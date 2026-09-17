@@ -1,0 +1,25 @@
+name: Long
+options:
+  projectFormat: xcode16_3
+  defaultSourceDirectoryType: syncedFolder
+
+packages:
+  LucideSwift:
+    url: https://github.com/ajaxjiang96/lucide-swift.git
+    from: "0.9.5"
+
+targets:
+  Long:
+    type: application
+    platform: iOS
+    deploymentTarget: "27.0"
+    sources:
+      - path: Long
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: "dev.liamhales.long"
+      MARKETING_VERSION: "1.0.0"
+      CURRENT_PROJECT_VERSION: "1"
+      ASSETCATALOG_COMPILER_APPICON_NAME: "AppIcon"
+      GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - package: LucideSwift
