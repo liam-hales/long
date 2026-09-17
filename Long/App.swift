@@ -19,6 +19,7 @@ struct App: SwiftUI.App {
     WindowGroup {
       AppView();
     }
-    .environment(appState);
+    .environment(appState)
+    .modelContainer(for: TaskItem.self);
   }
 }
