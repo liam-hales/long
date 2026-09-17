@@ -1,0 +1,52 @@
+{
+  "fill-specializations": [
+    {
+      "value": {
+        "solid": "srgb:0.98039,0.97647,0.96078,1.00000"
+      }
+    },
+    {
+      "appearance": "dark",
+      "value": {
+        "solid": "srgb:0.07843,0.07843,0.07451,1.00000"
+      }
+    }
+  ],
+  "groups": [
+    {
+      "layers": [
+        {
+          "fill-specializations": [
+            {
+              "value": {
+                "solid": "srgb:0.07843,0.07843,0.07451,1.00000"
+              }
+            },
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.98039,0.97647,0.96078,1.00000"
+              }
+            }
+          ],
+          "glass": false,
+          "image-name": "text.svg",
+          "name": "Text",
+          "position": {
+            "scale": 0.56,
+            "translation-in-points": [0, 0]
+          }
+        }
+      ]
+    }
+  ],
+  "supported-platforms": {
+    "circles": [
+      "watchOS"
+    ],
+    "squares": [
+      "iOS",
+      "macOS"
+    ]
+  }
+}
