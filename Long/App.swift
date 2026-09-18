@@ -7,19 +7,19 @@ import SwiftData
 struct App: SwiftUI.App {
 
   @State
-  private var appState: AppState;
+  private var _appState: AppState;
 
   /// Initialises the app with new
   // non-persistent app state
   init() {
-    self.appState = AppState();
+    self._appState = AppState();
   }
 
   var body: some Scene {
     WindowGroup {
       AppView();
     }
-    .environment(appState)
+    .environment(self._appState)
     .modelContainer(for: TaskItem.self);
   }
 }

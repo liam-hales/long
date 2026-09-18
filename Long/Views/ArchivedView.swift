@@ -4,7 +4,7 @@ import SwiftData
 /// Used to display the users
 /// archived tasks
 struct ArchivedView: View {
-    
+
   /// Query for the archived tasks stored on device
   /// ordered by ones that were completed first
   @Query(
@@ -14,11 +14,11 @@ struct ArchivedView: View {
     sort: \TaskItem.completedDate,
     order: .reverse
   )
-  private var tasks: [TaskItem];
-  
+  private var _tasks: [TaskItem];
+
   var body: some View {
     NavigationStack {
-      List(tasks) { task in
+      List(self._tasks) { task in
         Text(task.title);
       }
       .navigationTitle("Archived");
