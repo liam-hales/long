@@ -37,6 +37,8 @@ struct TasksView: View {
           CreateTaskView();
         }
       )
+      .scrollContentBackground(.hidden)
+      .background(Color.base);
     }
   }
 }

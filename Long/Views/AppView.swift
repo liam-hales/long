@@ -33,6 +33,7 @@ struct AppView: View {
         },
       );
     }
+    .tint(.accent);
   }
 }
 

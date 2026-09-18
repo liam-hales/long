@@ -11,17 +11,17 @@ struct CreateTaskView: View {
 
   @Environment(\.dismiss)
   private var _dismiss: DismissAction;
-  
+
   @State
   private var _title: String = "";
-  
+
   @FocusState
   private var _isFocused: Bool;
-  
+
   private var _trimmedTitle: String {
     return self._title.trimmingCharacters(in: .whitespacesAndNewlines);
   }
-  
+
   /// Creates and stores a new task with the
   /// entered title then dismisses the sheet
   private func _create() {
@@ -30,16 +30,16 @@ struct CreateTaskView: View {
     if (self._trimmedTitle.isEmpty == true) {
       return;
     }
-    
+
     // Create the new task
     // with the trimmed title
     let newTask = TaskItem(title: self._trimmedTitle)
-    
+
     // Insert and immediately save the
     // new task so it persists
     self._modelContext.insert(newTask);
     try? self._modelContext.save();
-    
+
     self._dismiss();
   }
 
@@ -68,26 +68,32 @@ struct CreateTaskView: View {
             }
           )
         }
-        
+
         ToolbarItem(placement: .topBarTrailing) {
           Button(
             action: {
               self._create();
             },
             label: {
-              Text("Create");
+              HStack(spacing: 4) {
+                LucideIcon(.check, size: 20);
+                Text("Create");
+              }
+              .foregroundStyle(.white);
             }
           )
+          .buttonStyle(.glassProminent)
+          .tint(.accent)
           .disabled(self._trimmedTitle.isEmpty == true);
         }
       }
     }
     .presentationBackground {
       ConcentricRectangle()
-        .fill(Color(.systemBackground))
+        .fill(Color.base)
         .overlay(
           ConcentricRectangle()
-            .stroke(.blue, lineWidth: 2)
+            .stroke(Color.outline, lineWidth: 2)
         )
       }
     .presentationDetents([
