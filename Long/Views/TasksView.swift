@@ -17,7 +17,7 @@ struct TasksView: View {
     sort: \TaskItem.dueDate,
     order: .reverse
   )
-  private var tasks: [TaskItem];
+  private var _tasks: [TaskItem];
 
   var body: some View {
 
@@ -25,12 +25,18 @@ struct TasksView: View {
     var appState = _appState;
 
     NavigationStack {
-      List(tasks) { task in
+      List(self._tasks) { task in
         Text(task.title);
       }
       .toolbar {
-        ToolbarView(taskFilter: $appState.taskFilter)
-      };
+        ToolbarView()
+      }
+      .sheet(
+        isPresented: $appState.isCreatingTask,
+        content: {
+          CreateTaskView();
+        }
+      )
     }
   }
 }

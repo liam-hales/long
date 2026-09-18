@@ -4,11 +4,14 @@ import LucideSwift
 /// Used to render the toolbar displayed above
 /// the users tasks in the `TasksView`
 struct ToolbarView: ToolbarContent {
-
-  @Binding
-  var taskFilter: TaskFilter;
+  
+  @Environment(AppState.self)
+  private var _appState: AppState;
 
   var body: some ToolbarContent {
+    
+    @Bindable
+    var appState = _appState;
 
     ToolbarItem(placement: .title) {
       Text("Tasks");
@@ -17,7 +20,7 @@ struct ToolbarView: ToolbarContent {
     ToolbarItem(placement: .topBarTrailing) {
       Menu(
         content: {
-          Picker("Filter", selection: $taskFilter) {
+          Picker("Filter", selection: $appState.taskFilter) {
             ForEach(TaskFilter.allCases) { filter in
               Label(
                 title: {
@@ -46,7 +49,9 @@ struct ToolbarView: ToolbarContent {
 
     ToolbarItemGroup(placement: .topBarTrailing) {
       Button(
-        action: {},
+        action: {
+          self._appState.status = .creatingTask;
+        },
         label: {
           LucideIcon(.plus, size: 22);
         }
