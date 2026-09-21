@@ -24,7 +24,10 @@ struct App: SwiftUI.App {
 
   var body: some Scene {
     WindowGroup {
-      AppView();
+      AppView()
+        .font(.serif(17, .regular))
+        .tint(.contentPrimary)
+        .foregroundStyle(Color.contentPrimary);
     }
     .modelContainer(self._container)
     .environment(self._appState);
