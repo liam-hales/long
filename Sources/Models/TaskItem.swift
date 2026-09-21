@@ -5,6 +5,17 @@ import SwiftData
 /// the user can create
 @Model
 final class TaskItem: Identifiable {
+  
+  /// Describes the different statuses a
+  /// task item can be in at any given time
+  enum TaskStatus: String {
+    case overdue;
+    case today;
+    case scheduled;
+    case unscheduled;
+    case completed;
+  }
+  
   var title: String = "";
   var dueDate: Date?;
   var completedDate: Date?;
@@ -12,6 +23,30 @@ final class TaskItem: Identifiable {
 
   private(set) var createDate: Date = Date.now;
   private(set) var updateDate: Date = Date.now;
+  
+  /// Calculates the task status based on its
+  /// `dueDate` and `completedDate` data
+  var status: TaskStatus {
+    if (self.completedDate != nil) {
+      return .completed;
+    }
+    
+    // Check if the task has a due date, if not then the
+    // task can be completed at anytime and is unscheduled
+    guard let dueDate = self.dueDate else {
+      return .unscheduled;
+    }
+
+    // A task due at any point today is treated
+    // as something that needs completing today
+    if (Calendar.current.isDateInToday(dueDate)) {
+      return .today;
+    }
+
+    return (dueDate < .now)
+      ? .overdue
+      : .unscheduled;
+  }
     
   /// Initialises a new task with a given
   /// `title` and optional `dueDate`
