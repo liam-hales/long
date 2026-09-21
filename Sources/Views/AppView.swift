@@ -16,6 +16,7 @@ struct AppView: View {
             lucide: .listCheck,
             size: .init(width: 22, height: 22)
           );
+          
           Text("Tasks");
         },
       );
@@ -29,6 +30,7 @@ struct AppView: View {
             lucide: .archive,
             size: .init(width: 22, height: 22)
           );
+          
           Text("Archived");
         },
       );

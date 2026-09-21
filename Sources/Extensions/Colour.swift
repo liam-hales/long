@@ -16,8 +16,8 @@ extension Color {
       // Get the correct RGB colour value
       // depending on the appearance
       let (red, green, blue) = (traits.userInterfaceStyle == .light)
-        ? Color._components(from: light)
-        : Color._components(from: dark);
+        ? Color._toRGB(from: light)
+        : Color._toRGB(from: dark);
 
       return UIColor(
         red: red,
@@ -30,9 +30,9 @@ extension Color {
     self.init(uiColor: colour);
   }
 
-  /// Used to extract RGB colour values
-  /// from a given hex string
-  private static func _components(from hex: String) -> (Double, Double, Double) {
+  /// Used to convert a given `hex` string into
+  /// separate RGB colour values
+  private static func _toRGB(from hex: String) -> (Double, Double, Double) {
 
     // Extract the colour segment
     // of the hex string
@@ -52,9 +52,9 @@ extension Color {
 
     // Return the RGB colour values
     return (
-        Double((value >> 16) & 0xFF) / 255,
-        Double((value >> 8) & 0xFF) / 255,
-        Double(value & 0xFF) / 255
+      Double((value >> 16) & 0xFF) / 255,
+      Double((value >> 8) & 0xFF) / 255,
+      Double(value & 0xFF) / 255
     )
   }
 }

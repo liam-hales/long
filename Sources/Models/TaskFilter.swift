@@ -1,9 +1,8 @@
-import Foundation
 import LucideSwift
 
 /// Describes all ways the user
 /// can filter their tasks
-enum TaskFilter: String, CaseIterable, Identifiable {
+enum TaskFilter: CaseIterable, Identifiable {
   case date;
   case category;
     
