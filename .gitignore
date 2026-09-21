@@ -1,5 +1,6 @@
 # Xcode
 *.xcodeproj
+Info.plist
 
 # Misc
 .DS_Store
