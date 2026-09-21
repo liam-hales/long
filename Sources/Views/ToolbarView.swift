@@ -13,32 +13,25 @@ struct ToolbarView: ToolbarContent {
     @Bindable
     var appState = _appState;
 
-    ToolbarItem(placement: .title) {
-      Text("Tasks");
-    }
-
     ToolbarItem(placement: .topBarTrailing) {
       Menu(
         content: {
-          Picker(
-            "Filter",
-            selection: $appState.taskFilter,
-            content: {
-              ForEach(TaskFilter.allCases) { filter in
-                Label(
-                  title: {
-                    Text(filter.title)
-                  },
-                  icon: {
-                    Image(
-                      lucide: filter.icon,
-                      size: .init(width: 22, height: 22)
-                    )
-                  }
-                )
-              }
+          Picker("Filter", selection: $appState.taskFilter) {
+            ForEach(TaskFilter.allCases) { filter in
+              Label(
+                title: {
+                  Text(filter.title)
+                },
+                icon: {
+                  Image(
+                    lucide: filter.icon,
+                    size: .init(width: 22, height: 22)
+                  )
+                }
+              )
             }
-          )
+          }
+          .tint(.contentPrimary)
           .pickerStyle(.inline);
         },
         label: {
@@ -48,12 +41,14 @@ struct ToolbarView: ToolbarContent {
           ) {
             VStack(
               alignment: .leading,
-              spacing: 0
+              spacing: 2
             ) {
               Text("Filter by")
-                .font(.caption2);
+                .foregroundStyle(Color.contentSecondary)
+                .font(.serif(11, .regular))
+
               Text(appState.taskFilter.title)
-                .font(.caption);
+                .font(.serif(13, .bold))
             }
 
             LucideIcon(
@@ -72,20 +67,11 @@ struct ToolbarView: ToolbarContent {
       placement: .topBarTrailing
     );
 
-    ToolbarItemGroup(placement: .topBarTrailing) {
-      Button(
-        action: {
-          self._appState.status = .creatingTask;
-        },
-        label: {
-          LucideIcon(.plus, size: 22);
-        }
-      )
-
+    ToolbarItem(placement: .topBarTrailing) {
       Button(
         action: {},
         label: {
-          LucideIcon(.sparkles, size: 22);
+          LucideIcon(.settings, size: 22);
         }
       )
     }
