@@ -21,7 +21,7 @@ final class AppState {
   init(context: ModelContext) {
     self._context = context;
     
-    self.taskFilter = .date;
+    self.taskFilter = .all;
     self.status = .idle;
   }
   
