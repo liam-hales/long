@@ -27,7 +27,7 @@ extension Font {
   /// at a fixed `size`
   static func mono(_ size: CGFloat) -> Font {
     let name = self._getName(
-      family: .serif,
+      family: .mono,
       weight: .regular
     );
     
