@@ -3,8 +3,8 @@ import LucideSwift
 /// Describes the different modes
 /// the `TaskInputView` can be in
 enum TaskInputMode: CaseIterable, Identifiable {
-  case manual;
-  case auto;
+  case add;
+  case capture;
   
   var id: Self {
     self;
@@ -14,8 +14,8 @@ enum TaskInputMode: CaseIterable, Identifiable {
   /// input mode title
   var title: String {
     switch self {
-      case .manual: "Manual";
-      case .auto: "Auto";
+      case .add: "Add";
+      case .capture: "Capture";
     }
   }
   
@@ -23,8 +23,8 @@ enum TaskInputMode: CaseIterable, Identifiable {
   /// input mode icon
   var icon: LucideIconName {
     switch self {
-      case .manual: .notebookPen;
-      case .auto: .pencilSparkles;
+      case .add: .listPlus;
+      case .capture: .pencilSparkles;
     }
   }
 }
