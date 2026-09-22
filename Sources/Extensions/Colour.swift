@@ -6,6 +6,9 @@ extension Color {
   static let contentPrimary = Color(light: "#141413", dark: "#faf9f5");
   static let contentSecondary = Color(light: "#8e8b82", dark: "#a09d96");
   static let outline = Color(light: "#e6dfd8", dark: "#2a2825");
+  static let surfaceHigh = Color(light: "#ffffff", dark: "#1f1e1b");
+  static let surfaceMid = Color(light: "#f5f0e8", dark: "#1f1e1b");
+  static let surfaceLow = Color(light: "#efe9de", dark: "#252320");
   static let base = Color(light: "#faf9f5", dark: "#181715");
 
   /// Initialises a `Color` from its hex value for
