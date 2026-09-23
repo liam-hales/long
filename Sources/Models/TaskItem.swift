@@ -20,6 +20,7 @@ final class TaskItem: Identifiable {
   var dueDate: Date?;
   var completedDate: Date?;
   var isArchived: Bool = false;
+  var sheet: TaskSheetItem;
 
   private(set) var createDate: Date = Date.now;
   private(set) var updateDate: Date = Date.now;
@@ -48,15 +49,17 @@ final class TaskItem: Identifiable {
       : .unscheduled;
   }
     
-  /// Initialises a new task with a given
+  /// Initialises a new task with a given `sheet`,
   /// `title` and optional `dueDate`
   init(
+    sheet: TaskSheetItem,
     title: String,
     dueDate: Date? = nil
   ) {
     self.title = title;
     self.dueDate = dueDate;
     self.isArchived = false;
+    self.sheet = sheet;
     self.createDate = .now;
     self.updateDate = .now;
   }

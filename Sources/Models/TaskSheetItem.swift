@@ -7,6 +7,12 @@ import SwiftData
 final class TaskSheetItem: Identifiable {
   var name: String = "";
 
+  @Relationship(
+    deleteRule: .cascade,
+    inverse: \TaskItem.sheet
+  )
+  var tasks: [TaskItem] = [];
+
   private(set) var createDate: Date = Date.now;
   private(set) var updateDate: Date = Date.now;
 
