@@ -14,7 +14,7 @@ struct App: SwiftUI.App {
   /// and custom appearance configuration
   init() {
     do {
-      self._container = try ModelContainer(for: TaskItem.self);
+      self._container = try ModelContainer(for: TaskItem.self, TaskSheetItem.self);
       self.__appState = State(initialValue: AppState(context: self._container.mainContext));
     }
     catch {
