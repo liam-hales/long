@@ -46,7 +46,7 @@ final class TaskItem: Identifiable {
 
     return (dueDate < .now)
       ? .overdue
-      : .unscheduled;
+      : .scheduled;
   }
     
   /// Initialises a new task with a given `sheet`,
