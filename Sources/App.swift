@@ -20,6 +20,35 @@ struct App: SwiftUI.App {
     catch {
       fatalError("Failed to create ModelContainer: \(error)")
     }
+    
+    // Configure the appearance
+    // of some UIKit views
+    self._configureNavBar();
+  }
+  
+  /// Used to configure the `UINavigationBar`
+  /// appearance for the app
+  private func _configureNavBar() -> Void {
+    let iconImage = Image(
+      lucide: .arrowLeft,
+      size: .init(width: 22, height: 22)
+    );
+    
+    // Define the renderer and its scale
+    // used to render the icon image
+    let renderer = ImageRenderer(content: iconImage);
+    renderer.scale = 3;
+    
+    let backImage = renderer.uiImage;
+    let appearance = UINavigationBarAppearance();
+    
+    appearance.configureWithDefaultBackground();
+    appearance.setBackIndicatorImage(backImage, transitionMaskImage: backImage);
+    appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear];
+
+    UINavigationBar.appearance().standardAppearance = appearance;
+    UINavigationBar.appearance().scrollEdgeAppearance = appearance;
+    UINavigationBar.appearance().compactAppearance = appearance;
   }
 
   var body: some Scene {
