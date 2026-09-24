@@ -1,41 +1,29 @@
 import SwiftUI
-import LucideSwift
 
 /// The main entry point view
 /// rendered by the `App`
 struct AppView: View {
+  
+  @Environment(AppState.self)
+  private var _appState: AppState;
+
+  @Environment(\.horizontalSizeClass)
+  private var _sizeClass: UserInterfaceSizeClass?;
 
   var body: some View {
-    TabView {
-      Tab(
-        content: {
-          TasksView();
-        },
-        label: {
-          Image(
-            lucide: .listCheck,
-            size: .init(width: 22, height: 22)
-          );
-          
-          Text("Tasks");
-        },
-      );
-
-      Tab(
-        content: {
-          ArchivedView();
-        },
-        label: {
-          Image(
-            lucide: .archive,
-            size: .init(width: 22, height: 22)
-          );
-          
-          Text("Archived");
-        },
-      );
-    }
+    
+    @Bindable
+    var appState = _appState;
+    
+    NavigationSplitView(
+      columnVisibility: $appState.navVisibility,
+      sidebar: {
+        NavSidebarView(sizeClass: self._sizeClass);
+      },
+      detail: {
+        NavRouterView(sizeClass: self._sizeClass);
+      }
+    )
     .tint(.accent);
   }
 }
-
