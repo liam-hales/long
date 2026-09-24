@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import SwiftData
 
 /// Used to store state for
@@ -15,6 +16,7 @@ final class AppState {
     case archived;
   }
 
+  var navVisibility: NavigationSplitViewVisibility;
   var navSelection: NavSelection?;
   var taskFilter: TaskFilter;
 
@@ -29,7 +31,7 @@ final class AppState {
     // the task sheet item via its ID
     let descriptor = FetchDescriptor<TaskSheetItem>(
       predicate: #Predicate {
-        $0.persistentModelID == id
+        $0.id == id
       }
     );
 
@@ -43,8 +45,9 @@ final class AppState {
   init(context: ModelContext) {
     self._context = context;
 
-    self.taskFilter = .all;
     self.navSelection = nil;
+    self.navVisibility = .doubleColumn;
+    self.taskFilter = .all;
   }
 
   /// Used to create and save a
