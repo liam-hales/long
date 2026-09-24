@@ -5,17 +5,17 @@ import LucideSwift
 /// Used to display the users
 /// current outstanding tasks
 struct TasksView: View {
-  private let _sheet: TaskSheetItem;
+  private let _sheet: TaskSheetModel;
   
   @Environment(AppState.self)
   private var _appState: AppState;
   
   @Query
-  private var _tasks: [TaskItem];
+  private var _tasks: [TaskModel];
 
   /// Initialises the view with the task
   /// `sheet` to display tasks for
-  init(sheet: TaskSheetItem) {
+  init(sheet: TaskSheetModel) {
     self._sheet = sheet;
     
     // `#Predicate` used below can only capture plain values
@@ -25,28 +25,28 @@ struct TasksView: View {
     // Query for the unarchived tasks for the
     // sheet ordered by ones that are due first
     self.__tasks = Query(
-      filter: #Predicate<TaskItem> {
+      filter: #Predicate<TaskModel> {
         $0.sheet.id == sheetId &&
         $0.isArchived == false
       },
-      sort: \TaskItem.dueDate,
+      sort: \TaskModel.dueDate,
       order: .reverse
     );
   }
 
-  private var _overdueTasks: [TaskItem] {
+  private var _overdueTasks: [TaskModel] {
     return self._tasks.filter { task in task.status == .overdue };
   }
 
-  private var _todayTasks: [TaskItem] {
+  private var _todayTasks: [TaskModel] {
     return self._tasks.filter { task in task.status == .today };
   }
   
-  private var _scheduledTasks: [TaskItem] {
+  private var _scheduledTasks: [TaskModel] {
     return self._tasks.filter { task in task.status == .scheduled };
   }
   
-  private var _unscheduledTasks: [TaskItem] {
+  private var _unscheduledTasks: [TaskModel] {
     return self._tasks.filter { task in task.status == .unscheduled };
   }
 

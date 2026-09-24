@@ -4,14 +4,14 @@ import SwiftData
 /// Describes a task sheet the user
 /// can create to group tasks
 @Model
-final class TaskSheetItem: Identifiable {
+final class TaskSheetModel: Identifiable {
   var name: String = "";
 
   @Relationship(
     deleteRule: .cascade,
-    inverse: \TaskItem.sheet
+    inverse: \TaskModel.sheet
   )
-  var tasks: [TaskItem] = [];
+  var tasks: [TaskModel] = [];
 
   private(set) var createDate: Date = Date.now;
   private(set) var updateDate: Date = Date.now;

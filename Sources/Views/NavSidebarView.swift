@@ -16,10 +16,10 @@ struct NavSidebarView: View {
   /// Query for the task sheets ordered
   /// by updated most recent
   @Query(
-    sort: \TaskSheetItem.createDate,
+    sort: \TaskSheetModel.createDate,
     order: .reverse
   )
-  private var _taskSheets: [TaskSheetItem];
+  private var _taskSheets: [TaskSheetModel];
 
   /// Initialises the view with
   /// the app `sizeClass`

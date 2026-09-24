@@ -11,7 +11,7 @@ final class AppState {
   /// Describes what the user has
   /// currently selected for navigation
   enum NavSelection: Hashable {
-    case taskSheet(_ id: TaskSheetItem.ID);
+    case taskSheet(_ id: TaskSheetModel.ID);
     case settings;
     case archived;
   }
@@ -22,14 +22,14 @@ final class AppState {
 
   /// The currently selected task sheet
   /// if the user has one selected
-  var selectedTaskSheet: TaskSheetItem? {
+  var selectedTaskSheet: TaskSheetModel? {
     guard case .taskSheet(let id) = self.navSelection else {
       return nil;
     }
 
     // Define the descriptor to fetch
-    // the task sheet item via its ID
-    let descriptor = FetchDescriptor<TaskSheetItem>(
+    // the task sheet via its ID
+    let descriptor = FetchDescriptor<TaskSheetModel>(
       predicate: #Predicate {
         $0.id == id
       }
@@ -41,7 +41,7 @@ final class AppState {
   }
 
   /// Initialises the `AppState` with a given
-  /// model context for the task item
+  /// model context for the task
   init(context: ModelContext) {
     self._context = context;
 
@@ -61,7 +61,7 @@ final class AppState {
       return;
     }
 
-    let newSheet = TaskSheetItem(name: trimmed);
+    let newSheet = TaskSheetModel(name: trimmed);
 
     // Insert and immediately save the
     // new task sheet so it persists
@@ -98,7 +98,7 @@ final class AppState {
 
     // Create the new task for the selected task sheet
     // with the trimmed title and due date
-    let newTask = TaskItem(
+    let newTask = TaskModel(
       sheet: sheet,
       title: trimmed,
       dueDate: dueDate

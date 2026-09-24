@@ -1,14 +1,14 @@
 import Foundation
 import SwiftData
 
-/// Describes a single task item
+/// Describes a single task
 /// the user can create
 @Model
-final class TaskItem: Identifiable {
+final class TaskModel: Identifiable {
   
   /// Describes the different statuses a
-  /// task item can be in at any given time
-  enum TaskStatus: String {
+  /// task can be in at any given time
+  enum Status: String {
     case overdue;
     case today;
     case scheduled;
@@ -20,14 +20,14 @@ final class TaskItem: Identifiable {
   var dueDate: Date?;
   var completedDate: Date?;
   var isArchived: Bool = false;
-  var sheet: TaskSheetItem;
+  var sheet: TaskSheetModel;
 
   private(set) var createDate: Date = Date.now;
   private(set) var updateDate: Date = Date.now;
   
   /// Calculates the task status based on its
   /// `dueDate` and `completedDate` data
-  var status: TaskStatus {
+  var status: Status {
     if (self.completedDate != nil) {
       return .completed;
     }
@@ -52,7 +52,7 @@ final class TaskItem: Identifiable {
   /// Initialises a new task with a given `sheet`,
   /// `title` and optional `dueDate`
   init(
-    sheet: TaskSheetItem,
+    sheet: TaskSheetModel,
     title: String,
     dueDate: Date? = nil
   ) {

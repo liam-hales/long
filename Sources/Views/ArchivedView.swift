@@ -8,13 +8,13 @@ struct ArchivedView: View {
   /// Query for the archived tasks stored on device
   /// ordered by ones that were completed first
   @Query(
-    filter: #Predicate<TaskItem> {
+    filter: #Predicate<TaskModel> {
       $0.isArchived == true
     },
-    sort: \TaskItem.completedDate,
+    sort: \TaskModel.completedDate,
     order: .reverse
   )
-  private var _tasks: [TaskItem];
+  private var _tasks: [TaskModel];
 
   var body: some View {
     List(self._tasks) { task in
