@@ -71,7 +71,7 @@ struct ToolbarView: ToolbarContent {
       Button(
         action: {},
         label: {
-          LucideIcon(.settings, size: 22);
+          LucideIcon(.filePen, size: 22);
         }
       )
     }

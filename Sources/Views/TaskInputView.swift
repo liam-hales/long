@@ -46,7 +46,7 @@ struct TaskInputView: View {
     ) {
       HStack(
         alignment: .center,
-        spacing: 4
+        spacing: 8
       ) {
         ForEach(TaskInputMode.allCases) { mode in
           let isSelected: Bool = (mode == self._mode);
@@ -79,7 +79,7 @@ struct TaskInputView: View {
           .buttonBorderShape(.roundedRectangle(radius: 8))
           .tint(
             (self._mode == mode)
-              ? .white
+              ? .surfaceHigh
               : .clear
           );
         }
@@ -122,7 +122,7 @@ struct TaskInputView: View {
           alignment: .center,
           spacing: 24
         ) {
-          TextField("Empty your thoughts here...", text: self.$_captureInputValue)
+          TextField("Capture your thoughts", text: self.$_captureInputValue)
             .padding(.horizontal, 8)
             .lineLimit(6)
             .submitLabel(.return)

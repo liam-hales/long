@@ -17,11 +17,9 @@ struct ArchivedView: View {
   private var _tasks: [TaskItem];
 
   var body: some View {
-    NavigationStack {
-      List(self._tasks) { task in
-        Text(task.title);
-      }
-      .navigationTitle("Archived");
+    List(self._tasks) { task in
+      Text(task.title);
     }
+    .navigationTitle("Archived");
   }
 }
