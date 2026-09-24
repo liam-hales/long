@@ -50,6 +50,29 @@ final class AppState {
     self.taskFilter = .all;
   }
 
+  /// Used to create and save a new
+  /// task sheet with a given `name`
+  func createTaskSheet(name: String) -> Void {
+    let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines);
+
+    // Check if the trimmed name
+    // is empty and if so return
+    if (trimmed.isEmpty == true) {
+      return;
+    }
+
+    let newSheet = TaskSheetItem(name: trimmed);
+
+    // Insert and immediately save the
+    // new task sheet so it persists
+    self._context.insert(newSheet);
+    try? self._context.save();
+
+    // Set the navigation selection state
+    // to the new task sheet
+    self.navSelection = .taskSheet(newSheet.id);
+  }
+
   /// Used to create and save a
   /// new task with a give `title`
   func createTask(title: String) -> Void {
