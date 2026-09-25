@@ -48,7 +48,24 @@ struct NavRouterView: View {
           ArchivedView()
         }
       }
+      .navigationBarBackButtonHidden(self._sizeClass == .compact)
       .toolbar {
+
+        // Replace the system back button with a
+        // custom one when the split view is collapsed
+        if (self._sizeClass == .compact) {
+          ToolbarItem(placement: .topBarLeading) {
+            Button(
+              action: {
+                self._appState.navSelection = nil
+              },
+              label: {
+                LucideIcon(.arrowLeft, size: 22)
+              }
+            )
+          }
+        }
+
         if (
           self._sizeClass == .regular &&
           self._appState.navVisibility == .detailOnly
