@@ -7,6 +7,9 @@ packages:
   LucideSwift:
     url: https://github.com/ajaxjiang96/lucide-swift.git
     from: "0.9.5"
+  SwiftLintPlugins:
+    url: https://github.com/SimplyDanny/SwiftLintPlugins
+    from: "0.65.1"
 
 targets:
   Long:
@@ -31,3 +34,6 @@ targets:
       GENERATE_INFOPLIST_FILE: YES
     dependencies:
       - package: LucideSwift
+    buildToolPlugins:
+      - plugin: SwiftLintBuildToolPlugin
+        package: SwiftLintPlugins

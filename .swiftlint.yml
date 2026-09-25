@@ -1,0 +1,50 @@
+opt_in_rules:
+  - all
+
+disabled_rules:
+  - redundant_void_return
+  - redundant_type_annotation
+  - redundant_self
+  - no_extension_access_modifier
+  - no_magic_numbers
+  - explicit_acl
+  - explicit_top_level_acl
+  - explicit_type_interface
+  - contrasted_opening_brace
+  - control_statement
+  - prefer_condition_list
+  - vertical_whitespace_opening_braces
+  - discouraged_default_parameter
+  - required_deinit
+  - switch_case_on_newline
+
+attributes:
+  always_on_line_above:
+    - "@State"
+    - "@Bindable"
+    - "@Query"
+
+type_contents_order:
+  order:
+    - [case]
+    - [type_alias, associated_type]
+    - [subtype]
+    - [type_property]
+    - [instance_property, initializer, other_method]
+    - [type_method]
+    - [subscript]
+    - [deinitializer]
+
+switch_case_alignment:
+  indented_cases: true
+
+large_tuple:
+  warning: 4
+  error: 5
+
+indentation_width:
+  indentation_width: 2
+
+closure_body_length:
+  warning: 150
+  error: 200
