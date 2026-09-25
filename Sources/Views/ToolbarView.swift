@@ -1,17 +1,17 @@
-import SwiftUI
 import LucideSwift
+import SwiftUI
 
 /// Used to render the toolbar displayed above
 /// the users tasks in the `TasksView`
 struct ToolbarView: ToolbarContent {
 
   @Environment(AppState.self)
-  private var _appState: AppState;
+  private var _appState: AppState
 
   var body: some ToolbarContent {
 
     @Bindable
-    var appState = _appState;
+    var appState = _appState
 
     ToolbarItem(placement: .topBarTrailing) {
       Menu(
@@ -32,7 +32,7 @@ struct ToolbarView: ToolbarContent {
             }
           }
           .tint(.contentPrimary)
-          .pickerStyle(.inline);
+          .pickerStyle(.inline)
         },
         label: {
           HStack(
@@ -55,9 +55,9 @@ struct ToolbarView: ToolbarContent {
               self._appState.taskFilter.icon,
               size: 22,
               color: .contentPrimary
-            );
+            )
           }
-          .padding(.horizontal, 8);
+          .padding(.horizontal, 8)
         }
       )
     }
@@ -65,13 +65,13 @@ struct ToolbarView: ToolbarContent {
     ToolbarSpacer(
       .fixed,
       placement: .topBarTrailing
-    );
+    )
 
     ToolbarItem(placement: .topBarTrailing) {
       Button(
         action: {},
         label: {
-          LucideIcon(.filePen, size: 22);
+          LucideIcon(.filePen, size: 22)
         }
       )
     }

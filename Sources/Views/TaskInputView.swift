@@ -1,41 +1,37 @@
-import SwiftUI
 import LucideSwift
+import SwiftUI
 
 /// Used to display the task input the user can use to
 /// create tasks in either add or capture mode
 struct TaskInputView: View {
 
   @Environment(AppState.self)
-  private var _appState: AppState;
+  private var _appState: AppState
 
   @State
-  private var _mode: TaskInputMode = .add;
+  private var _mode: TaskInputMode = .add
 
   @State
-  private var _addInputValue: String = "";
+  private var _addInputValue: String = ""
 
   @State
-  private var _captureInputValue: String = "";
+  private var _captureInputValue: String = ""
 
   /// Used to trigger the task action based
   /// on the current task input mode
   private func _onSubmit() -> Void {
     switch self._mode {
-      
+
       // For add mode, create the
       // task and clear the input state
       case .add:
-        self._appState.createTask(title: self._addInputValue);
-        self._addInputValue = "";
-      
-        break;
-      
+        self._appState.createTask(title: self._addInputValue)
+        self._addInputValue = ""
+
       // For capture mode, capture the tasks
       // and clear the input state
       case .capture:
-        self._captureInputValue = "";
-      
-        break;
+        self._captureInputValue = ""
     }
   }
 
@@ -49,11 +45,11 @@ struct TaskInputView: View {
         spacing: 8
       ) {
         ForEach(TaskInputMode.allCases) { mode in
-          let isSelected: Bool = (mode == self._mode);
-          
+          let isSelected: Bool = (mode == self._mode)
+
           Button(
             action: {
-              self._mode = mode;
+              self._mode = mode
             },
             label: {
               HStack(
@@ -61,10 +57,10 @@ struct TaskInputView: View {
                 spacing: 6
               ) {
                 LucideIcon(mode.icon, size: 16)
-                
+
                 Text(mode.title)
                   .font(.serif(16, .bold))
-                  .padding(.top, 2);
+                  .padding(.top, 2)
               }
               .frame(maxWidth: .infinity)
               .padding(.vertical, 2)
@@ -72,7 +68,7 @@ struct TaskInputView: View {
                 (isSelected == true)
                   ? Color.contentPrimary
                   : Color.contentSecondary
-              );
+              )
             }
           )
           .buttonStyle(.borderedProminent)
@@ -81,7 +77,7 @@ struct TaskInputView: View {
             (self._mode == mode)
               ? .surfaceHigh
               : .clear
-          );
+          )
         }
       }
       .padding(.all, 5)
@@ -98,12 +94,12 @@ struct TaskInputView: View {
             .lineLimit(1)
             .submitLabel(.done)
             .onSubmit {
-              self._onSubmit();
+              self._onSubmit()
             }
 
           Button(
             action: {
-              self._onSubmit();
+              self._onSubmit()
             },
             label: {
               LucideIcon(.arrowUp, size: 22)
@@ -113,10 +109,10 @@ struct TaskInputView: View {
           )
           .buttonStyle(.borderedProminent)
           .buttonBorderShape(.roundedRectangle(radius: 10))
-          .tint(.accent);
+          .tint(.accent)
         }
       }
-      
+
       if (self._mode == .capture) {
         VStack(
           alignment: .center,
@@ -126,7 +122,7 @@ struct TaskInputView: View {
             .padding(.horizontal, 8)
             .lineLimit(6)
             .submitLabel(.return)
-          
+
           HStack(
             alignment: .center,
             spacing: 10
@@ -134,13 +130,13 @@ struct TaskInputView: View {
             Text("You will review captured tasks before they are created.")
               .padding(.leading, 8)
               .font(.mono(12))
-              .foregroundStyle(Color.contentSecondary);
-            
-            Spacer();
-            
+              .foregroundStyle(Color.contentSecondary)
+
+            Spacer()
+
             Button(
               action: {
-                self._onSubmit();
+                self._onSubmit()
               },
               label: {
                 LucideIcon(.arrowUp, size: 22)
@@ -150,10 +146,10 @@ struct TaskInputView: View {
             )
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.roundedRectangle(radius: 10))
-            .tint(.accent);
+            .tint(.accent)
           }
         }
-        .padding(.top, 8);
+        .padding(.top, 8)
       }
     }
     .padding(.all, 10)
@@ -162,6 +158,6 @@ struct TaskInputView: View {
     .overlay(
       RoundedRectangle(cornerRadius: 14)
         .stroke(Color.outline, lineWidth: 1)
-    );
+    )
   }
 }

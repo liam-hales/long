@@ -1,24 +1,23 @@
-import SwiftUI
 import LucideSwift
+import SwiftUI
 
 /// Used to route the user to the view
 /// for the current navigation selections
 struct NavRouterView: View {
-  private let _sizeClass: UserInterfaceSizeClass?;
+  private let _sizeClass: UserInterfaceSizeClass?
 
   @Environment(AppState.self)
-  private var _appState: AppState;
+  private var _appState: AppState
 
   /// Initialises the view with
   /// the app `sizeClass`
   init(sizeClass: UserInterfaceSizeClass?) {
-    self._sizeClass = sizeClass;
+    self._sizeClass = sizeClass
   }
 
   var body: some View {
     NavigationStack {
       Group {
-
         // If there is no nav selection then render a default
         // view to let the user know to select something
         if (self._appState.navSelection == nil) {
@@ -27,12 +26,12 @@ struct NavRouterView: View {
             spacing: 6
           ) {
             Text("Nothing selected.")
-              .font(.serif(22, .bold));
+              .font(.serif(22, .bold))
             Text("You have not selected an option from the sidebar.")
               .foregroundStyle(Color.contentSecondary)
               .font(.serif(14, .regular))
               .frame(maxWidth: 260)
-              .multilineTextAlignment(.center);
+              .multilineTextAlignment(.center)
           }
           .frame(
             maxWidth: .infinity,
@@ -42,11 +41,11 @@ struct NavRouterView: View {
         }
 
         if let sheet = self._appState.selectedTaskSheet {
-          TasksView(sheet: sheet);
+          TasksView(sheet: sheet)
         }
 
         if (self._appState.navSelection == .archived) {
-          ArchivedView();
+          ArchivedView()
         }
       }
       .toolbar {
@@ -57,15 +56,15 @@ struct NavRouterView: View {
           ToolbarItem(placement: .topBarLeading) {
             Button(
               action: {
-                self._appState.navVisibility = .doubleColumn;
+                self._appState.navVisibility = .doubleColumn
               },
               label: {
-                LucideIcon(.panelRightClose, size: 22);
+                LucideIcon(.panelRightClose, size: 22)
               }
-            );
+            )
           }
         }
-      };
+      }
     }
   }
 }
