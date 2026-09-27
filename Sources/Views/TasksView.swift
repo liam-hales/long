@@ -56,31 +56,30 @@ struct TasksView: View {
     var appState = _appState
 
     List {
-      TaskInputView()
-        .padding(.vertical, 10)
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
-        .listRowInsets(.horizontal, 0)
+      Section {
+        TaskInputView()
+          .padding(.vertical, 10)
 
-      if (self._tasks.isEmpty == true) {
-        VStack(
-          alignment: .center,
-          spacing: 6
-        ) {
-          Text("No tasks.")
-            .font(.serif(22, .bold))
-          Text("You currently have no tasks to complete, try creating one above.")
-            .foregroundStyle(Color.contentSecondary)
-            .font(.serif(14, .regular))
-            .frame(maxWidth: 260)
-            .multilineTextAlignment(.center)
+        if (self._tasks.isEmpty == true) {
+          VStack(
+            alignment: .center,
+            spacing: 6
+          ) {
+            Text("No tasks.")
+              .font(.serif(22, .bold))
+            Text("You currently have no tasks to complete, try creating one above.")
+              .foregroundStyle(Color.contentSecondary)
+              .font(.serif(14, .regular))
+              .frame(maxWidth: 260)
+              .multilineTextAlignment(.center)
+          }
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, 20)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 20)
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
-        .listRowInsets(.horizontal, 0)
       }
+      .listRowBackground(Color.clear)
+      .listRowSeparator(.hidden)
+      .listRowInsets(.horizontal, 0)
 
       if (self._todayTasks.isEmpty == false) {
         Section(
@@ -95,7 +94,6 @@ struct TasksView: View {
               .font(.mono(16))
           }
         )
-        .listRowInsets(.horizontal, 0)
       }
 
       if (self._scheduledTasks.isEmpty == false) {
@@ -111,7 +109,6 @@ struct TasksView: View {
               .font(.mono(16))
           }
         )
-        .listRowInsets(.horizontal, 0)
       }
 
       if (self._unscheduledTasks.isEmpty == false) {
@@ -120,13 +117,37 @@ struct TasksView: View {
             Text(task.title)
           }
         }
-        .listRowInsets(.horizontal, 0)
       }
     }
-    .navigationTitle(self._sheet.name)
     .toolbar {
       ToolbarView()
+
+      ToolbarItem(placement: .largeTitle) {
+        Text(self._sheet.name)
+          .font(.serif(28, .bold))
+          .padding(.horizontal, 4)
+          .padding(.top, 24)
+          .padding(.bottom, -4)
+          .frame(
+            maxWidth: .infinity,
+            alignment: .leading
+          )
+      }
+
+      ToolbarItem(placement: .largeSubtitle) {
+        Text("\(self._tasks.count) tasks to complete")
+          .foregroundStyle(Color.contentSecondary)
+          .font(.mono(14))
+          .padding(.horizontal, 4)
+          .frame(
+            maxWidth: .infinity,
+            alignment: .leading
+          )
+      }
     }
+    .listStyle(.plain)
+    .navigationTitle(self._sheet.name)
+    .navigationSubtitle("\(self._tasks.count) tasks to complete")
     .scrollContentBackground(.hidden)
     .background(Color.base)
   }

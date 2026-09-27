@@ -52,6 +52,7 @@ struct NavRouterView: View {
       }
     }
     .navigationBarBackButtonHidden(self._sizeClass == .compact)
+    .toolbarTitleDisplayMode(.large)
     .toolbar {
 
       // Replace the system back button with a

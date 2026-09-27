@@ -153,11 +153,10 @@ struct TaskInputView: View {
       }
     }
     .padding(.all, 10)
-    .background(Color.surfaceHigh)
-    .cornerRadius(14)
-    .overlay(
+    .background(
       RoundedRectangle(cornerRadius: 14)
-        .stroke(Color.outline, lineWidth: 1)
+        .fill(Color.surfaceHigh)
+        .strokeBorder(Color.outline, lineWidth: 1)
     )
   }
 }
