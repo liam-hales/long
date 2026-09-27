@@ -31,12 +31,12 @@ extension UINavigationBar {
 
     appearance.titleTextAttributes = [
       .font: titleFont,
-      .foregroundColor: UIColor(Color.contentPrimary)
+      .foregroundColor: UIColor(Color.contentPrimary),
     ]
 
     appearance.subtitleTextAttributes = [
       .font: subtitleFont,
-      .foregroundColor: UIColor(Color.contentSecondary)
+      .foregroundColor: UIColor(Color.contentSecondary),
     ]
 
     self.appearance().standardAppearance = appearance

@@ -38,6 +38,12 @@ type_contents_order:
 switch_case_alignment:
   indented_cases: true
 
+statement_position:
+  statement_mode: uncuddled_else
+
+trailing_comma:
+  mandatory_comma: true
+
 large_tuple:
   warning: 4
   error: 5
