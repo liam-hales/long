@@ -26,6 +26,7 @@ targets:
           - Newsreader-Regular.ttf
           - Newsreader-SemiBold.ttf
           - JetBrainsMono-Medium.ttf
+          - SixCaps-Regular.ttf
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: dev.liamhales.long
       MARKETING_VERSION: "1.0.0"

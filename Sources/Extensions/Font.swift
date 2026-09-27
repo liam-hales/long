@@ -5,6 +5,7 @@ extension Font {
   enum FontFamily {
     case serif
     case mono
+    case condensed
   }
 
   enum FontWeight {
@@ -34,6 +35,17 @@ extension Font {
     return .custom(name, fixedSize: size)
   }
 
+  /// Creates the app condensed
+  /// font at a fixed `size`
+  static func condensed(_ size: CGFloat) -> Font {
+    let name = self.getName(
+      family: .condensed,
+      weight: .regular
+    )
+
+    return .custom(name, fixedSize: size)
+  }
+
   /// Resolves the custom font name for a
   /// given font `family` and `weight`
   static func getName(family: FontFamily, weight: FontWeight) -> String {
@@ -47,6 +59,10 @@ extension Font {
       // For all the
       // mono fonts
       case (.mono, _): "JetBrainsMono-Medium"
+
+      // For all the
+      // condensed fonts
+      case (.condensed, _): "SixCaps"
     }
   }
 }
