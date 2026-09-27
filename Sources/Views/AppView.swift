@@ -24,6 +24,7 @@ struct AppView: View {
         NavRouterView(sizeClass: self._sizeClass)
       }
     )
+    .contentMargins(.horizontal, 16, for: .scrollContent)
     .tint(.accent)
   }
 }
