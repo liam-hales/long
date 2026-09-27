@@ -16,6 +16,10 @@ struct NavRouterView: View {
   }
 
   var body: some View {
+
+    @Bindable
+    var appState = _appState
+
     Group {
       // If there is no nav selection then render a default
       // view to let the user know to select something
@@ -80,6 +84,12 @@ struct NavRouterView: View {
           )
         }
       }
+    }
+    .sheet(isPresented: $appState.isSettingsPresented) {
+      SettingsView()
+        .presentationDetents([
+          .height(360)
+        ])
     }
   }
 }
