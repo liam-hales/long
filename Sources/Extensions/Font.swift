@@ -15,7 +15,7 @@ extension Font {
   /// Creates the app serif font at
   /// a fixed `size` and `weight`
   static func serif(_ size: CGFloat, _ weight: FontWeight = .regular) -> Font {
-    let name = self._getName(
+    let name = self.getName(
       family: .serif,
       weight: weight
     )
@@ -26,7 +26,7 @@ extension Font {
   /// Creates the app mono font
   /// at a fixed `size`
   static func mono(_ size: CGFloat) -> Font {
-    let name = self._getName(
+    let name = self.getName(
       family: .mono,
       weight: .regular
     )
@@ -36,7 +36,7 @@ extension Font {
 
   /// Resolves the custom font name for a
   /// given font `family` and `weight`
-  private static func _getName(family: FontFamily, weight: FontWeight) -> String {
+  static func getName(family: FontFamily, weight: FontWeight) -> String {
     switch (family, weight) {
 
       // For all the
