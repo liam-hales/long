@@ -11,7 +11,6 @@ final class AppState {
   /// currently selected for navigation
   enum NavSelection: Hashable {
     case taskSheet(_ id: TaskSheetModel.ID)
-    case settings
     case archived
   }
 
@@ -20,6 +19,7 @@ final class AppState {
   var navVisibility: NavigationSplitViewVisibility
   var navSelection: NavSelection?
   var taskFilter: TaskFilter
+  var isSettingsPresented: Bool
 
   /// The currently selected task sheet
   /// if the user has one selected
@@ -49,6 +49,7 @@ final class AppState {
     self.navSelection = nil
     self.navVisibility = .doubleColumn
     self.taskFilter = .all
+    self.isSettingsPresented = false
   }
 
   /// Used to create and save a new
