@@ -21,11 +21,10 @@ struct SettingsView: View {
         .foregroundStyle(Color.contentSecondary)
         .font(.mono(12))
     }
-    .padding(.top, 32)
-    .background(Color.base)
     .frame(
       maxWidth: .infinity,
       maxHeight: .infinity,
     )
+    .background(Color.base)
   }
 }
