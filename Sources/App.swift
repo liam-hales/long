@@ -16,9 +16,14 @@ struct App: SwiftUI.App {
     do {
       self._container = try ModelContainer(for: TaskModel.self, TaskSheetModel.self)
       self.__appState = State(initialValue: AppState(context: self._container.mainContext))
-    } catch {
+    }
+    catch {
       fatalError("Failed to create ModelContainer: \(error)")
     }
+
+    // Configure the appearance of some UIKit views
+    // that don't have the required SwiftUI modifiers
+    UINavigationBar.configureAppearance()
   }
 
   var body: some Scene {
