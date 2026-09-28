@@ -5,7 +5,7 @@ import SwiftData
 /// can create to group tasks
 @Model
 final class TaskSheetModel: Identifiable {
-  var name: String = ""
+  private(set) var name: String = ""
 
   @Relationship(
     deleteRule: .cascade,
