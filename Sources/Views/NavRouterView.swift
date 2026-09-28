@@ -86,11 +86,13 @@ struct NavRouterView: View {
         }
       }
     }
-    .sheet(isPresented: $appState.isSettingsPresented) {
-      SettingsView()
-        .presentationDetents([
-          .height(360)
-        ])
+    .sheet(item: $appState.sheetSelection) { sheet in
+      switch sheet {
+        case .editTaskSheet: EmptyView()
+        case .editTask: EmptyView()
+        case .reviewTasks: EmptyView()
+        case .settings: SettingsView()
+      }
     }
   }
 }
