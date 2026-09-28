@@ -25,6 +25,10 @@ struct SettingsView: View {
       maxWidth: .infinity,
       maxHeight: .infinity,
     )
-    .background(Color.base)
+    .presentationCornerRadius(20)
+    .presentationBackground(Color.base)
+    .presentationDetents([
+      .height(360)
+    ])
   }
 }
