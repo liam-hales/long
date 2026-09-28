@@ -16,11 +16,11 @@ final class TaskModel: Identifiable {
     case completed
   }
 
-  var title: String = ""
-  var dueDate: Date?
-  var completedDate: Date?
-  var isArchived: Bool = false
-  var sheet: TaskSheetModel
+  private(set) var title: String = ""
+  private(set) var dueDate: Date?
+  private(set) var completedDate: Date?
+  private(set) var isArchived: Bool = false
+  private(set) var sheet: TaskSheetModel
 
   private(set) var createDate: Date = Date.now
   private(set) var updateDate: Date = Date.now
@@ -92,5 +92,17 @@ final class TaskModel: Identifiable {
     self.sheet = sheet
     self.createDate = .now
     self.updateDate = .now
+  }
+
+  /// Used to toggle the task between
+  /// active and completed
+  func toggleCompleted() -> Void {
+    self.updateDate = .now
+
+    // Set the completed date to either the current
+    // date or `nil` depending on its current value
+    self.completedDate = (self.completedDate == nil)
+      ? .now
+      : nil
   }
 }
