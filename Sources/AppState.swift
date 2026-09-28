@@ -14,12 +14,25 @@ final class AppState {
     case archived
   }
 
+  /// Describes which sheet the user
+  /// currently has presented
+  enum SheetSelection: Identifiable {
+    case editTaskSheet
+    case editTask
+    case reviewTasks
+    case settings
+
+    var id: Self {
+      self
+    }
+  }
+
   private let _context: ModelContext
 
   var navVisibility: NavigationSplitViewVisibility
   var navSelection: NavSelection?
+  var sheetSelection: SheetSelection?
   var taskFilter: TaskFilter
-  var isSettingsPresented: Bool
 
   /// The currently selected task sheet
   /// if the user has one selected
@@ -48,8 +61,8 @@ final class AppState {
 
     self.navSelection = nil
     self.navVisibility = .doubleColumn
+    self.sheetSelection = nil
     self.taskFilter = .all
-    self.isSettingsPresented = false
   }
 
   /// Used to create and save a new
@@ -73,12 +86,6 @@ final class AppState {
     // Set the navigation selection state
     // to the new task sheet
     self.navSelection = .taskSheet(newSheet.id)
-  }
-
-  /// Used to create and save a
-  /// new task with a give `title`
-  func createTask(title: String) -> Void {
-    self._createTask(title: title)
   }
 
   /// Used to create and save a new task
