@@ -123,9 +123,19 @@ struct NavSidebarView: View {
           }
         },
         header: {
-          Text("Task Sheets")
-            .font(.serif(22, .bold))
-            .listRowInsets(.horizontal, 20)
+          HStack(
+            alignment: .center,
+            spacing: 10
+          ) {
+            Text("Task Sheets")
+              .font(.serif(22, .bold))
+            
+            Text("• \(self._taskSheets.count)")
+              .foregroundStyle(Color.contentSecondary)
+              .font(.mono(16))
+              .padding(.bottom, 2)
+          }
+          .listRowInsets(.horizontal, 20)
         }
       )
       .listRowSeparator(.hidden)
