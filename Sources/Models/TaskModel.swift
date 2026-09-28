@@ -49,6 +49,36 @@ final class TaskModel: Identifiable {
       : .scheduled
   }
 
+  /// Formats the `dueDate` into a human
+  /// readable format relative to today
+  var dueText: String {
+    guard let dueDate = self.dueDate else {
+      return "No due date"
+    }
+
+    let days = Calendar.current.dateComponents(
+      [.day],
+      from: Calendar.current.startOfDay(for: .now),
+      to: dueDate
+    ).day ?? 0
+
+    // Dates more than a week either side
+    // of today are shown as the full date
+    if (abs(days) > 7) {
+      return dueDate.formatted(date: .abbreviated, time: .omitted)
+    }
+
+    // Return the date in
+    // a relative format
+    return dueDate.formatted(
+      Date.RelativeFormatStyle(
+        allowedFields: [.day],
+        presentation: .named,
+        capitalizationContext: .beginningOfSentence
+      )
+    )
+  }
+
   /// Initialises a new task with a given `sheet`,
   /// `title` and optional `dueDate`
   init(
