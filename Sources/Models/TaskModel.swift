@@ -6,14 +6,13 @@ import SwiftData
 @Model
 final class TaskModel: Identifiable {
 
-  /// Describes the different statuses a
-  /// task can be in at any given time
-  enum Status {
+  /// Describes where a task sits in
+  /// the schedule based on its due date
+  enum Schedule {
     case overdue
     case today
     case scheduled
     case unscheduled
-    case completed
   }
 
   private(set) var title: String = ""
@@ -25,12 +24,9 @@ final class TaskModel: Identifiable {
   private(set) var createDate: Date = Date.now
   private(set) var updateDate: Date = Date.now
 
-  /// Calculates the task status based on its
-  /// `dueDate` and `completedDate` data
-  var status: Status {
-    if (self.completedDate != nil) {
-      return .completed
-    }
+  /// Calculates where the task sits in
+  /// the schedule based on its `dueDate`
+  var schedule: Schedule {
 
     // Check if the task has a due date, if not then the
     // task can be completed at anytime and is unscheduled
@@ -47,6 +43,12 @@ final class TaskModel: Identifiable {
     return (dueDate < .now)
       ? .overdue
       : .scheduled
+  }
+
+  /// Determines ehether the task has
+  /// been completed or not
+  var isCompleted: Bool {
+    self.completedDate != nil
   }
 
   /// Formats the `dueDate` into a human
