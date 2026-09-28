@@ -45,10 +45,10 @@ struct NavSidebarItemView<Content: View>: View {
     }
     .navigationLinkIndicatorVisibility(.hidden)
     .listRowBackground(
-      RoundedRectangle(cornerRadius: 10)
+      RoundedRectangle(cornerRadius: 14)
         .fill(
           (self._appState.navSelection == self._value)
-            ? Color.surfaceMid
+            ? Color.selected
             : Color.surfaceHigh
         )
         .strokeBorder(Color.outline, lineWidth: 1)
