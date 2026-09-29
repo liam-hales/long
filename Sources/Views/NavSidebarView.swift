@@ -21,13 +21,8 @@ struct NavSidebarView: View {
   )
   private var _taskSheets: [TaskSheetModel]
 
-  /// Query for all the tasks that
-  /// have not been archived
-  @Query(
-    filter: #Predicate<TaskModel> { task in
-      task.isArchived == false
-    }
-  )
+  /// Query for all the tasks
+  @Query
   private var _tasks: [TaskModel]
 
   /// Initialises the view with
@@ -139,20 +134,6 @@ struct NavSidebarView: View {
         }
       )
       .listRowSeparator(.hidden)
-
-      Section {
-        NavSidebarItemView(
-          value: .archived,
-          sizeClass: self._sizeClass
-        ) {
-          LucideIcon(.archive, size: 22)
-
-          Text("Archived")
-            .padding(.top, 2)
-        }
-      }
-      .listRowSeparator(.hidden)
-      .listSectionSpacing(40)
     }
     .toolbar(removing: .sidebarToggle)
     .toolbarTitleDisplayMode(.inline)

@@ -18,7 +18,6 @@ final class TaskModel: Identifiable {
   private(set) var title: String = ""
   private(set) var dueDate: Date?
   private(set) var completedDate: Date?
-  private(set) var isArchived: Bool = false
   private(set) var sheet: TaskSheetModel
 
   private(set) var createDate: Date = Date.now
@@ -104,7 +103,6 @@ final class TaskModel: Identifiable {
   ) {
     self.title = title
     self.dueDate = dueDate
-    self.isArchived = false
     self.sheet = sheet
     self.createDate = .now
     self.updateDate = .now

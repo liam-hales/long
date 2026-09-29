@@ -27,12 +27,11 @@ struct TasksView: View {
     // So we must extract the sheet ID first before using it
     let sheetId = self._sheet.id
 
-    // Query for the unarchived tasks for the
-    // sheet ordered by ones that are due first
+    // Query for all tasks for the sheet
+    // ordered by ones that are due first
     self.__tasks = Query(
       filter: #Predicate<TaskModel> { task in
-        task.sheet.id == sheetId &&
-        task.isArchived == false
+        task.sheet.id == sheetId
       },
       sort: \TaskModel.dueDate,
       order: .reverse

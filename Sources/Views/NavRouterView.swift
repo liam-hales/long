@@ -46,10 +46,6 @@ struct NavRouterView: View {
       if let sheet = self._appState.selectedTaskSheet {
         TasksView(sheet: sheet)
       }
-
-      if (self._appState.navSelection == .archived) {
-        ArchivedView()
-      }
     }
     .navigationBarBackButtonHidden(self._sizeClass == .compact)
     .toolbarTitleDisplayMode(.large)

@@ -11,7 +11,6 @@ final class AppState {
   /// currently selected for navigation
   enum NavSelection: Hashable {
     case taskSheet(_ id: TaskSheetModel.ID)
-    case archived
   }
 
   /// Describes which sheet the user
