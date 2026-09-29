@@ -53,7 +53,7 @@ struct NavSidebarView: View {
               spacing: 12
             ) {
               let count = self._tasks
-                .filter { $0.status == .today }
+                .filter { $0.schedule == .today }
                 .count
 
               LucideIcon(.sun, size: 20)
@@ -70,7 +70,7 @@ struct NavSidebarView: View {
               spacing: 12
             ) {
               let count = self._tasks
-                .filter { $0.status == .scheduled }
+                .filter { $0.schedule == .scheduled }
                 .count
 
               LucideIcon(.calendarCheck2, size: 20)
@@ -87,7 +87,7 @@ struct NavSidebarView: View {
               spacing: 12
             ) {
               let count = self._tasks
-                .filter { $0.status == .completed }
+                .filter { $0.isCompleted == true }
                 .count
 
               LucideIcon(.check, size: 20)
@@ -129,7 +129,7 @@ struct NavSidebarView: View {
           ) {
             Text("Task Sheets")
               .font(.serif(22, .bold))
-            
+
             Text("• \(self._taskSheets.count)")
               .foregroundStyle(Color.contentSecondary)
               .font(.mono(16))
@@ -160,7 +160,7 @@ struct NavSidebarView: View {
       ToolbarItem(placement: .topBarLeading) {
         Button(
           action: {
-            self._appState.isSettingsPresented = true
+            self._appState.sheetSelection = .settings
           },
           label: {
             LucideIcon(.settings, size: 22)
@@ -184,6 +184,7 @@ struct NavSidebarView: View {
                 .font(.serif(14, .bold))
                 .padding(.top, 2)
             }
+            .padding(.horizontal, 8)
           }
         )
       }
