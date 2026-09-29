@@ -45,40 +45,39 @@ final class TaskModel: Identifiable {
       : .scheduled
   }
 
-  /// Determines ehether the task has
+  /// Determines whether the task has
   /// been completed or not
   var isCompleted: Bool {
     self.completedDate != nil
   }
 
-  /// Formats the `dueDate` into a human
-  /// readable format relative to today
-  var dueText: String {
-    guard let dueDate = self.dueDate else {
-      return "No due date"
-    }
+  /// The task subtitle built from the most relevant date formatted
+  /// into a human readable format relative to today
+  var subtitle: String {
 
-    let days = Calendar.current.dateComponents(
-      [.day],
-      from: Calendar.current.startOfDay(for: .now),
-      to: dueDate
-    ).day ?? 0
-
-    // Dates more than a week either side
-    // of today are shown as the full date
-    if (abs(days) > 7) {
-      return dueDate.formatted(date: .abbreviated, time: .omitted)
-    }
-
-    // Return the date in
-    // a relative format
-    return dueDate.formatted(
-      Date.RelativeFormatStyle(
-        allowedFields: [.day],
-        presentation: .named,
-        capitalizationContext: .beginningOfSentence
+    // If the task has a completed date
+    // then use this to build the subtitle
+    if let completedDate = self.completedDate {
+      let text = self._relativeText(
+        for: completedDate,
+        includeTime: true
       )
-    )
+
+      return "Completed \(text)"
+    }
+
+    // If the task has a due date then
+    // use this to build the subtitle
+    if let dueDate = self.dueDate {
+      let text = self._relativeText(
+        for: dueDate,
+        includeTime: false
+      )
+
+      return "Due \(text)"
+    }
+
+    return "No due date"
   }
 
   /// Initialises a new task with a given `sheet`,
@@ -106,5 +105,41 @@ final class TaskModel: Identifiable {
     self.completedDate = (self.completedDate == nil)
       ? .now
       : nil
+  }
+
+  /// Formats a given `date` into a human
+  /// readable format relative to today
+  private func _relativeText(
+    for date: Date,
+    includeTime: Bool = false
+  ) -> String {
+    let calendar = Calendar.current
+
+    // Extract the number of days it has been
+    // from today since the given date
+    let days = calendar.dateComponents(
+      [.day],
+      from: calendar.startOfDay(for: .now),
+      to: date
+    ).day ?? 0
+
+    // Dates more than a week either side of today are shown as
+    // the full date, otherwise they're shown relative
+    let dateText = (abs(days) > 7)
+      ? date.formatted(date: .abbreviated, time: .omitted)
+      : date.formatted(
+          Date.RelativeFormatStyle(
+            allowedFields: [.day],
+            presentation: .named,
+            capitalizationContext: .middleOfSentence
+          )
+        )
+
+    if (includeTime == false) {
+      return dateText
+    }
+
+    let timeText = date.formatted(date: .omitted, time: .shortened)
+    return "\(dateText) at \(timeText)"
   }
 }

@@ -60,7 +60,7 @@ struct TaskView: View {
           )
           .padding(.top, 3)
 
-        Text(self._task.dueText)
+        Text(self._task.subtitle)
           .foregroundStyle(Color.contentSecondary)
           .font(.mono(11))
       }
