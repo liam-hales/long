@@ -51,6 +51,21 @@ final class TaskModel: Identifiable {
     self.completedDate != nil
   }
 
+  /// Determines whether the task was completed
+  /// long enough ago to be considered settled
+  var isSettled: Bool {
+    guard let completedDate = self.completedDate else {
+      return false
+    }
+
+    // Define the delay amount and add it to the completed
+    // date to have a new date to compare against
+    let delay: TimeInterval = 2 * 60
+    let delayDate = completedDate.addingTimeInterval(delay)
+
+    return (delayDate <= .now)
+  }
+
   /// The task subtitle built from the most relevant date formatted
   /// into a human readable format relative to today
   var subtitle: String {
