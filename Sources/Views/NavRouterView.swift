@@ -84,7 +84,11 @@ struct NavRouterView: View {
     }
     .sheet(item: $appState.sheetSelection) { sheet in
       switch sheet {
-        case .editTaskSheet: EmptyView()
+        case .editTaskSheet:
+          if let taskSheet = self._appState.selectedTaskSheet {
+            EditTaskSheetView(sheet: taskSheet)
+          }
+
         case .editTask: EmptyView()
         case .reviewTasks: EmptyView()
         case .settings: SettingsView()

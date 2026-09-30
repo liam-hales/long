@@ -69,7 +69,9 @@ struct ToolbarView: ToolbarContent {
 
     ToolbarItem(placement: .topBarTrailing) {
       Button(
-        action: {},
+        action: {
+          self._appState.sheetSelection = .editTaskSheet
+        },
         label: {
           LucideIcon(.filePen, size: 22)
         }
