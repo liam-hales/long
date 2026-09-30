@@ -23,6 +23,7 @@ attributes:
     - "@State"
     - "@Bindable"
     - "@Query"
+    - "@FocusState"
 
 type_contents_order:
   order:
