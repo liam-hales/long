@@ -2,8 +2,8 @@ import LucideSwift
 import SwiftUI
 
 /// Used to render the toolbar displayed above
-/// the users tasks in the `TasksView`
-struct ToolbarView: ToolbarContent {
+/// the users tasks in the `TaskSheetView`
+struct TaskSheetToolbar: ToolbarContent {
 
   @Environment(AppState.self)
   private var _appState: AppState

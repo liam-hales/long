@@ -44,7 +44,7 @@ struct NavRouterView: View {
       }
 
       if let sheet = self._appState.selectedTaskSheet {
-        TasksView(sheet: sheet)
+        TaskSheetView(sheet: sheet)
       }
     }
     .navigationBarBackButtonHidden(self._sizeClass == .compact)

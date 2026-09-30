@@ -2,9 +2,9 @@ import LucideSwift
 import SwiftData
 import SwiftUI
 
-/// Used to display the users
-/// current outstanding tasks
-struct TasksView: View {
+/// Used to display the tasks
+/// for a given task sheet
+struct TaskSheetView: View {
   private let _sheet: TaskSheetModel
 
   @Environment(AppState.self)
@@ -157,7 +157,7 @@ struct TasksView: View {
       }
     }
     .toolbar {
-      ToolbarView()
+      TaskSheetToolbar()
 
       ToolbarItem(placement: .largeTitle) {
         Text(self._sheet.name)
