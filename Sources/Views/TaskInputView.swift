@@ -45,6 +45,7 @@ struct TaskInputView: View {
           .padding(.leading, 8)
           .padding(.vertical, 8)
           .lineLimit(8)
+          .submitLabel(.return)
 
           Button(
             action: {},

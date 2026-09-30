@@ -60,6 +60,7 @@ struct TasksView: View {
 
   private var _completedTasks: [TaskModel] {
     let sort = SortDescriptor(\TaskModel.completedDate, order: .reverse)
+
     return self._tasks
       .filter { task in task.isSettled == true }
       .sorted(using: sort)
