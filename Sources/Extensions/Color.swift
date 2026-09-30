@@ -5,6 +5,7 @@ extension Color {
   static let accent = Color(light: "#cc785c", dark: "#cc785c")
   static let contentPrimary = Color(light: "#141413", dark: "#faf9f5")
   static let contentSecondary = Color(light: "#8e8b82", dark: "#a09d96")
+  static let contentError = Color(light: "#b1391f", dark: "#e79a85")
   static let outline = Color(light: "#e6dfd8", dark: "#2a2825")
   static let selected = Color(light: "#f5f0e8", dark: "#33302c")
   static let disabled = Color(light: "#e6dfd8", dark: "#33302c")
