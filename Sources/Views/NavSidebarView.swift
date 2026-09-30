@@ -13,17 +13,19 @@ struct NavSidebarView: View {
   @Environment(\.displayScale)
   private var _displayScale: CGFloat
 
-  /// Query for the task sheets ordered
-  /// by updated most recent
-  @Query(
-    sort: \TaskSheetModel.createDate,
-    order: .reverse
-  )
+  @Query
   private var _taskSheets: [TaskSheetModel]
 
-  /// Query for all the tasks
   @Query
   private var _tasks: [TaskModel]
+
+  /// The task sheets ordered by
+  /// most recently active
+  private var _sortedTaskSheets: [TaskSheetModel] {
+    self._taskSheets.sorted { first, second in
+      first.activityDate > second.activityDate
+    }
+  }
 
   /// Initialises the view with
   /// the app `sizeClass`
@@ -107,7 +109,7 @@ struct NavSidebarView: View {
 
       Section(
         content: {
-          ForEach(self._taskSheets) { sheet in
+          ForEach(self._sortedTaskSheets) { sheet in
             NavSidebarItemView(
               value: .taskSheet(sheet.id),
               sizeClass: self._sizeClass
