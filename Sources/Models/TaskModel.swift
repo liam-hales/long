@@ -136,23 +136,32 @@ final class TaskModel: Identifiable {
       to: date
     ).day ?? 0
 
+    let relativeStyle = Date.RelativeFormatStyle(
+      allowedFields: [.day],
+      presentation: .named,
+      capitalizationContext: .middleOfSentence
+    )
+
     // Dates more than a week either side of today are shown as
     // the full date, otherwise they're shown relative
     let dateText = (abs(days) > 7)
-      ? date.formatted(date: .abbreviated, time: .omitted)
-      : date.formatted(
-          Date.RelativeFormatStyle(
-            allowedFields: [.day],
-            presentation: .named,
-            capitalizationContext: .middleOfSentence
-          )
-        )
+      ? date.formatted(
+        date: .abbreviated,
+        time: .omitted
+      )
+      : date.formatted(relativeStyle)
 
+    // If the text should not include the time then
+    // just return the date text as is
     if (includeTime == false) {
       return dateText
     }
 
-    let timeText = date.formatted(date: .omitted, time: .shortened)
+    let timeText = date.formatted(
+      date: .omitted,
+      time: .shortened
+    )
+
     return "\(dateText) at \(timeText)"
   }
 }
