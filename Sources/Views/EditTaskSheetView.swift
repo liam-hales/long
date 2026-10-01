@@ -4,7 +4,7 @@ import SwiftUI
 /// Used to display the edit view which allows
 /// the user to update task sheet details
 struct EditTaskSheetView: View {
-  private static let _maxNameLength = 16
+  private static let _maxNameLength = 24
   private let _sheet: TaskSheetModel
 
   @Environment(\.dismiss)
