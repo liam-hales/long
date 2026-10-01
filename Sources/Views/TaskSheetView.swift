@@ -38,24 +38,40 @@ struct TaskSheetView: View {
     )
   }
 
-  private var _openTasks: [TaskModel] {
-    self._tasks.filter { task in task.isSettled == false }
-  }
-
   private var _overdueTasks: [TaskModel] {
-    self._openTasks.filter { task in task.schedule == .overdue }
+    self._tasks.filter { task in
+      (
+        task.isSettled == false &&
+        task.schedule == .overdue
+      )
+    }
   }
 
   private var _todayTasks: [TaskModel] {
-    self._openTasks.filter { task in task.schedule == .today }
+    self._tasks.filter { task in
+      (
+        task.isSettled == false &&
+        task.schedule == .today
+      )
+    }
   }
 
   private var _scheduledTasks: [TaskModel] {
-    self._openTasks.filter { task in task.schedule == .scheduled }
+    self._tasks.filter { task in
+      (
+        task.isSettled == false &&
+        task.schedule == .scheduled
+      )
+    }
   }
 
   private var _unscheduledTasks: [TaskModel] {
-    self._openTasks.filter { task in task.schedule == .unscheduled }
+    self._tasks.filter { task in
+      (
+        task.isSettled == false &&
+        task.schedule == .unscheduled
+      )
+    }
   }
 
   private var _completedTasks: [TaskModel] {
