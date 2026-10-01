@@ -16,9 +16,6 @@ struct NavSidebarView: View {
   @Query
   private var _taskSheets: [TaskSheetModel]
 
-  @Query
-  private var _tasks: [TaskModel]
-
   /// The task sheets ordered by
   /// most recently active
   private var _sortedTaskSheets: [TaskSheetModel] {
@@ -39,74 +36,6 @@ struct NavSidebarView: View {
     var appState = _appState
 
     List(selection: $appState.navSelection) {
-      Section(
-        content: {
-          VStack(
-            alignment: .leading,
-            spacing: 14
-          ) {
-            HStack(
-              alignment: .center,
-              spacing: 12
-            ) {
-              let count = self._tasks
-                .filter { $0.schedule == .today }
-                .count
-
-              LucideIcon(.sun, size: 20)
-                .foregroundStyle(Color.contentSecondary)
-
-              Text("\(count) \((count == 1) ? "task" : "tasks") today")
-                .foregroundStyle(Color.contentSecondary)
-                .font(.mono(14))
-                .padding(.top, 0.5)
-            }
-
-            HStack(
-              alignment: .center,
-              spacing: 12
-            ) {
-              let count = self._tasks
-                .filter { $0.schedule == .scheduled }
-                .count
-
-              LucideIcon(.calendarCheck2, size: 20)
-                .foregroundStyle(Color.contentSecondary)
-
-              Text("\(count) \((count == 1) ? "task" : "tasks") scheduled")
-                .foregroundStyle(Color.contentSecondary)
-                .font(.mono(14))
-                .padding(.top, 0.5)
-            }
-
-            HStack(
-              alignment: .center,
-              spacing: 12
-            ) {
-              let count = self._tasks
-                .filter { $0.isCompleted == true }
-                .count
-
-              LucideIcon(.check, size: 20)
-                .foregroundStyle(Color.contentSecondary)
-
-              Text("\(count) \((count == 1) ? "task" : "tasks") completed")
-                .foregroundStyle(Color.contentSecondary)
-                .font(.mono(14))
-                .padding(.top, 0.5)
-            }
-          }
-        },
-        header: {
-          Text("Summary")
-            .font(.serif(22, .bold))
-            .listRowInsets(.horizontal, 20)
-        }
-      )
-      .listRowBackground(Color.clear)
-      .listRowSeparator(.hidden)
-      .listRowInsets(.horizontal, 8)
-
       Section(
         content: {
           ForEach(self._sortedTaskSheets) { sheet in
