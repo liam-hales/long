@@ -98,62 +98,84 @@ struct TaskSheetView: View {
         .listRowInsets(.horizontal, 0)
       }
 
-      if (self._todayTasks.isEmpty == false) {
-        Section(
-          content: {
-            ForEach(self._todayTasks) { task in
-              TaskView(task: task)
-            }
-          },
-          header: {
-            Text("Today")
-              .foregroundStyle(Color.contentSecondary)
-              .font(.mono(16))
-          }
-        )
-        .listRowSeparator(.hidden)
-      }
+      if (self._appState.taskFocus != .all) {
+        // Get the focussed tasks based
+        // on the `taskFocus` state
+        let focusedTasks = switch self._appState.taskFocus {
+          case .all: self._tasks
+          case .today: self._todayTasks
+          case .overdue: self._overdueTasks
+          case .scheduled: self._scheduledTasks
+          case .unscheduled: self._unscheduledTasks
+          case .completed: self._completedTasks
+        }
 
-      if (self._scheduledTasks.isEmpty == false) {
-        Section(
-          content: {
-            ForEach(self._scheduledTasks) { task in
-              TaskView(task: task)
-            }
-          },
-          header: {
-            Text("Scheduled")
-              .foregroundStyle(Color.contentSecondary)
-              .font(.mono(16))
-          }
-        )
-        .listRowSeparator(.hidden)
-      }
-
-      if (self._unscheduledTasks.isEmpty == false) {
         Section {
-          ForEach(self._unscheduledTasks) { task in
+          ForEach(focusedTasks) { task in
             TaskView(task: task)
           }
         }
         .listRowSeparator(.hidden)
       }
 
-      if (self._completedTasks.isEmpty == false) {
-        Section(
-          content: {
-            ForEach(self._completedTasks) { task in
+      if (self._appState.taskFocus == .all) {
+        if (self._todayTasks.isEmpty == false) {
+          Section(
+            content: {
+              ForEach(self._todayTasks) { task in
+                TaskView(task: task)
+              }
+            },
+            header: {
+              Text("Today")
+                .foregroundStyle(Color.contentSecondary)
+                .font(.mono(16))
+            }
+          )
+          .listRowSeparator(.hidden)
+        }
+
+        if (self._scheduledTasks.isEmpty == false) {
+          Section(
+            content: {
+              ForEach(self._scheduledTasks) { task in
+                TaskView(task: task)
+              }
+            },
+            header: {
+              Text("Scheduled")
+                .foregroundStyle(Color.contentSecondary)
+                .font(.mono(16))
+            }
+          )
+          .listRowSeparator(.hidden)
+        }
+
+        if (self._unscheduledTasks.isEmpty == false) {
+          Section {
+            ForEach(self._unscheduledTasks) { task in
               TaskView(task: task)
             }
-          },
-          header: {
-            Text("Completed • \(self._completedTasks.count)")
-              .foregroundStyle(Color.contentSecondary)
-              .font(.mono(16))
-              .listRowInsets(.horizontal, 20)
           }
-        )
-        .listRowSeparator(.hidden)
+          .listRowSeparator(.hidden)
+        }
+
+        if (self._completedTasks.isEmpty == false) {
+          Section(
+            content: {
+              ForEach(self._completedTasks) { task in
+                TaskView(task: task)
+              }
+            },
+            header: {
+              Text("Completed • \(self._completedTasks.count)")
+                .foregroundStyle(Color.contentSecondary)
+                .font(.mono(16))
+                .listRowInsets(.horizontal, 20)
+            }
+          )
+          .listRowSeparator(.hidden)
+        }
       }
     }
     .toolbar {
