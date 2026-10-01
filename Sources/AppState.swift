@@ -31,7 +31,7 @@ final class AppState {
   var navVisibility: NavigationSplitViewVisibility
   var navSelection: NavSelection?
   var modalSelection: ModalSelection?
-  var taskFilter: TaskFilter
+  var taskFocus: TaskFocus
 
   /// The currently selected task sheet
   /// if the user has one selected
@@ -61,7 +61,7 @@ final class AppState {
     self.navSelection = nil
     self.navVisibility = .doubleColumn
     self.modalSelection = nil
-    self.taskFilter = .all
+    self.taskFocus = .all
   }
 
   /// Used to create and save a new

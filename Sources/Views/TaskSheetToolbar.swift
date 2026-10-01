@@ -16,15 +16,15 @@ struct TaskSheetToolbar: ToolbarContent {
     ToolbarItem(placement: .topBarTrailing) {
       Menu(
         content: {
-          Picker("Filter", selection: $appState.taskFilter) {
-            ForEach(TaskFilter.allCases) { filter in
+          Picker("Focus", selection: $appState.taskFocus) {
+            ForEach(TaskFocus.allCases) { focus in
               Label(
                 title: {
-                  Text(filter.title)
+                  Text(focus.title)
                 },
                 icon: {
                   Image(
-                    lucide: filter.icon,
+                    lucide: focus.icon,
                     size: .init(width: 22, height: 22)
                   )
                 }
@@ -35,29 +35,45 @@ struct TaskSheetToolbar: ToolbarContent {
           .pickerStyle(.inline)
         },
         label: {
+          let isActive = (self._appState.taskFocus != .all)
+
           HStack(
             alignment: .center,
-            spacing: 14
+            spacing: 12
           ) {
             VStack(
               alignment: .leading,
               spacing: 2
             ) {
-              Text("Filter by")
+              Text("Focus on")
                 .foregroundStyle(Color.contentSecondary)
                 .font(.serif(11, .regular))
 
-              Text(appState.taskFilter.title)
+              Text(appState.taskFocus.title)
                 .font(.serif(13, .bold))
             }
 
-            LucideIcon(
-              self._appState.taskFilter.icon,
-              size: 22,
-              color: .contentPrimary
+            ZStack(alignment: .center) {
+              if (isActive == true) {
+                Circle()
+                  .fill(Color.accent)
+              }
+
+              LucideIcon(
+                self._appState.taskFocus.icon,
+                size: 22,
+                color: (isActive == true)
+                  ? .white
+                  : .contentPrimary
+              )
+            }
+            .frame(
+              width: 34,
+              height: 34
             )
           }
-          .padding(.horizontal, 8)
+          .padding(.leading, 8)
+          .padding(.trailing, -4)
         }
       )
     }
