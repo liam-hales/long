@@ -70,7 +70,7 @@ struct TaskSheetToolbar: ToolbarContent {
     ToolbarItem(placement: .topBarTrailing) {
       Button(
         action: {
-          self._appState.sheetSelection = .editTaskSheet
+          self._appState.modalSelection = .editTaskSheet
         },
         label: {
           LucideIcon(.pencil, size: 22)

@@ -13,9 +13,9 @@ final class AppState {
     case taskSheet(_ id: TaskSheetModel.ID)
   }
 
-  /// Describes which sheet the user
+  /// Describes which modal the user
   /// currently has presented
-  enum SheetSelection: Identifiable {
+  enum ModalSelection: Identifiable {
     case editTaskSheet
     case editTask
     case reviewTasks
@@ -30,7 +30,7 @@ final class AppState {
 
   var navVisibility: NavigationSplitViewVisibility
   var navSelection: NavSelection?
-  var sheetSelection: SheetSelection?
+  var modalSelection: ModalSelection?
   var taskFilter: TaskFilter
 
   /// The currently selected task sheet
@@ -60,7 +60,7 @@ final class AppState {
 
     self.navSelection = nil
     self.navVisibility = .doubleColumn
-    self.sheetSelection = nil
+    self.modalSelection = nil
     self.taskFilter = .all
   }
 

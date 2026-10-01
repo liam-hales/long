@@ -72,7 +72,7 @@ struct NavSidebarView: View {
       ToolbarItem(placement: .topBarLeading) {
         Button(
           action: {
-            self._appState.sheetSelection = .settings
+            self._appState.modalSelection = .settings
           },
           label: {
             LucideIcon(.settings, size: 22)

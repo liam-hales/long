@@ -82,11 +82,11 @@ struct NavRouterView: View {
         }
       }
     }
-    .sheet(item: $appState.sheetSelection) { sheet in
-      switch sheet {
+    .sheet(item: $appState.modalSelection) { modal in
+      switch modal {
         case .editTaskSheet:
-          if let taskSheet = self._appState.selectedTaskSheet {
-            EditTaskSheetView(sheet: taskSheet)
+          if let sheet = self._appState.selectedTaskSheet {
+            EditTaskSheetView(sheet: sheet)
           }
 
         case .editTask: EmptyView()
