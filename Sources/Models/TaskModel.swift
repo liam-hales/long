@@ -57,9 +57,9 @@ final class TaskModel: Identifiable {
       return false
     }
 
-    // Define the delay amount and add it to the completed
-    // date to have a new date to compare against
-    let delay: TimeInterval = 2 * 60
+    // Define the delay amount (30 seconds) and add it to the
+    // completed date to have a new date to compare against
+    let delay: TimeInterval = 30
     let delayDate = completedDate.addingTimeInterval(delay)
 
     return (delayDate <= .now)
