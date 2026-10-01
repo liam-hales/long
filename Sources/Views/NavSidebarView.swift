@@ -16,6 +16,22 @@ struct NavSidebarView: View {
   @Query
   private var _taskSheets: [TaskSheetModel]
 
+  @Query
+  private var _tasks: [TaskModel]
+
+  private var _activeTasks: [TaskModel] {
+    self._tasks.filter { task in task.isCompleted == false }
+  }
+
+  /// The subtitle summarising the number of task
+  /// sheets and tasks yet to be completed
+  private var _subtitle: String {
+    let sheetText = "\(self._taskSheets.count) \((self._taskSheets.count == 1) ? "sheet" : "sheets")"
+    let taskText = "\(self._activeTasks.count) \((self._activeTasks.count == 1) ? "task" : "tasks") to complete"
+
+    return "\(sheetText) • \(taskText)"
+  }
+
   /// The task sheets ordered by
   /// most recently active
   private var _sortedTaskSheets: [TaskSheetModel] {
@@ -36,39 +52,43 @@ struct NavSidebarView: View {
     var appState = _appState
 
     List(selection: $appState.navSelection) {
-      Section(
-        content: {
-          ForEach(self._sortedTaskSheets) { sheet in
-            NavSidebarItemView(
-              value: .taskSheet(sheet.id),
-              sizeClass: self._sizeClass
-            ) {
-              Text(sheet.name)
-                .padding(.top, 2)
-            }
-          }
-        },
-        header: {
-          HStack(
-            alignment: .center,
-            spacing: 10
-          ) {
-            Text("Task Sheets")
-              .font(.serif(22, .bold))
-
-            Text("• \(self._taskSheets.count)")
-              .foregroundStyle(Color.contentSecondary)
-              .font(.mono(16))
-              .padding(.bottom, 2)
-          }
-          .listRowInsets(.horizontal, 20)
+      ForEach(self._sortedTaskSheets) { sheet in
+        NavSidebarItemView(
+          value: .taskSheet(sheet.id),
+          sizeClass: self._sizeClass
+        ) {
+          Text(sheet.name)
+            .padding(.top, 2)
         }
-      )
+      }
       .listRowSeparator(.hidden)
     }
     .toolbar(removing: .sidebarToggle)
-    .toolbarTitleDisplayMode(.inline)
+    .toolbarTitleDisplayMode(.large)
     .toolbar {
+      ToolbarItem(placement: .largeTitle) {
+        Text("Task Sheets")
+          .font(.serif(28, .bold))
+          .padding(.horizontal, 4)
+          .padding(.top, 32)
+          .padding(.bottom, -4)
+          .frame(
+            maxWidth: .infinity,
+            alignment: .leading
+          )
+      }
+
+      ToolbarItem(placement: .largeSubtitle) {
+        Text(self._subtitle)
+          .foregroundStyle(Color.contentSecondary)
+          .font(.mono(14))
+          .padding(.horizontal, 4)
+          .frame(
+            maxWidth: .infinity,
+            alignment: .leading
+          )
+      }
+
       ToolbarItem(placement: .topBarLeading) {
         Button(
           action: {
@@ -96,7 +116,7 @@ struct NavSidebarView: View {
                 .font(.serif(14, .bold))
                 .padding(.top, 2)
             }
-            .padding(.horizontal, 8)
+            .padding(.horizontal, 6)
           }
         )
       }
@@ -137,8 +157,11 @@ struct NavSidebarView: View {
       }
     }
     .listStyle(.plain)
+    .navigationTitle("Task Sheets")
+    .navigationSubtitle(self._subtitle)
     .listRowSpacing(10)
-    .contentMargins(.top, 0, for: .scrollContent)
+    .contentMargins(.top, 20, for: .scrollContent)
+    .contentMargins(.bottom, 20, for: .scrollContent)
     .scrollContentBackground(.hidden)
     .background(Color.base)
   }
