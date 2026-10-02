@@ -52,6 +52,13 @@ struct NavSidebarView: View {
     var appState = _appState
 
     List(selection: $appState.navSelection) {
+      if (self._taskSheets.isEmpty == true) {
+        NoContentView(
+          title: "No task sheets.",
+          message: "You currently have no task sheets, try creating a new one above."
+        )
+      }
+
       ForEach(self._sortedTaskSheets) { sheet in
         NavSidebarItemView(
           value: .taskSheet(sheet.id),

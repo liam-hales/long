@@ -92,28 +92,6 @@ struct TaskSheetView: View {
     var appState = _appState
 
     List {
-      if (self._tasks.isEmpty == true) {
-        Section {
-          VStack(
-            alignment: .center,
-            spacing: 6
-          ) {
-            Text("No tasks.")
-              .font(.serif(22, .bold))
-            Text("You currently have no tasks to complete, try creating one below.")
-              .foregroundStyle(Color.contentSecondary)
-              .font(.serif(14, .regular))
-              .frame(maxWidth: 260)
-              .multilineTextAlignment(.center)
-          }
-          .frame(maxWidth: .infinity)
-          .padding(.vertical, 20)
-        }
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
-        .listRowInsets(.horizontal, 0)
-      }
-
       if (self._appState.taskFocus != .all) {
         // Get the focussed tasks based
         // on the `taskFocus` state
@@ -126,15 +104,33 @@ struct TaskSheetView: View {
           case .completed: self._completedTasks
         }
 
-        Section {
-          ForEach(focusedTasks) { task in
-            TaskView(task: task)
-          }
+        if (focusedTasks.isEmpty == true) {
+          let focus = self._appState.taskFocus.title
+
+          NoContentView(
+            title: "No tasks.",
+            message: "There are no tasks for the \"\(focus)\" focus, try choosing a different one."
+          )
         }
-        .listRowSeparator(.hidden)
+
+        if (focusedTasks.isEmpty == false) {
+          Section {
+            ForEach(focusedTasks) { task in
+              TaskView(task: task)
+            }
+          }
+          .listRowSeparator(.hidden)
+        }
       }
 
       if (self._appState.taskFocus == .all) {
+        if (self._tasks.isEmpty == true) {
+          NoContentView(
+            title: "No tasks.",
+            message: "You currently have no tasks to complete, try creating one below."
+          )
+        }
+
         if (self._todayTasks.isEmpty == false) {
           Section(
             content: {

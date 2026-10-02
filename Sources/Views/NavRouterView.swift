@@ -24,18 +24,10 @@ struct NavRouterView: View {
       // If there is no nav selection then render a default
       // view to let the user know to select something
       if (self._appState.navSelection == nil) {
-        VStack(
-          alignment: .center,
-          spacing: 6
-        ) {
-          Text("Nothing selected.")
-            .font(.serif(22, .bold))
-          Text("You have not selected an option from the sidebar.")
-            .foregroundStyle(Color.contentSecondary)
-            .font(.serif(14, .regular))
-            .frame(maxWidth: 260)
-            .multilineTextAlignment(.center)
-        }
+        NoContentView(
+          title: "Nothing selected.",
+          message: "You have nothing selected, select a task sheet from the sidebar."
+        )
         .frame(
           maxWidth: .infinity,
           maxHeight: .infinity
@@ -84,6 +76,7 @@ struct NavRouterView: View {
     }
     .sheet(item: $appState.modalSelection) { modal in
       switch modal {
+
         case .editTaskSheet:
           if let sheet = self._appState.selectedTaskSheet {
             EditTaskSheetView(sheet: sheet)
