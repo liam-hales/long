@@ -7,6 +7,9 @@ struct EditTaskSheetView: View {
   private static let _maxNameLength = 24
   private let _sheet: TaskSheetModel
 
+  @Environment(AppState.self)
+  private var _appState: AppState
+
   @Environment(\.dismiss)
   private var _dismiss: DismissAction
 
@@ -16,21 +19,31 @@ struct EditTaskSheetView: View {
   @State
   private var _name: String
 
-  @Environment(AppState.self)
-  private var _appState: AppState
-
   @State
   private var _showDeleteConfirmation: Bool = false
+
+  @State
+  private var _showDiscardConfirmation: Bool = false
 
   private var _trimmedName: String {
     self._name.trimmingCharacters(in: .whitespacesAndNewlines)
   }
 
+  private var _hasChanges: Bool {
+    self._trimmedName != self._sheet.name
+  }
+
+  private var _isNameValid: Bool {
+    (
+      self._trimmedName.count <= Self._maxNameLength &&
+      self._trimmedName.isEmpty == false
+    )
+  }
+
   private var _isSaveDisabled: Bool {
     (
-      self._trimmedName.count > Self._maxNameLength ||
-      self._trimmedName.isEmpty == true ||
-      self._trimmedName == self._sheet.name
+      self._hasChanges == false ||
+      self._isNameValid == false
     )
   }
 
@@ -52,6 +65,20 @@ struct EditTaskSheetView: View {
   /// and dismiss the view
   private func _delete() -> Void {
     self._appState.deleteTaskSheet(self._sheet)
+    self._dismiss()
+  }
+
+  /// Used to dismiss the view or confirm with
+  /// the user first if they have unsaved changes
+  private func _close() -> Void {
+
+    // If the user has edited the name then
+    // confirm before discarding the changes
+    if (self._hasChanges == true) {
+      self._showDiscardConfirmation = true
+      return
+    }
+
     self._dismiss()
   }
 
@@ -94,11 +121,24 @@ struct EditTaskSheetView: View {
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(
-            action: {
-              self._dismiss()
-            },
-            label: {
+            action: self._close
+          ) {
               LucideIcon(.x, size: 22)
+          }
+          .confirmationDialog(
+            "Discard changes?",
+            isPresented: self.$_showDiscardConfirmation,
+            titleVisibility: .visible,
+            actions: {
+              Button(
+                "Discard Changes",
+                role: .destructive
+              ) {
+                self._dismiss()
+              }
+            },
+            message: {
+              Text("Your changes to this task sheet will be lost.")
             }
           )
         }
@@ -179,6 +219,7 @@ struct EditTaskSheetView: View {
       .navigationTitle("Edit")
       .navigationSubtitle("Update task sheet details")
       .navigationBarTitleDisplayMode(.inline)
+      .interactiveDismissDisabled(self._hasChanges)
     }
     .presentationBackground(Color.base)
     .presentationDetents([
