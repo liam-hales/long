@@ -4,9 +4,24 @@ import SwiftUI
 /// Used to render the toolbar displayed above
 /// the users tasks in the `TaskSheetView`
 struct TaskSheetToolbar: ToolbarContent {
+  private let _sheet: TaskSheetModel
 
   @Environment(AppState.self)
   private var _appState: AppState
+
+  @State
+  private var _showDeleteConfirmation: Bool = false
+
+  /// Initialises the toolbar with
+  /// the task `sheet` being viewed
+  init(sheet: TaskSheetModel) {
+    self._sheet = sheet
+  }
+
+  /// Used to delete the task sheet
+  private func _delete() -> Void {
+    self._appState.deleteTaskSheet(self._sheet)
+  }
 
   var body: some ToolbarContent {
 
@@ -84,12 +99,71 @@ struct TaskSheetToolbar: ToolbarContent {
     )
 
     ToolbarItem(placement: .topBarTrailing) {
-      Button(
-        action: {
-          self._appState.modalSelection = .editTaskSheet
+      Menu(
+        content: {
+          Section {
+            Button(
+              action: {
+                self._appState.modalSelection = .editTaskSheet
+              },
+              label: {
+                Label(
+                  title: {
+                    Text("Edit")
+                  },
+                  icon: {
+                    Image(
+                      lucide: .pencil,
+                      size: .init(width: 22, height: 22)
+                    )
+                  }
+                )
+              }
+            )
+            .tint(.contentPrimary)
+          }
+
+          Section {
+            Button(
+              role: .destructive,
+              action: {
+                self._showDeleteConfirmation = true
+              },
+              label: {
+                Label(
+                  title: {
+                    Text("Delete")
+                  },
+                  icon: {
+                    Image(
+                      lucide: .trash,
+                      size: .init(width: 22, height: 22)
+                    )
+                  }
+                )
+              }
+            )
+            .tint(.red)
+          }
         },
         label: {
-          LucideIcon(.pencil, size: 22)
+          LucideIcon(.ellipsis, size: 22)
+        }
+      )
+      .menuOrder(.fixed)
+      .confirmationDialog(
+        "Delete \"\(self._sheet.name)\"?",
+        isPresented: self.$_showDeleteConfirmation,
+        titleVisibility: .visible,
+        actions: {
+          Button(
+            "Delete",
+            role: .destructive,
+            action: self._delete
+          )
+        },
+        message: {
+          Text("This task sheet and all of its tasks will be permanently deleted.")
         }
       )
     }

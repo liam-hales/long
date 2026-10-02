@@ -7,9 +7,6 @@ struct EditTaskSheetView: View {
   private static let _maxNameLength = 24
   private let _sheet: TaskSheetModel
 
-  @Environment(AppState.self)
-  private var _appState: AppState
-
   @Environment(\.dismiss)
   private var _dismiss: DismissAction
 
@@ -18,9 +15,6 @@ struct EditTaskSheetView: View {
 
   @State
   private var _name: String
-
-  @State
-  private var _showDeleteConfirmation: Bool = false
 
   @State
   private var _showDiscardConfirmation: Bool = false
@@ -58,13 +52,6 @@ struct EditTaskSheetView: View {
   /// and dismiss the view
   private func _save() -> Void {
     self._sheet.rename(to: self._trimmedName)
-    self._dismiss()
-  }
-
-  /// Used to delete the task sheet
-  /// and dismiss the view
-  private func _delete() -> Void {
-    self._appState.deleteTaskSheet(self._sheet)
     self._dismiss()
   }
 
@@ -143,64 +130,25 @@ struct EditTaskSheetView: View {
           )
         }
 
-        ToolbarItem(placement: .topBarTrailing) {
-          Menu(
-            content: {
-              Button(
-                role: .destructive,
-                action: {
-                  self._showDeleteConfirmation = true
-                },
-                label: {
-                  Label(
-                    title: {
-                      Text("Delete")
-                    },
-                    icon: {
-                      Image(
-                        lucide: .trash,
-                        size: .init(width: 22, height: 22)
-                      )
-                    }
-                  )
-                }
-              )
-            },
-            label: {
-              LucideIcon(.ellipsis, size: 22)
-            }
-          )
-          .confirmationDialog(
-            "Delete \"\(self._sheet.name)\"?",
-            isPresented: self.$_showDeleteConfirmation,
-            titleVisibility: .visible,
-            actions: {
-              Button(
-                "Delete",
-                role: .destructive,
-                action: self._delete
-              )
-            },
-            message: {
-              Text("This task sheet and all of its tasks will be permanently deleted.")
-            }
-          )
-        }
-
-        ToolbarSpacer(
-          .fixed,
-          placement: .topBarTrailing
-        )
-
         ToolbarItem(placement: .confirmationAction) {
           Button(
             action: self._save
           ) {
-            LucideIcon(
-              .check,
-              size: 20,
-              strokeWidth: 3
-            )
+            HStack(
+              alignment: .center,
+              spacing: 8
+            ) {
+              LucideIcon(
+                .check,
+                size: 20,
+                strokeWidth: 3
+              )
+
+              Text("Save")
+                .font(.serif(17, .bold))
+                .padding(.top, 2)
+            }
+            .padding(.horizontal, 6)
             .foregroundStyle(
               (self._isSaveDisabled == true)
                 ? .contentSecondary

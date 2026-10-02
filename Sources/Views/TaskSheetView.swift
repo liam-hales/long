@@ -191,7 +191,7 @@ struct TaskSheetView: View {
       }
     }
     .toolbar {
-      TaskSheetToolbar()
+      TaskSheetToolbar(sheet: self._sheet)
 
       ToolbarItem(placement: .largeTitle) {
         Text(self._sheet.name)
