@@ -87,6 +87,22 @@ final class AppState {
     self.navSelection = .taskSheet(newSheet.id)
   }
 
+  /// Used to delete a given task `sheet`
+  /// and clear any state referencing it
+  func deleteTaskSheet(_ sheet: TaskSheetModel) -> Void {
+
+    // Clear the navigation selection if the user
+    // is viewing the task sheet being deleted
+    if (self.navSelection == .taskSheet(sheet.id)) {
+      self.navSelection = nil
+    }
+
+    // Delete and immediately save so the removal
+    // persists, tasks will cascade delete
+    self._context.delete(sheet)
+    try? self._context.save()
+  }
+
   /// Used to create and save a new task
   /// with a given `title` and `dueDate`
   private func _createTask(title: String, dueDate: Date? = nil) -> Void {
