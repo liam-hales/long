@@ -57,7 +57,7 @@ struct EditTaskSheetView: View {
   /// Used to save the task sheet
   /// and dismiss the view
   private func _save() -> Void {
-    self._sheet.rename(self._trimmedName)
+    self._sheet.rename(to: self._trimmedName)
     self._dismiss()
   }
 

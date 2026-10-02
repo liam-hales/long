@@ -35,7 +35,7 @@ final class TaskSheetModel: Identifiable {
 
   /// Used to rename the task
   /// sheet to a given `name`
-  func rename(_ name: String) -> Void {
+  func rename(to name: String) -> Void {
     self.name = String(name.prefix(32))
     self.updateDate = .now
   }
