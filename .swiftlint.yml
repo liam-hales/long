@@ -17,6 +17,7 @@ disabled_rules:
   - discouraged_default_parameter
   - required_deinit
   - switch_case_on_newline
+  - sorted_enum_cases
 
 attributes:
   always_on_line_above:
