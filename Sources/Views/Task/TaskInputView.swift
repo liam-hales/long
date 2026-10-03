@@ -82,6 +82,17 @@ struct TaskInputView: View {
           .lineLimit(8)
           .submitLabel(.return)
           .disabled(self._isCapturing)
+          .onChange(of: self._appState.taskInput) { oldValue, newValue in
+
+            // Check if the user has just started typing
+            // and if so start the capture session
+            if (
+              oldValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true &&
+              newValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
+            ) {
+              self._appState.startCaptureSession()
+            }
+          }
 
           Button(
             action: self._capture

@@ -33,7 +33,13 @@ final class TaskCaptureService {
     let dueDateText: String?
   }
 
-  private static let _instructions =
+  private var _modelSession: LanguageModelSession?
+  private let _instructions: String
+
+  /// Initialises the `TaskCaptureService` with
+  /// the model instructions
+  init() {
+    self._instructions =
     """
     Your purpose is to extract tasks from text the user has written, \
     in the order they appear.
@@ -42,20 +48,42 @@ final class TaskCaptureService {
       - Split text that mentions several things into separate tasks.
       - Only include tasks that are in the text, never invent new ones.
     """
+  }
+
+  /// Used to initialise and prewarm
+  /// the model session before use
+  func startSession() {
+
+    // Only start a model session if
+    // one does not already exist
+    if (self._modelSession != nil) {
+      return
+    }
+
+    self._modelSession = .init(instructions: self._instructions)
+    self._modelSession?.prewarm()
+  }
 
   /// Used to capture tasks from a given `text` as
   /// unsaved pending tasks for the user to review
   func capture(from text: String) async throws -> [TaskModel] {
 
-    // Make sure the on device model can be used, it
-    // may be unsupported, turned off or still downloading
+    // Make sure the on device model can be
+    // used and is supported by the device
     guard SystemLanguageModel.default.isAvailable else {
-      throw CaptureError.modelUnavailable
+      throw TaskCaptureError.modelUnavailable
     }
 
-    // Use a new session for each capture so previous
-    // inputs are not included in the transcript
-    let session = LanguageModelSession(instructions: Self._instructions)
+    // Make sure the model session has
+    // been started and prewarmed
+    guard let session = self._modelSession else {
+      throw TaskCaptureError.sessionNotStarted
+    }
+
+    // Clear the session so it can only
+    // be used for one capture
+    self._modelSession = nil
+
     let response = try await session.respond(
       to: text,
       generating: [CapturedTask].self

@@ -113,9 +113,22 @@ final class AppState {
     try? self._context.save()
   }
 
+  /// Used to start the
+  /// capture session
+  func startCaptureSession() -> Void {
+    self._captureService.startSession()
+  }
+
   /// Used to capture tasks from the task input
   /// and present them for the user to review
   func captureTasks() async throws -> Void {
+
+    // Start a new session once the capture finishes,
+    // even if it fails, so a new session is ready
+    defer {
+      self._captureService.startSession()
+    }
+
     let capturedTasks = try await self._captureService.capture(from: self.taskInput)
 
     // Set the pending tasks and
