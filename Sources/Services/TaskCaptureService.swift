@@ -7,12 +7,6 @@ import FoundationModels
 @MainActor
 final class TaskCaptureService {
 
-  /// Describes the errors that can
-  /// happen when capturing tasks
-  enum CaptureError: Error {
-    case modelUnavailable
-  }
-
   /// Describes a single task the on
   /// device model should generate
   @Generable
