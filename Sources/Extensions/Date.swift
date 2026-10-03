@@ -15,7 +15,7 @@ extension Date {
       to: self
     ).day ?? 0
 
-    let relativeStyle = Date.RelativeFormatStyle(
+    let relativeStyle = Self.RelativeFormatStyle(
       allowedFields: [.day],
       presentation: .named,
       capitalizationContext: .middleOfSentence

@@ -167,8 +167,7 @@ struct NavSidebarView: View {
     .navigationTitle("Task Sheets")
     .navigationSubtitle(self._subtitle)
     .listRowSpacing(10)
-    .contentMargins(.top, 20, for: .scrollContent)
-    .contentMargins(.bottom, 20, for: .scrollContent)
+    .contentMargins(.vertical, 20, for: .scrollContent)
     .scrollContentBackground(.hidden)
     .background(Color.base)
   }

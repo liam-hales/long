@@ -31,7 +31,7 @@ struct TaskSheetView: View {
     // ordered by ones that are due first
     self.__tasks = Query(
       filter: #Predicate<TaskModel> { task in
-        task.sheet.id == sheetId
+        task.sheet?.id == sheetId
       },
       sort: \TaskModel.dueDate,
       order: .reverse
@@ -226,8 +226,7 @@ struct TaskSheetView: View {
     .navigationTitle(self._sheet.name)
     .navigationSubtitle("\(self._activeTasks.count) tasks to complete")
     .listRowSpacing(10)
-    .contentMargins(.top, 20, for: .scrollContent)
-    .contentMargins(.bottom, 20, for: .scrollContent)
+    .contentMargins(.vertical, 20, for: .scrollContent)
     .scrollContentBackground(.hidden)
     .scrollDismissesKeyboard(.interactively)
     .background(Color.base)

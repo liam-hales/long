@@ -110,7 +110,7 @@ struct EditTaskSheetView: View {
           Button(
             action: self._close
           ) {
-              LucideIcon(.x, size: 22)
+            LucideIcon(.x, size: 22)
           }
           .confirmationDialog(
             "Discard changes?",
