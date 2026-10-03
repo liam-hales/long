@@ -83,7 +83,7 @@ struct NavRouterView: View {
           }
 
         case .editTask: EmptyView()
-        case .reviewTasks: EmptyView()
+        case .reviewTasks: ReviewTasksView()
         case .settings: SettingsView()
       }
     }
