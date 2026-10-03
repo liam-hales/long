@@ -25,6 +25,7 @@ struct TaskInputView: View {
       Rectangle()
         .fill(Color.outline)
         .frame(height: 2 / self._displayScale)
+        .ignoresSafeArea(edges: .horizontal)
         .allowsHitTesting(false)
 
       VStack(
@@ -86,9 +87,6 @@ struct TaskInputView: View {
       .padding(.horizontal, 16)
       .padding(.vertical, 16)
     }
-    .background {
-      Color.base
-        .ignoresSafeArea(edges: .bottom)
-    }
+    .background(Color.base)
   }
 }

@@ -143,7 +143,7 @@ struct TaskSheetToolbar: ToolbarContent {
                 )
               }
             )
-            .tint(.red)
+            .tint(nil)
           }
         },
         label: {
