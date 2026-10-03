@@ -5,19 +5,53 @@ import SwiftUI
 /// user can use to create tasks
 struct TaskInputView: View {
 
+  @Environment(AppState.self)
+  private var _appState: AppState
+
   @Environment(\.displayScale)
   private var _displayScale: CGFloat
 
   @State
-  private var _inputValue: String = ""
+  private var _isCapturing: Bool = false
+
+  @State
+  private var _showCaptureError: Bool = false
 
   private var _isDisabled: Bool {
-    self._inputValue
-      .trimmingCharacters(in: .whitespacesAndNewlines)
-      .isEmpty
+    (
+      self._isCapturing == true ||
+      self._appState.taskInput
+        .trimmingCharacters(in: .whitespacesAndNewlines)
+        .isEmpty
+    )
+  }
+
+  /// Used to capture tasks from the task input
+  /// and show an error if it fails
+  private func _capture() -> Void {
+    self._isCapturing = true
+
+    Task {
+      do {
+        
+        // Attempt to capture the tasks
+        // from the user input
+        try await self._appState.captureTasks()
+      }
+      catch {
+        print("Failed to capture tasks: \(error)")
+        self._showCaptureError = true
+      }
+      
+      self._isCapturing = false
+    }
   }
 
   var body: some View {
+
+    @Bindable
+    var appState = _appState
+
     VStack(
       alignment: .center,
       spacing: 0
@@ -38,7 +72,7 @@ struct TaskInputView: View {
         ) {
           TextField(
             "Add tasks",
-            text: self.$_inputValue,
+            text: $appState.taskInput,
             prompt: Text("What do you need to get done?")
               .foregroundStyle(Color.contentSecondary),
             axis: .vertical
@@ -47,10 +81,18 @@ struct TaskInputView: View {
           .padding(.vertical, 8)
           .lineLimit(8)
           .submitLabel(.return)
+          .disabled(self._isCapturing)
 
           Button(
-            action: {},
-            label: {
+            action: self._capture
+          ) {
+            if (self._isCapturing == true) {
+              LoaderView(size: 22)
+                .frame(width: 14, height: 22)
+                .foregroundStyle(Color.contentSecondary)
+            }
+
+            if (self._isCapturing == false) {
               LucideIcon(.arrowUp, size: 22)
                 .frame(width: 14, height: 22)
                 .foregroundStyle(
@@ -59,7 +101,7 @@ struct TaskInputView: View {
                     : .white
                 )
             }
-          )
+          }
           .buttonStyle(.borderedProminent)
           .buttonBorderShape(.roundedRectangle(radius: 10))
           .disabled(self._isDisabled)
@@ -88,5 +130,17 @@ struct TaskInputView: View {
       .padding(.vertical, 16)
     }
     .background(Color.base)
+    .alert(
+      "Failed to capture tasks",
+      isPresented: self.$_showCaptureError,
+      actions: {
+        Button("OK", role: .cancel) {
+          self._showCaptureError = false
+        }
+      },
+      message: {
+        Text("Could not capture tasks, please try again.")
+      }
+    )
   }
 }
