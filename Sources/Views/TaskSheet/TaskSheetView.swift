@@ -139,9 +139,10 @@ struct TaskSheetView: View {
               }
             },
             header: {
-              Text("Today")
+              Text("Today • \(self._todayTasks.count)")
                 .foregroundStyle(Color.contentSecondary)
                 .font(.mono(16))
+                .listRowInsets(.horizontal, 24)
             }
           )
           .listRowSeparator(.hidden)
@@ -155,9 +156,10 @@ struct TaskSheetView: View {
               }
             },
             header: {
-              Text("Scheduled")
+              Text("Scheduled • \(self._scheduledTasks.count)")
                 .foregroundStyle(Color.contentSecondary)
                 .font(.mono(16))
+                .listRowInsets(.horizontal, 24)
             }
           )
           .listRowSeparator(.hidden)
@@ -183,7 +185,7 @@ struct TaskSheetView: View {
               Text("Completed • \(self._completedTasks.count)")
                 .foregroundStyle(Color.contentSecondary)
                 .font(.mono(16))
-                .listRowInsets(.horizontal, 20)
+                .listRowInsets(.horizontal, 24)
             }
           )
           .listRowSeparator(.hidden)
@@ -226,6 +228,7 @@ struct TaskSheetView: View {
     .navigationTitle(self._sheet.name)
     .navigationSubtitle("\(self._activeTasks.count) tasks to complete")
     .listRowSpacing(10)
+    .listSectionSpacing(16)
     .contentMargins(.vertical, 20, for: .scrollContent)
     .scrollContentBackground(.hidden)
     .scrollDismissesKeyboard(.interactively)
