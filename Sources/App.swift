@@ -13,9 +13,16 @@ struct App: SwiftUI.App {
   /// Initialises the app with new app state
   /// and custom appearance configuration
   init() {
+    let captureService = TaskCaptureService()
+
     do {
       self._container = try ModelContainer(for: TaskModel.self, TaskSheetModel.self)
-      self.__appState = State(initialValue: AppState(context: self._container.mainContext))
+      self.__appState = State(
+        initialValue: AppState(
+          context: self._container.mainContext,
+          captureService: captureService
+        )
+      )
     }
     catch {
       fatalError("Failed to create ModelContainer: \(error)")
