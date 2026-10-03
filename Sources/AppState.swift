@@ -4,6 +4,7 @@ import SwiftUI
 
 /// Used to store state for
 /// the entire app
+@MainActor
 @Observable
 final class AppState {
 
@@ -27,11 +28,14 @@ final class AppState {
   }
 
   private let _context: ModelContext
+  private let _captureService: TaskCaptureService
 
   var navVisibility: NavigationSplitViewVisibility
   var navSelection: NavSelection?
   var modalSelection: ModalSelection?
   var taskFocus: TaskFocus
+  var taskInput: String
+  var pendingTasks: [TaskModel]
 
   /// The currently selected task sheet
   /// if the user has one selected
@@ -53,15 +57,21 @@ final class AppState {
       .first
   }
 
-  /// Initialises the `AppState` with a given
-  /// model context for the task
-  init(context: ModelContext) {
+  /// Initialises the `AppState` with a given model context
+  /// and the service used to capture tasks
+  init(
+    context: ModelContext,
+    captureService: TaskCaptureService
+  ) {
     self._context = context
+    self._captureService = captureService
 
     self.navSelection = nil
     self.navVisibility = .doubleColumn
     self.modalSelection = nil
     self.taskFocus = .all
+    self.taskInput = ""
+    self.pendingTasks = []
   }
 
   /// Used to create and save a new
@@ -103,34 +113,37 @@ final class AppState {
     try? self._context.save()
   }
 
-  /// Used to create and save a new task
-  /// with a given `title` and `dueDate`
-  private func _createTask(title: String, dueDate: Date? = nil) -> Void {
-    let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
+  /// Used to capture tasks from the task input
+  /// and present them for the user to review
+  func captureTasks() async throws -> Void {
+    let capturedTasks = try await self._captureService.capture(from: self.taskInput)
 
-    // Check if the trimmed title
-    // is empty and if so return
-    if trimmed.isEmpty == true {
-      return
-    }
+    // Set the pending tasks and
+    // model selection state
+    self.pendingTasks = capturedTasks
+    self.modalSelection = .reviewTasks
+  }
 
-    // Make sure the user has
-    // a task sheet selected
+  /// Used to add the pending tasks to the selected
+  /// task sheet then clear the task input
+  func addPendingTasks() -> Void {
     guard let sheet = self.selectedTaskSheet else {
       return
     }
 
-    // Create the new task for the selected task sheet
-    // with the trimmed title and due date
-    let newTask = TaskModel(
-      sheet: sheet,
-      title: trimmed,
-      dueDate: dueDate
-    )
+    for task in self.pendingTasks {
 
-    // Insert and immediately save the
-    // new task so it persists
-    self._context.insert(newTask)
+      // Assign each pending task to the sheet and insert
+      // it so it only persists once confirmed
+      task.assign(to: sheet)
+      self._context.insert(task)
+    }
+
+    // Immediately save so the
+    // data persists
     try? self._context.save()
+
+    self.pendingTasks = []
+    self.taskInput = ""
   }
 }
