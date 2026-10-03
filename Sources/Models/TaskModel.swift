@@ -72,23 +72,13 @@ final class TaskModel: Identifiable {
     // If the task has a completed date
     // then use this to build the subtitle
     if let completedDate = self.completedDate {
-      let text = self._relativeText(
-        for: completedDate,
-        includeTime: true
-      )
-
-      return "Completed \(text)"
+      return "Completed \(completedDate.relativeText(includeTime: true))"
     }
 
     // If the task has a due date then
     // use this to build the subtitle
     if let dueDate = self.dueDate {
-      let text = self._relativeText(
-        for: dueDate,
-        includeTime: false
-      )
-
-      return "Due \(text)"
+      return "Due \(dueDate.relativeText(includeTime: false))"
     }
 
     return "No due date"
@@ -118,50 +108,5 @@ final class TaskModel: Identifiable {
     self.completedDate = (self.completedDate == nil)
       ? .now
       : nil
-  }
-
-  /// Formats a given `date` into a human
-  /// readable format relative to today
-  private func _relativeText(
-    for date: Date,
-    includeTime: Bool = false
-  ) -> String {
-    let calendar = Calendar.current
-
-    // Extract the number of days it has been
-    // from today since the given date
-    let days = calendar.dateComponents(
-      [.day],
-      from: calendar.startOfDay(for: .now),
-      to: date
-    ).day ?? 0
-
-    let relativeStyle = Date.RelativeFormatStyle(
-      allowedFields: [.day],
-      presentation: .named,
-      capitalizationContext: .middleOfSentence
-    )
-
-    // Dates more than a week either side of today are shown as
-    // the full date, otherwise they're shown relative
-    let dateText = (abs(days) > 7)
-      ? date.formatted(
-        date: .abbreviated,
-        time: .omitted
-      )
-      : date.formatted(relativeStyle)
-
-    // If the text should not include the time then
-    // just return the date text as is
-    if (includeTime == false) {
-      return dateText
-    }
-
-    let timeText = date.formatted(
-      date: .omitted,
-      time: .shortened
-    )
-
-    return "\(dateText) at \(timeText)"
   }
 }
