@@ -18,7 +18,7 @@ final class TaskModel: Identifiable {
   private(set) var title: String = ""
   private(set) var dueDate: Date?
   private(set) var completedDate: Date?
-  private(set) var sheet: TaskSheetModel
+  private(set) var sheet: TaskSheetModel?
 
   private(set) var createDate: Date = Date.now
   private(set) var updateDate: Date = Date.now
@@ -84,17 +84,22 @@ final class TaskModel: Identifiable {
     return "No due date"
   }
 
-  /// Initialises a new task with a given `sheet`,
+  /// Initialises a new task with a given
   /// `title` and optional `dueDate`
   init(
-    sheet: TaskSheetModel,
     title: String,
     dueDate: Date? = nil
   ) {
     self.title = title
     self.dueDate = dueDate
-    self.sheet = sheet
     self.createDate = .now
+    self.updateDate = .now
+  }
+
+  /// Used to assign the task
+  /// to a given task sheet
+  func assign(to sheet: TaskSheetModel) -> Void {
+    self.sheet = sheet
     self.updateDate = .now
   }
 
