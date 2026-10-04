@@ -25,24 +25,12 @@ struct ReviewTasksView: View {
   var body: some View {
     NavigationStack {
       List {
-        if (self._appState.pendingTasks.isEmpty == true) {
-          NoContentView(
-            title: "No tasks.",
-            message: "No tasks were found in what you wrote, try rewording it."
-          )
-        }
-
-        if (self._appState.pendingTasks.isEmpty == false) {
-          Section {
-            ForEach(self._appState.pendingTasks) { task in
-              TaskView(task: task)
-            }
-            .onDelete { offsets in
-              self._appState.pendingTasks.remove(atOffsets: offsets)
-            }
+        Section {
+          ForEach(self._appState.pendingTasks) { task in
+            TaskView(task: task)
           }
-          .listRowSeparator(.hidden)
         }
+        .listRowSeparator(.hidden)
       }
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
