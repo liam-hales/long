@@ -68,10 +68,23 @@ final class TaskCaptureService {
   /// unsaved pending tasks for the user to review
   func capture(from text: String) async throws -> [TaskModel] {
 
-    // Make sure the on device model can be
-    // used and is supported by the device
-    guard SystemLanguageModel.default.isAvailable else {
-      throw TaskCaptureError.modelUnavailable
+    // Make sure the on device model can be used,
+    // throwing a specific error for each reason
+    switch SystemLanguageModel.default.availability {
+      case .available:
+        break
+
+      case .unavailable(.deviceNotEligible):
+        throw TaskCaptureError.deviceNotSupported
+
+      case .unavailable(.appleIntelligenceNotEnabled):
+        throw TaskCaptureError.appleIntelligenceDisabled
+
+      case .unavailable(.modelNotReady):
+        throw TaskCaptureError.modelNotReady
+
+      case .unavailable:
+        throw TaskCaptureError.modelUnavailable
     }
 
     // Make sure the model session has
@@ -91,7 +104,7 @@ final class TaskCaptureService {
 
     // Map the resposne content into
     // an array of captured tasks
-    return await response.content.asyncCompactMap { task -> TaskModel? in
+    let tasks = await response.content.asyncCompactMap { task -> TaskModel? in
       let trimmed = task.title.trimmingCharacters(in: .whitespacesAndNewlines)
 
       if trimmed.isEmpty == true {
@@ -115,6 +128,14 @@ final class TaskCaptureService {
 
       return TaskModel(title: title)
     }
+
+    // Make sure at least one task
+    // was captured from the text
+    if (tasks.isEmpty == true) {
+      throw TaskCaptureError.noTasks
+    }
+
+    return tasks
   }
 
   /// Used to resolve a `Date` relative to now from

@@ -15,7 +15,7 @@ struct TaskInputView: View {
   private var _isCapturing: Bool = false
 
   @State
-  private var _showCaptureError: Bool = false
+  private var _captureError: TaskCaptureError?
 
   private var _isDisabled: Bool {
     (
@@ -33,16 +33,19 @@ struct TaskInputView: View {
 
     Task {
       do {
-        
+
         // Attempt to capture the tasks
         // from the user input
         try await self._appState.captureTasks()
       }
       catch {
         print("Failed to capture tasks: \(error)")
-        self._showCaptureError = true
+
+        // Use the capture error if there is one, otherwise
+        // fall back to a generic failed error
+        self._captureError = (error as? TaskCaptureError) ?? .failed
       }
-      
+
       self._isCapturing = false
     }
   }
@@ -142,15 +145,23 @@ struct TaskInputView: View {
     }
     .background(Color.base)
     .alert(
-      "Failed to capture tasks",
-      isPresented: self.$_showCaptureError,
-      actions: {
+      self._captureError?.title ?? "",
+      isPresented: Binding(
+        get: {
+          self._captureError != nil
+        },
+        set: { _ in
+          self._captureError = nil
+        }
+      ),
+      presenting: self._captureError,
+      actions: { _ in
         Button("OK", role: .cancel) {
-          self._showCaptureError = false
+          self._captureError = nil
         }
       },
-      message: {
-        Text("Could not capture tasks, please try again.")
+      message: { error in
+        Text(error.message)
       }
     )
   }
