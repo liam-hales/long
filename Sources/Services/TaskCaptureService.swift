@@ -7,15 +7,16 @@ import FoundationModels
 @MainActor
 final class TaskCaptureService {
 
-  /// Describes a single task the on
-  /// device model should generate
+  /// Describes a single captured
+  /// task the model should generate
   @Generable
   struct CapturedTask {
+
     @Guide(
       description:
         """
-        A short, actionable title for the task written in sentence case \
-        that starts with a verb, without any due date words
+        A short, actionable title for the task written in sentence \
+        case that starts with a verb, without any due date words
         """
     )
     let title: String
@@ -23,8 +24,12 @@ final class TaskCaptureService {
     @Guide(
       description:
         """
-        When the task is due, rewritten as a simple date phrase such as "tomorrow", \
-        "Friday", "next Monday at 9am", "in 3 days" or "October 12 at 5pm".
+        When the task is due, rewritten as a simple date phrase such as...
+          - "tomorrow"
+          - "Friday"
+          - "next Monday"
+          - "in 3 days"
+          - "October 12"
 
         Never work out the actual date yourself.
         Leave out if no due date is mentioned.
@@ -47,6 +52,17 @@ final class TaskCaptureService {
     Rules:
       - Split text that mentions several things into separate tasks.
       - Only include tasks that are in the text, never invent new ones.
+      - Group relevant tasks into one, for example "Buy milk, eggs and flour" should be one task
+      - Dates always go in dueDateText and never in the title.
+
+    Example:
+      Text: "Book a dentist appointment tomorrow and put the bins out on Monday"
+      Tasks:
+        - title: "Book a dentist appointment", dueDateText: "tomorrow"
+        - title: "Put the bins out", dueDateText: "Monday"
+
+    The text may not include any tasks, which is fine and you can \
+    just return an empty array.
     """
   }
 
@@ -97,12 +113,15 @@ final class TaskCaptureService {
     // be used for one capture
     self._modelSession = nil
 
+    // Use greedy sampling so the model always picks its
+    // most likely output, making the extraction consistent
     let response = try await session.respond(
       to: text,
-      generating: [CapturedTask].self
+      generating: [CapturedTask].self,
+      options: .init(samplingMode: .greedy)
     )
 
-    // Map the resposne content into
+    // Map the response content into
     // an array of captured tasks
     let tasks = await response.content.asyncCompactMap { task -> TaskModel? in
       let trimmed = task.title.trimmingCharacters(in: .whitespacesAndNewlines)
