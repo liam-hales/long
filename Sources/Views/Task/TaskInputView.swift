@@ -11,42 +11,20 @@ struct TaskInputView: View {
   @Environment(\.displayScale)
   private var _displayScale: CGFloat
 
-  @State
-  private var _isCapturing: Bool = false
-
-  @State
-  private var _captureError: TaskCaptureError?
-
   private var _isDisabled: Bool {
     (
-      self._isCapturing == true ||
+      self._appState.isCapturing == true ||
       self._appState.taskInput
         .trimmingCharacters(in: .whitespacesAndNewlines)
         .isEmpty
     )
   }
 
-  /// Used to capture tasks from the task input
-  /// and show an error if it fails
+  /// Used to capture tasks
+  /// from the task input
   private func _capture() -> Void {
-    self._isCapturing = true
-
     Task {
-      do {
-
-        // Attempt to capture the tasks
-        // from the user input
-        try await self._appState.captureTasks()
-      }
-      catch {
-        print("Failed to capture tasks: \(error)")
-
-        // Use the capture error if there is one, otherwise
-        // fall back to a generic failed error
-        self._captureError = (error as? TaskCaptureError) ?? .failed
-      }
-
-      self._isCapturing = false
+      await self._appState.captureTasks()
     }
   }
 
@@ -84,7 +62,7 @@ struct TaskInputView: View {
           .padding(.vertical, 8)
           .lineLimit(8)
           .submitLabel(.return)
-          .disabled(self._isCapturing)
+          .disabled(self._appState.isCapturing)
           .onChange(of: self._appState.taskInput) { oldValue, newValue in
 
             // Check if the user has just started typing
@@ -100,13 +78,13 @@ struct TaskInputView: View {
           Button(
             action: self._capture
           ) {
-            if (self._isCapturing == true) {
+            if (self._appState.isCapturing == true) {
               LoaderView(size: 22)
                 .frame(width: 14, height: 22)
                 .foregroundStyle(Color.contentSecondary)
             }
 
-            if (self._isCapturing == false) {
+            if (self._appState.isCapturing == false) {
               LucideIcon(.arrowUp, size: 22)
                 .frame(width: 14, height: 22)
                 .foregroundStyle(
@@ -144,25 +122,5 @@ struct TaskInputView: View {
       .padding(.vertical, 16)
     }
     .background(Color.base)
-    .alert(
-      self._captureError?.title ?? "",
-      isPresented: Binding(
-        get: {
-          self._captureError != nil
-        },
-        set: { _ in
-          self._captureError = nil
-        }
-      ),
-      presenting: self._captureError,
-      actions: { _ in
-        Button("OK", role: .cancel) {
-          self._captureError = nil
-        }
-      },
-      message: { error in
-        Text(error.message)
-      }
-    )
   }
 }

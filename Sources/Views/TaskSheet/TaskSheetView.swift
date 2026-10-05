@@ -224,6 +224,26 @@ struct TaskSheetView: View {
     ) {
       TaskInputView()
     }
+    .alert(
+      self._appState.captureError?.title ?? "",
+      isPresented: Binding(
+        get: {
+          self._appState.captureError != nil
+        },
+        set: { _ in
+          self._appState.captureError = nil
+        }
+      ),
+      presenting: self._appState.captureError,
+      actions: { _ in
+        Button("OK", role: .cancel) {
+          self._appState.captureError = nil
+        }
+      },
+      message: { error in
+        Text(error.message)
+      }
+    )
     .listStyle(.plain)
     .navigationTitle(self._sheet.name)
     .navigationSubtitle("\(self._activeTasks.count) tasks to complete")

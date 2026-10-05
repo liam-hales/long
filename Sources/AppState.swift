@@ -36,6 +36,8 @@ final class AppState {
   var taskFocus: TaskFocus
   var taskInput: String
   var pendingTasks: [TaskModel]
+  var isCapturing: Bool
+  var captureError: TaskCaptureError?
 
   /// The currently selected task sheet
   /// if the user has one selected
@@ -72,6 +74,8 @@ final class AppState {
     self.taskFocus = .all
     self.taskInput = ""
     self.pendingTasks = []
+    self.isCapturing = false
+    self.captureError = nil
   }
 
   /// Used to create and save a new
@@ -119,22 +123,33 @@ final class AppState {
     self._captureService.startSession()
   }
 
-  /// Used to capture tasks from the task input
-  /// and present them for the user to review
-  func captureTasks() async throws -> Void {
+  /// Used to capture tasks from the task input and present
+  /// them for the user to review, or set an error if it fails
+  func captureTasks() async -> Void {
+    self.isCapturing = true
 
-    // Start a new session once the capture finishes,
-    // even if it fails, so a new session is ready
+    // Reset the capturing state and start a new session once the
+    // capture finishes, even if it fails, so a new session is ready
     defer {
+      self.isCapturing = false
       self._captureService.startSession()
     }
 
-    let capturedTasks = try await self._captureService.capture(from: self.taskInput)
+    do {
+      let capturedTasks = try await self._captureService.capture(from: self.taskInput)
 
-    // Set the pending tasks and
-    // model selection state
-    self.pendingTasks = capturedTasks
-    self.modalSelection = .reviewTasks
+      // Set the pending tasks and
+      // model selection state
+      self.pendingTasks = capturedTasks
+      self.modalSelection = .reviewTasks
+    }
+    catch {
+      print("Failed to capture tasks: \(error)")
+
+      // Use the capture error if there is one, otherwise
+      // fall back to a generic failed error
+      self.captureError = (error as? TaskCaptureError) ?? .failed
+    }
   }
 
   /// Used to add the pending tasks to the selected
