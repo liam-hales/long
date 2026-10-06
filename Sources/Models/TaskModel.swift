@@ -15,6 +15,14 @@ final class TaskModel: Identifiable {
     case unscheduled
   }
 
+  /// Describes the status the task is in during
+  /// the review process after being captured
+  enum ReviewStatus {
+    case confirmed
+    case discarded
+    case added
+  }
+
   private(set) var title: String = ""
   private(set) var dueDate: Date?
   private(set) var completedDate: Date?
@@ -22,6 +30,23 @@ final class TaskModel: Identifiable {
 
   private(set) var createDate: Date = Date.now
   private(set) var updateDate: Date = Date.now
+
+  @Transient
+  private var _reviewStatus: ReviewStatus = .added
+
+  /// Describes the status the task is in during
+  /// the review process after being captured
+  private(set) var reviewStatus: ReviewStatus {
+    get {
+      self.access(keyPath: \.reviewStatus)
+      return self._reviewStatus
+    }
+    set {
+      self.withMutation(keyPath: \.reviewStatus) {
+        self._reviewStatus = newValue
+      }
+    }
+  }
 
   /// Calculates where the task sits in
   /// the schedule based on its `dueDate`
@@ -94,13 +119,26 @@ final class TaskModel: Identifiable {
     self.dueDate = dueDate
     self.createDate = .now
     self.updateDate = .now
+    self._reviewStatus = .confirmed
   }
 
   /// Used to assign the task
   /// to a given task sheet
   func assign(to sheet: TaskSheetModel) -> Void {
-    self.sheet = sheet
     self.updateDate = .now
+
+    // Assign the task to the given sheet and
+    // set the review status to added
+    self.sheet = sheet
+    self.reviewStatus = .added
+  }
+
+  /// Used to toggle the task between confirmed
+  /// and discarded while it is being reviewed
+  func toggleConfirmed() -> Void {
+    self.reviewStatus = (self.reviewStatus == .confirmed)
+      ? .discarded
+      : .confirmed
   }
 
   /// Used to toggle the task between
