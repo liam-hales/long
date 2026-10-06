@@ -141,7 +141,7 @@ struct TaskSheetView: View {
             header: {
               Text("Today • \(self._todayTasks.count)")
                 .foregroundStyle(Color.contentSecondary)
-                .font(.mono(16))
+                .font(.mono(14))
                 .listRowInsets(.horizontal, 24)
             }
           )
@@ -158,7 +158,7 @@ struct TaskSheetView: View {
             header: {
               Text("Scheduled • \(self._scheduledTasks.count)")
                 .foregroundStyle(Color.contentSecondary)
-                .font(.mono(16))
+                .font(.mono(14))
                 .listRowInsets(.horizontal, 24)
             }
           )
@@ -184,7 +184,7 @@ struct TaskSheetView: View {
             header: {
               Text("Completed • \(self._completedTasks.count)")
                 .foregroundStyle(Color.contentSecondary)
-                .font(.mono(16))
+                .font(.mono(14))
                 .listRowInsets(.horizontal, 24)
             }
           )
