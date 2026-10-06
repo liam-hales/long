@@ -25,6 +25,7 @@ attributes:
     - "@Bindable"
     - "@Query"
     - "@FocusState"
+    - "@Transient"
 
 type_contents_order:
   order:
