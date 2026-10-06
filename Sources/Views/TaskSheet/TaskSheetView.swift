@@ -34,7 +34,7 @@ struct TaskSheetView: View {
         task.sheet?.id == sheetId
       },
       sort: \TaskModel.dueDate,
-      order: .reverse
+      order: .forward
     )
   }
 
