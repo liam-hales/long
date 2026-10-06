@@ -35,7 +35,7 @@ final class AppState {
   var modalSelection: ModalSelection?
   var taskFocus: TaskFocus
   var taskInput: String
-  var pendingTasks: [TaskModel]
+  var capturedTasks: [TaskModel]
   var isCapturing: Bool
   var captureError: TaskCaptureError?
 
@@ -73,7 +73,7 @@ final class AppState {
     self.modalSelection = nil
     self.taskFocus = .all
     self.taskInput = ""
-    self.pendingTasks = []
+    self.capturedTasks = []
     self.isCapturing = false
     self.captureError = nil
   }
@@ -136,11 +136,7 @@ final class AppState {
     }
 
     do {
-      let capturedTasks = try await self._captureService.capture(from: self.taskInput)
-
-      // Set the pending tasks and
-      // model selection state
-      self.pendingTasks = capturedTasks
+      self.capturedTasks = try await self._captureService.capture(from: self.taskInput)
       self.modalSelection = .reviewTasks
     }
     catch {
@@ -152,26 +148,28 @@ final class AppState {
     }
   }
 
-  /// Used to add the pending tasks to the selected
-  /// task sheet then clear the task input
-  func addPendingTasks() -> Void {
+  /// Used to add the confirmed captured tasks to the
+  /// selected task sheet then clear the task input
+  func addConfirmedTasks() -> Void {
     guard let sheet = self.selectedTaskSheet else {
       return
     }
 
-    for task in self.pendingTasks {
+    self.capturedTasks
+      .filter { $0.reviewStatus == .confirmed }
+      .forEach { task in
 
-      // Assign each pending task to the sheet and insert
-      // it so it only persists once confirmed
-      task.assign(to: sheet)
-      self._context.insert(task)
-    }
+        // Assign each confirmed task to the sheet and
+        // insert it so it only persists once added
+        task.assign(to: sheet)
+        self._context.insert(task)
+      }
 
     // Immediately save so the
     // data persists
     try? self._context.save()
 
-    self.pendingTasks = []
+    self.capturedTasks = []
     self.taskInput = ""
   }
 }

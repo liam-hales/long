@@ -12,13 +12,16 @@ struct ReviewTasksView: View {
   private var _dismiss: DismissAction
 
   private var _isAddDisabled: Bool {
-    self._appState.pendingTasks.isEmpty
+    (
+      self._appState.isCapturing == true ||
+      self._appState.capturedTasks.contains { $0.reviewStatus == .confirmed } == false
+    )
   }
 
-  /// Used to add the pending
+  /// Used to add the confirmed
   /// tasks and dismiss the view
   private func _add() -> Void {
-    self._appState.addPendingTasks()
+    self._appState.addConfirmedTasks()
     self._dismiss()
   }
 
@@ -26,8 +29,8 @@ struct ReviewTasksView: View {
     NavigationStack {
       List {
         Section {
-          ForEach(self._appState.pendingTasks) { task in
-            TaskView(task: task)
+          ForEach(self._appState.capturedTasks) { task in
+            CapturedTaskView(task: task)
           }
         }
         .listRowSeparator(.hidden)
@@ -80,7 +83,7 @@ struct ReviewTasksView: View {
       }
       .listStyle(.plain)
       .navigationTitle("Review")
-      .navigationSubtitle("You have \(self._appState.pendingTasks.count) tasks to review")
+      .navigationSubtitle("You have \(self._appState.capturedTasks.count) tasks to review")
       .navigationBarTitleDisplayMode(.inline)
       .listRowSpacing(10)
       .contentMargins(.vertical, 20, for: .scrollContent)
