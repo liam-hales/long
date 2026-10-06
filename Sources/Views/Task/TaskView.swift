@@ -23,7 +23,7 @@ struct TaskView: View {
         },
         label: {
           ZStack(alignment: .center) {
-            if (self._task.isCompleted) {
+            if (self._task.isCompleted == true) {
               Circle()
                 .fill(Color.accent)
 
@@ -36,13 +36,13 @@ struct TaskView: View {
               .padding(.top, 1)
             }
 
-            if (!self._task.isCompleted) {
+            if (self._task.isCompleted == false) {
               Circle()
                 .strokeBorder(Color.outline, lineWidth: 1.5)
             }
           }
           .frame(width: 20, height: 20)
-          .contentShape(Circle())
+          .contentShape(.circle)
         }
       )
       .buttonStyle(.plain)
@@ -54,7 +54,7 @@ struct TaskView: View {
         Text(self._task.title)
           .strikethrough(self._task.isCompleted)
           .foregroundStyle(
-            (self._task.isCompleted)
+            (self._task.isCompleted == true)
               ? Color.contentSecondary
               : Color.contentPrimary
           )
