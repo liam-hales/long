@@ -21,14 +21,14 @@ struct TaskSheetItemView: View {
         spacing: 6
       ) {
         Text(self._sheet.name)
-        
+
         Text("\(self._sheet.activeCount) \((self._sheet.activeCount == 1) ? "task" : "tasks") to complete")
           .foregroundStyle(Color.contentSecondary)
           .font(.mono(11))
       }
-      
+
       Spacer()
-      
+
       HStack(
         alignment: .center,
         spacing: 8
@@ -40,7 +40,7 @@ struct TaskSheetItemView: View {
             text: "\(self._sheet.overdueCount)"
           )
         }
-        
+
         if (self._sheet.todayCount > 0) {
           BadgeView(
             appearance: .warning,

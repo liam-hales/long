@@ -21,7 +21,7 @@ extension UINavigationBar {
     // and the new `UINavigationBar` appearance
     let titleFont = UIFont(descriptor: titleDescriptor, size: 18)
     let appearance = UINavigationBarAppearance()
-    
+
     // Configure the appearance backgrond
     // and text attributes
     appearance.configureWithDefaultBackground()

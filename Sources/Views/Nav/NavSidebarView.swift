@@ -61,7 +61,7 @@ struct NavSidebarView: View {
 
       ForEach(self._sortedTaskSheets) { sheet in
         let value: AppState.NavSelection = .taskSheet(sheet.id)
-        
+
         NavigationLink(value: value) {
           TaskSheetItemView(sheet: sheet)
         }
