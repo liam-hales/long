@@ -69,12 +69,7 @@ struct CapturedTaskView: View {
           .font(.mono(11))
       }
     }
+    .listItem()
     .opacity(self._opacity)
-    .listRowBackground(
-      RoundedRectangle(cornerRadius: 14)
-        .fill(Color.surfaceHigh)
-        .strokeBorder(Color.outline, lineWidth: 1)
-        .opacity(self._opacity)
-    )
   }
 }

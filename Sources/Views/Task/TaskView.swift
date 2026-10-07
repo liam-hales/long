@@ -64,10 +64,6 @@ struct TaskView: View {
           .font(.mono(11))
       }
     }
-    .listRowBackground(
-      RoundedRectangle(cornerRadius: 14)
-        .fill(Color.surfaceHigh)
-        .strokeBorder(Color.outline, lineWidth: 1)
-    )
+    .listItem()
   }
 }
