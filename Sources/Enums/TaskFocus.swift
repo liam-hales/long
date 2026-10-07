@@ -4,8 +4,8 @@ import LucideSwift
 /// can focus on their tasks
 enum TaskFocus: CaseIterable, Identifiable {
   case all
-  case today
   case overdue
+  case today
   case scheduled
   case unscheduled
   case completed
@@ -18,8 +18,8 @@ enum TaskFocus: CaseIterable, Identifiable {
   var title: String {
     switch self {
       case .all: "All"
-      case .today: "Today"
       case .overdue: "Overdue"
+      case .today: "Today"
       case .scheduled: "Scheduled"
       case .unscheduled: "Unscheduled"
       case .completed: "Completed"
@@ -30,8 +30,8 @@ enum TaskFocus: CaseIterable, Identifiable {
   var icon: LucideIconName {
     switch self {
       case .all: .listCheck
+      case .overdue: .clockAlert
       case .today: .sun
-      case .overdue: .calendarClock
       case .scheduled: .calendarCheck2
       case .unscheduled: .calendarX2
       case .completed: .check
