@@ -12,12 +12,23 @@ struct TaskSheetItemView: View {
   }
 
   var body: some View {
-    VStack(
-      alignment: .leading,
-      spacing: 10
+    HStack(
+      alignment: .top,
+      spacing: 8
     ) {
-      Text(self._sheet.name)
-
+      VStack(
+        alignment: .leading,
+        spacing: 6
+      ) {
+        Text(self._sheet.name)
+        
+        Text("\(self._sheet.activeCount) \((self._sheet.activeCount == 1) ? "task" : "tasks") to complete")
+          .foregroundStyle(Color.contentSecondary)
+          .font(.mono(11))
+      }
+      
+      Spacer()
+      
       HStack(
         alignment: .center,
         spacing: 8
@@ -29,7 +40,7 @@ struct TaskSheetItemView: View {
             text: "\(self._sheet.overdueCount)"
           )
         }
-
+        
         if (self._sheet.todayCount > 0) {
           BadgeView(
             appearance: .warning,
@@ -37,19 +48,6 @@ struct TaskSheetItemView: View {
             text: "\(self._sheet.todayCount)"
           )
         }
-
-        if (
-          self._sheet.overdueCount > 0 ||
-          self._sheet.todayCount > 0
-        ) {
-          Text("•")
-            .foregroundStyle(Color.contentSecondary)
-            .font(.mono(11))
-        }
-
-        Text("\(self._sheet.activeCount) \((self._sheet.activeCount == 1) ? "task" : "tasks") to complete")
-          .foregroundStyle(Color.contentSecondary)
-          .font(.mono(11))
       }
     }
   }
