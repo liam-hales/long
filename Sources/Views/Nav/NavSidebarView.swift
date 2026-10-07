@@ -64,8 +64,7 @@ struct NavSidebarView: View {
           value: .taskSheet(sheet.id),
           sizeClass: self._sizeClass
         ) {
-          Text(sheet.name)
-            .padding(.top, 2)
+          TaskSheetItemView(sheet: sheet)
         }
       }
       .listRowSeparator(.hidden)
