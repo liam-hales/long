@@ -19,7 +19,7 @@ struct NoContentView: View {
       spacing: 8
     ) {
       Text(self._title)
-        .font(.serif(22, .bold))
+        .font(.serif(22, .semibold))
 
       Text(self._message)
         .foregroundStyle(Color.contentSecondary)

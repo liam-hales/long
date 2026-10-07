@@ -58,14 +58,14 @@ struct TaskSheetToolbar: ToolbarContent {
           ) {
             VStack(
               alignment: .leading,
-              spacing: 2
+              spacing: 1
             ) {
               Text("Focus on")
                 .foregroundStyle(Color.contentSecondary)
                 .font(.serif(11, .regular))
 
               Text(appState.taskFocus.title)
-                .font(.serif(13, .bold))
+                .font(.serif(12, .semibold))
             }
 
             ZStack(alignment: .center) {

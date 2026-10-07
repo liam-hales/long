@@ -112,7 +112,7 @@ struct TaskInputView: View {
         )
 
         Text("Capturing tasks uses Apple Intelligence which can make mistakes. Review tasks before they are added.")
-          .font(.serif(14, .regular))
+          .font(.serif(13, .regular))
           .lineHeight(.multiple(factor: 1.4))
           .foregroundStyle(Color.contentSecondary)
           .multilineTextAlignment(.center)

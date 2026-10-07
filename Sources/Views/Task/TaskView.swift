@@ -58,7 +58,6 @@ struct TaskView: View {
               ? Color.contentSecondary
               : Color.contentPrimary
           )
-          .padding(.top, 3)
 
         Text(self._task.subtitle)
           .foregroundStyle(Color.contentSecondary)

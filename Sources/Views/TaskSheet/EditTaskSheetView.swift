@@ -81,7 +81,7 @@ struct EditTaskSheetView: View {
           prompt: Text("Untitled")
             .foregroundStyle(Color.contentSecondary)
         )
-        .font(.serif(28, .bold))
+        .font(.serif(28, .semibold))
         .focused(self.$_isFocused)
         .submitLabel(.done)
 
@@ -145,8 +145,7 @@ struct EditTaskSheetView: View {
               )
 
               Text("Save")
-                .font(.serif(17, .bold))
-                .padding(.top, 2)
+                .font(.serif(16, .semibold))
             }
             .padding(.horizontal, 6)
             .foregroundStyle(

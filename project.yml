@@ -23,8 +23,6 @@ targets:
       path: Resources/Info.plist
       properties:
         UIAppFonts:
-          - Newsreader-Regular.ttf
-          - Newsreader-SemiBold.ttf
           - JetBrainsMono-Medium.ttf
           - SixCaps-Regular.ttf
     settings:

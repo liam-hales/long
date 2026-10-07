@@ -62,8 +62,7 @@ struct ReviewTasksView: View {
               )
 
               Text("Add")
-                .font(.serif(17, .bold))
-                .padding(.top, 2)
+                .font(.serif(16, .semibold))
             }
             .padding(.horizontal, 6)
             .foregroundStyle(

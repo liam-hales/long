@@ -74,10 +74,9 @@ struct NavSidebarView: View {
     .toolbar {
       ToolbarItem(placement: .largeTitle) {
         Text("Task Sheets")
-          .font(.serif(28, .bold))
+          .font(.serif(28, .semibold))
           .padding(.horizontal, 4)
           .padding(.top, 32)
-          .padding(.bottom, -4)
           .frame(
             maxWidth: .infinity,
             alignment: .leading
@@ -119,8 +118,7 @@ struct NavSidebarView: View {
               LucideIcon(.filePlusCorner, size: 22)
 
               Text("New Sheet")
-                .font(.serif(14, .bold))
-                .padding(.top, 2)
+                .font(.serif(14, .semibold))
             }
             .padding(.horizontal, 6)
           }

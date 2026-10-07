@@ -36,7 +36,7 @@ struct App: SwiftUI.App {
   var body: some Scene {
     WindowGroup {
       AppView()
-        .font(.serif(17, .regular))
+        .font(.serif(16, .regular))
         .tint(.contentPrimary)
         .foregroundStyle(Color.contentPrimary)
     }

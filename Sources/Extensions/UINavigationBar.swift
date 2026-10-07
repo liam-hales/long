@@ -5,30 +5,26 @@ extension UINavigationBar {
   /// Used to configure the `UINavigationBar`
   /// title and subtitle appearance for the app
   static func configureAppearance() -> Void {
-    let titleName = Font.getName(
-      family: .serif,
-      weight: .bold
-    )
+    let titleDescriptor = UIFont
+      .systemFont(ofSize: 18, weight: .semibold)
+      .fontDescriptor
+      .withDesign(.serif)
 
-    let subtitleName = Font.getName(
-      family: .mono,
-      weight: .regular
-    )
-
-    // Create the fonts used for the
-    // nav bar title and subtitle
     guard
-      let titleFont = UIFont(name: titleName, size: 18),
-      let subtitleFont = UIFont(name: subtitleName, size: 11)
+      let titleDescriptor,
+      let subtitleFont = UIFont(name: "JetBrainsMono-Medium", size: 11)
     else {
       preconditionFailure("Failed to create fonts for \"UINavigationBar\"")
     }
 
-    // Define the attributes for the title
-    // and subtitle inline appearance
+    // Create the title font from the descriptor
+    // and the new `UINavigationBar` appearance
+    let titleFont = UIFont(descriptor: titleDescriptor, size: 18)
     let appearance = UINavigationBarAppearance()
+    
+    // Configure the appearance backgrond
+    // and text attributes
     appearance.configureWithDefaultBackground()
-
     appearance.titleTextAttributes = [
       .font: titleFont,
       .foregroundColor: UIColor(Color.contentPrimary),

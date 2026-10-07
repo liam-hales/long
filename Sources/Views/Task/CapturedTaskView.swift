@@ -63,7 +63,6 @@ struct CapturedTaskView: View {
               ? Color.contentPrimary
               : Color.contentSecondary
           )
-          .padding(.top, 3)
 
         Text(self._task.subtitle)
           .foregroundStyle(Color.contentSecondary)

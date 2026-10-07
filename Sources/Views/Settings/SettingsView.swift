@@ -14,7 +14,7 @@ struct SettingsView: View {
       spacing: 6
     ) {
       Text("LONG")
-        .font(.condensed(96))
+        .font(.logo(96))
       Text("Created by Liam Hales")
         .font(.serif(14, .regular))
       Text("Version \(version) (build \(build))")

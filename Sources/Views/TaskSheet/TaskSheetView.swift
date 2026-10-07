@@ -197,10 +197,9 @@ struct TaskSheetView: View {
 
       ToolbarItem(placement: .largeTitle) {
         Text(self._sheet.name)
-          .font(.serif(28, .bold))
+          .font(.serif(28, .semibold))
           .padding(.horizontal, 4)
           .padding(.top, 32)
-          .padding(.bottom, -4)
           .frame(
             maxWidth: .infinity,
             alignment: .leading
