@@ -5,8 +5,6 @@ import SwiftUI
 struct ListItemModifier: ViewModifier {
   private let _isSelected: Bool
 
-  /// Initialises the modifier with whether
-  /// the list item `isSelected`
   init(isSelected: Bool) {
     self._isSelected = isSelected
   }

@@ -6,8 +6,8 @@ struct TaskSheetItemView: View {
   private let _sheet: TaskSheetModel
   private let _isSelected: Bool
 
-  /// Initialises the view with the task `sheet`
-  /// to render and whether it `isSelected`
+  /// Initialises the view with the given
+  /// task `sheet` to render
   init(sheet: TaskSheetModel, isSelected: Bool) {
     self._sheet = sheet
     self._isSelected = isSelected
