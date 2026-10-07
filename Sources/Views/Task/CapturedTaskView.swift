@@ -12,12 +12,8 @@ struct CapturedTaskView: View {
     self._task = task
   }
 
-  private var _isConfirmed: Bool {
-    self._task.reviewStatus == .confirmed
-  }
-
   private var _opacity: Double {
-    (self._isConfirmed == true)
+    (self._task.reviewStatus == .confirmed)
       ? 1
       : 0.7
   }
@@ -33,7 +29,7 @@ struct CapturedTaskView: View {
         },
         label: {
           ZStack(alignment: .center) {
-            if (self._isConfirmed == true) {
+            if (self._task.reviewStatus == .confirmed) {
               RoundedRectangle(cornerRadius: 6)
                 .fill(Color.accent)
 
@@ -46,7 +42,7 @@ struct CapturedTaskView: View {
               .padding(.top, 1)
             }
 
-            if (self._isConfirmed == false) {
+            if (self._task.reviewStatus == .confirmed) {
               RoundedRectangle(cornerRadius: 6)
                 .strokeBorder(Color.outline, lineWidth: 1.5)
             }
@@ -63,7 +59,7 @@ struct CapturedTaskView: View {
       ) {
         Text(self._task.title)
           .foregroundStyle(
-            (self._isConfirmed == true)
+            (self._task.reviewStatus == .confirmed)
               ? Color.contentPrimary
               : Color.contentSecondary
           )
