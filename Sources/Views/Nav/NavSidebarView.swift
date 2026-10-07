@@ -60,12 +60,21 @@ struct NavSidebarView: View {
       }
 
       ForEach(self._sortedTaskSheets) { sheet in
-        NavSidebarItemView(
-          value: .taskSheet(sheet.id),
-          sizeClass: self._sizeClass
-        ) {
+        let value: AppState.NavSelection = .taskSheet(sheet.id)
+        
+        NavigationLink(value: value) {
           TaskSheetItemView(sheet: sheet)
         }
+        .navigationLinkIndicatorVisibility(.hidden)
+        .listRowBackground(
+          RoundedRectangle(cornerRadius: 14)
+            .fill(
+              (self._appState.navSelection == value)
+                ? Color.selected
+                : Color.surfaceHigh
+            )
+            .strokeBorder(Color.outline, lineWidth: 1)
+        )
       }
       .listRowSeparator(.hidden)
     }
