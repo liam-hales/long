@@ -4,11 +4,13 @@ import SwiftUI
 /// task sheet item
 struct TaskSheetItemView: View {
   private let _sheet: TaskSheetModel
+  private let _isSelected: Bool
 
-  /// Initialises the view with
-  /// the task `sheet` to render
-  init(sheet: TaskSheetModel) {
+  /// Initialises the view with the task `sheet`
+  /// to render and whether it `isSelected`
+  init(sheet: TaskSheetModel, isSelected: Bool) {
     self._sheet = sheet
+    self._isSelected = isSelected
   }
 
   var body: some View {
@@ -51,6 +53,6 @@ struct TaskSheetItemView: View {
       }
     }
     .padding(.leading, 6)
-    .listItem()
+    .listItem(isSelected: self._isSelected)
   }
 }
