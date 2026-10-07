@@ -10,7 +10,7 @@ extension Color {
   static let outline = Color(light: "#e6dfd8", dark: "#2a2825")
   static let outlineWarning = Color(light: "#e3d2b4", dark: "#3c3426")
   static let outlineError = Color(light: "#e8cfc2", dark: "#43302a")
-  static let selected = Color(light: "#f5f0e8", dark: "#33302c")
+  static let outlineSelected = Color(light: "#b3aca6", dark: "#4d4943")
   static let disabled = Color(light: "#e6dfd8", dark: "#33302c")
   static let surfaceHigh = Color(light: "#ffffff", dark: "#1f1e1b")
   static let surfaceMid = Color(light: "#f5f0e8", dark: "#1f1e1b")
