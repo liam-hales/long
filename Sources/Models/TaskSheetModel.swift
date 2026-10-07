@@ -24,6 +24,34 @@ final class TaskSheetModel: Identifiable {
     }
   }
 
+  /// The number of active tasks assigned to
+  /// the sheet that are yet to be completed
+  var activeCount: Int {
+    self.tasks.count { task in task.isCompleted == false }
+  }
+
+  /// The number of overdue tasks
+  /// that are assigned to the sheet
+  var overdueCount: Int {
+    self.tasks.count { task in
+      (
+        task.isCompleted == false &&
+        task.schedule == .overdue
+      )
+    }
+  }
+
+  /// The number of tasks due today
+  /// that are assigned to the sheet
+  var todayCount: Int {
+    self.tasks.count { task in
+      (
+        task.isCompleted == false &&
+        task.schedule == .today
+      )
+    }
+  }
+
   /// Initialises a new task sheet
   /// with a given `name`
   init(name: String) {
