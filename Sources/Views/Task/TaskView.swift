@@ -12,6 +12,15 @@ struct TaskView: View {
     self._task = task
   }
 
+  private var _badgeAppearance: BadgeView.Appearance {
+    switch self._task.schedule {
+      case .overdue: .error
+      case .today: .warning
+      case .scheduled: .info
+      case .unscheduled: .info
+    }
+  }
+
   var body: some View {
     HStack(
       alignment: .top,
@@ -49,7 +58,7 @@ struct TaskView: View {
 
       VStack(
         alignment: .leading,
-        spacing: 6
+        spacing: 8
       ) {
         Text(self._task.title)
           .strikethrough(self._task.isCompleted)
@@ -59,9 +68,18 @@ struct TaskView: View {
               : Color.contentPrimary
           )
 
-        Text(self._task.subtitle)
-          .foregroundStyle(Color.contentSecondary)
-          .font(.mono(11))
+        if (self._task.isCompleted == true) {
+          Text(self._task.subtitle)
+            .foregroundStyle(Color.contentSecondary)
+            .font(.mono(11))
+        }
+
+        if (self._task.isCompleted == false) {
+          BadgeView(
+            appearance: self._badgeAppearance,
+            text: self._task.subtitle
+          )
+        }
       }
     }
     .listItem()

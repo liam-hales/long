@@ -14,22 +14,11 @@ struct TaskSheetItemView: View {
   }
 
   var body: some View {
-    HStack(
-      alignment: .top,
+    VStack(
+      alignment: .leading,
       spacing: 8
     ) {
-      VStack(
-        alignment: .leading,
-        spacing: 6
-      ) {
-        Text(self._sheet.name)
-
-        Text("\(self._sheet.activeCount) \((self._sheet.activeCount == 1) ? "task" : "tasks") to complete")
-          .foregroundStyle(Color.contentSecondary)
-          .font(.mono(11))
-      }
-
-      Spacer()
+      Text(self._sheet.name)
 
       HStack(
         alignment: .center,
@@ -50,6 +39,19 @@ struct TaskSheetItemView: View {
             icon: TaskFocus.today.icon
           )
         }
+
+        if (
+          self._sheet.overdueCount > 0 ||
+          self._sheet.todayCount > 0
+        ) {
+          Text("•")
+            .foregroundStyle(Color.contentSecondary)
+            .font(.mono(11))
+        }
+
+        Text("\(self._sheet.activeCount) \((self._sheet.activeCount == 1) ? "task" : "tasks") to complete")
+          .foregroundStyle(Color.contentSecondary)
+          .font(.mono(11))
       }
     }
     .padding(.leading, 6)
