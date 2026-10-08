@@ -139,10 +139,17 @@ struct TaskSheetView: View {
               }
             },
             header: {
-              Text("Overdue • \(self._overdueTasks.count)")
-                .foregroundStyle(Color.contentError)
-                .font(.mono(14))
-                .listRowInsets(.horizontal, 24)
+              HStack(
+                alignment: .center,
+                spacing: 6
+              ) {
+                LucideIcon(TaskFocus.overdue.icon, size: 14)
+
+                Text("Overdue • \(self._overdueTasks.count)")
+                  .font(.mono(14))
+              }
+              .foregroundStyle(Color.contentError)
+              .listRowInsets(.horizontal, 24)
             }
           )
           .listRowSeparator(.hidden)
@@ -156,10 +163,17 @@ struct TaskSheetView: View {
               }
             },
             header: {
-              Text("Today • \(self._todayTasks.count)")
-                .foregroundStyle(Color.contentSecondary)
-                .font(.mono(14))
-                .listRowInsets(.horizontal, 24)
+              HStack(
+                alignment: .center,
+                spacing: 6
+              ) {
+                LucideIcon(TaskFocus.today.icon, size: 14)
+
+                Text("Today • \(self._todayTasks.count)")
+                  .font(.mono(14))
+              }
+              .foregroundStyle(Color.contentSecondary)
+              .listRowInsets(.horizontal, 24)
             }
           )
           .listRowSeparator(.hidden)
@@ -173,10 +187,17 @@ struct TaskSheetView: View {
               }
             },
             header: {
-              Text("Scheduled • \(self._scheduledTasks.count)")
-                .foregroundStyle(Color.contentSecondary)
-                .font(.mono(14))
-                .listRowInsets(.horizontal, 24)
+              HStack(
+                alignment: .center,
+                spacing: 6
+              ) {
+                LucideIcon(TaskFocus.scheduled.icon, size: 14)
+
+                Text("Scheduled • \(self._scheduledTasks.count)")
+                  .font(.mono(14))
+              }
+              .foregroundStyle(Color.contentSecondary)
+              .listRowInsets(.horizontal, 24)
             }
           )
           .listRowSeparator(.hidden)
@@ -199,10 +220,17 @@ struct TaskSheetView: View {
               }
             },
             header: {
-              Text("Completed • \(self._completedTasks.count)")
-                .foregroundStyle(Color.contentSecondary)
-                .font(.mono(14))
-                .listRowInsets(.horizontal, 24)
+              HStack(
+                alignment: .center,
+                spacing: 6
+              ) {
+                LucideIcon(TaskFocus.completed.icon, size: 14)
+
+                Text("Completed • \(self._completedTasks.count)")
+                  .font(.mono(14))
+              }
+              .foregroundStyle(Color.contentSecondary)
+              .listRowInsets(.horizontal, 24)
             }
           )
           .listRowSeparator(.hidden)
