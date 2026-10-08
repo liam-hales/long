@@ -42,7 +42,7 @@ struct CapturedTaskRowView: View {
               .padding(.top, 1)
             }
 
-            if (self._task.reviewStatus == .confirmed) {
+            if (self._task.reviewStatus == .discarded) {
               RoundedRectangle(cornerRadius: 6)
                 .strokeBorder(Color.outline, lineWidth: 1.5)
             }
