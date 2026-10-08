@@ -38,16 +38,16 @@ struct TaskSheetItemView: View {
         if (self._sheet.overdueCount > 0) {
           BadgeView(
             appearance: .error,
-            icon: TaskFocus.overdue.icon,
-            text: "\(self._sheet.overdueCount)"
+            text: "\(self._sheet.overdueCount)",
+            icon: TaskFocus.overdue.icon
           )
         }
 
         if (self._sheet.todayCount > 0) {
           BadgeView(
             appearance: .warning,
-            icon: TaskFocus.today.icon,
-            text: "\(self._sheet.todayCount)"
+            text: "\(self._sheet.todayCount)",
+            icon: TaskFocus.today.icon
           )
         }
       }

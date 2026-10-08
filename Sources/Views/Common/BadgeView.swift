@@ -14,8 +14,8 @@ struct BadgeView: View {
   }
 
   private let _appearance: Appearance
-  private let _icon: LucideIconName
   private let _text: String
+  private let _icon: LucideIconName?
 
   private var _contentColour: Color {
 
@@ -50,16 +50,16 @@ struct BadgeView: View {
     }
   }
 
-  /// Initialises the view with the `icon` and `text`
+  /// Initialises the view with the `text` and `icon`
   /// to render, styled using the given `appearance`
   init(
     appearance: Appearance,
-    icon: LucideIconName,
-    text: String
+    text: String,
+    icon: LucideIconName? = nil
   ) {
     self._appearance = appearance
-    self._icon = icon
     self._text = text
+    self._icon = icon
   }
 
   var body: some View {
@@ -67,7 +67,12 @@ struct BadgeView: View {
       alignment: .center,
       spacing: 4
     ) {
-      LucideIcon(self._icon, size: 12)
+
+      // Only render the icon
+      // if it has been set
+      if let icon = self._icon {
+        LucideIcon(icon, size: 12)
+      }
 
       Text(self._text)
         .font(.mono(11))
