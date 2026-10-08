@@ -116,7 +116,7 @@ struct TaskSheetView: View {
         if (focusedTasks.isEmpty == false) {
           Section {
             ForEach(focusedTasks) { task in
-              TaskView(task: task)
+              TaskRowView(task: task)
             }
           }
           .listRowSeparator(.hidden)
@@ -135,7 +135,7 @@ struct TaskSheetView: View {
           Section(
             content: {
               ForEach(self._overdueTasks) { task in
-                TaskView(task: task)
+                TaskRowView(task: task)
               }
             },
             header: {
@@ -152,7 +152,7 @@ struct TaskSheetView: View {
           Section(
             content: {
               ForEach(self._todayTasks) { task in
-                TaskView(task: task)
+                TaskRowView(task: task)
               }
             },
             header: {
@@ -169,7 +169,7 @@ struct TaskSheetView: View {
           Section(
             content: {
               ForEach(self._scheduledTasks) { task in
-                TaskView(task: task)
+                TaskRowView(task: task)
               }
             },
             header: {
@@ -185,7 +185,7 @@ struct TaskSheetView: View {
         if (self._unscheduledTasks.isEmpty == false) {
           Section {
             ForEach(self._unscheduledTasks) { task in
-              TaskView(task: task)
+              TaskRowView(task: task)
             }
           }
           .listRowSeparator(.hidden)
@@ -195,7 +195,7 @@ struct TaskSheetView: View {
           Section(
             content: {
               ForEach(self._completedTasks) { task in
-                TaskView(task: task)
+                TaskRowView(task: task)
               }
             },
             header: {

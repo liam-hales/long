@@ -30,7 +30,7 @@ struct ReviewTasksView: View {
       List {
         Section {
           ForEach(self._appState.capturedTasks) { task in
-            CapturedTaskView(task: task)
+            CapturedTaskRowView(task: task)
           }
         }
         .listRowSeparator(.hidden)

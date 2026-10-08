@@ -2,8 +2,8 @@ import LucideSwift
 import SwiftUI
 
 /// Used to render a single
-/// task item for the task lists
-struct TaskView: View {
+/// task row for the task lists
+struct TaskRowView: View {
   private let _task: TaskModel
 
   /// Initialises the view with

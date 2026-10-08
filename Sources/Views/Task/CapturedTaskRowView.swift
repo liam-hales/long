@@ -3,7 +3,7 @@ import SwiftUI
 
 /// Used to render a single captured
 /// task for the user to review
-struct CapturedTaskView: View {
+struct CapturedTaskRowView: View {
   private let _task: TaskModel
 
   /// Initialises the view with
