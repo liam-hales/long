@@ -131,6 +131,23 @@ struct TaskSheetView: View {
           )
         }
 
+        if (self._overdueTasks.isEmpty == false) {
+          Section(
+            content: {
+              ForEach(self._overdueTasks) { task in
+                TaskView(task: task)
+              }
+            },
+            header: {
+              Text("Overdue • \(self._overdueTasks.count)")
+                .foregroundStyle(Color.contentError)
+                .font(.mono(14))
+                .listRowInsets(.horizontal, 24)
+            }
+          )
+          .listRowSeparator(.hidden)
+        }
+
         if (self._todayTasks.isEmpty == false) {
           Section(
             content: {
