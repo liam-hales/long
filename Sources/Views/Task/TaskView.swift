@@ -82,6 +82,6 @@ struct TaskView: View {
         }
       }
     }
-    .listItem()
+    .listRow()
   }
 }

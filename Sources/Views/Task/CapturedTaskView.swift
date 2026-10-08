@@ -69,7 +69,7 @@ struct CapturedTaskView: View {
           .font(.mono(11))
       }
     }
-    .listItem()
+    .listRow()
     .opacity(self._opacity)
   }
 }

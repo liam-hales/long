@@ -55,6 +55,6 @@ struct TaskSheetItemView: View {
       }
     }
     .padding(.leading, 6)
-    .listItem(isSelected: self._isSelected)
+    .listRow(isSelected: self._isSelected)
   }
 }

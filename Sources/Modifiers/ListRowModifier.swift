@@ -1,8 +1,8 @@
 import SwiftUI
 
 /// Used to style a view as a standalone list
-/// item with its own padding and background
-struct ListItemModifier: ViewModifier {
+/// row with its own padding and background
+struct ListRowModifier: ViewModifier {
   private let _isSelected: Bool
 
   init(isSelected: Bool) {
