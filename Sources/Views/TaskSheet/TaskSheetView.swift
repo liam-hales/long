@@ -204,11 +204,26 @@ struct TaskSheetView: View {
         }
 
         if (self._unscheduledTasks.isEmpty == false) {
-          Section {
-            ForEach(self._unscheduledTasks) { task in
-              TaskRowView(task: task)
+          Section(
+            content: {
+              ForEach(self._unscheduledTasks) { task in
+                TaskRowView(task: task)
+              }
+            },
+            header: {
+              HStack(
+                alignment: .center,
+                spacing: 6
+              ) {
+                LucideIcon(TaskFocus.unscheduled.icon, size: 14)
+
+                Text("Anytime • \(self._unscheduledTasks.count)")
+                  .font(.mono(14))
+              }
+              .foregroundStyle(Color.contentSecondary)
+              .listRowInsets(.horizontal, 24)
             }
-          }
+          )
           .listRowSeparator(.hidden)
         }
 
