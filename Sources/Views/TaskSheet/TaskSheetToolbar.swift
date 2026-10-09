@@ -32,7 +32,7 @@ struct TaskSheetToolbar: ToolbarContent {
       Menu(
         content: {
           Picker("Focus", selection: $appState.taskFocus) {
-            ForEach(TaskFocus.allCases) { focus in
+            ForEach(TaskFilter.allCases) { focus in
               Label(
                 title: {
                   Text(focus.title)

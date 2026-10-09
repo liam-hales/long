@@ -28,7 +28,7 @@ struct TaskSheetRowView: View {
           BadgeView(
             appearance: .error,
             text: "\(self._sheet.overdueCount)",
-            icon: TaskFocus.overdue.icon
+            icon: TaskFilter.overdue.icon
           )
         }
 
@@ -36,7 +36,7 @@ struct TaskSheetRowView: View {
           BadgeView(
             appearance: .warning,
             text: "\(self._sheet.todayCount)",
-            icon: TaskFocus.today.icon
+            icon: TaskFilter.today.icon
           )
         }
 

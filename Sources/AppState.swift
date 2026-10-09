@@ -33,7 +33,7 @@ final class AppState {
   var navVisibility: NavigationSplitViewVisibility
   var navSelection: NavSelection?
   var modalSelection: ModalSelection?
-  var taskFocus: TaskFocus
+  var taskFocus: TaskFilter
   var taskInput: String
   var capturedTasks: [TaskModel]
   var isCapturing: Bool

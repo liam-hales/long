@@ -1,8 +1,8 @@
 import LucideSwift
 
-/// Describes all the ways the user
-/// can focus on their tasks
-enum TaskFocus: CaseIterable, Identifiable {
+/// Describes all the ways the user can filter their tasks,
+/// used for both focusing on and sectioning tasks
+enum TaskFilter: CaseIterable, Identifiable {
   case all
   case overdue
   case today
@@ -14,7 +14,8 @@ enum TaskFocus: CaseIterable, Identifiable {
     self
   }
 
-  /// Describes the task focus title
+  /// Describes the task
+  /// filter title
   var title: String {
     switch self {
       case .all: "All"
@@ -26,7 +27,8 @@ enum TaskFocus: CaseIterable, Identifiable {
     }
   }
 
-  /// Describes the task focus icon
+  /// Describes the task
+  /// filter icon
   var icon: LucideIconName {
     switch self {
       case .all: .listCheck
