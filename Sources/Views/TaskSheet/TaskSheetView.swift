@@ -191,6 +191,9 @@ struct TaskSheetView: View {
           )
       }
     }
+    // The sidebar overlaps the leading edge on larger screens and the
+    // content margins don't account for it, so pad from the safe area too
+    .safeAreaPadding(.leading, 16)
     .safeAreaInset(
       edge: .bottom,
       spacing: 0
