@@ -49,7 +49,7 @@ struct TaskSectionView: View {
             .font(.mono(14))
         }
         .foregroundStyle(self._headerColour)
-        .listRowInsets(.horizontal, 24)
+        .listRowInsets(.horizontal, 8)
       }
     )
     .listRowSeparator(.hidden)
