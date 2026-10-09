@@ -1,4 +1,3 @@
-import LucideSwift
 import SwiftData
 import SwiftUI
 
@@ -132,123 +131,38 @@ struct TaskSheetView: View {
         }
 
         if (self._overdueTasks.isEmpty == false) {
-          Section(
-            content: {
-              ForEach(self._overdueTasks) { task in
-                TaskRowView(task: task)
-              }
-            },
-            header: {
-              HStack(
-                alignment: .center,
-                spacing: 6
-              ) {
-                LucideIcon(TaskFocus.overdue.icon, size: 14)
-
-                Text("Overdue • \(self._overdueTasks.count)")
-                  .font(.mono(14))
-              }
-              .foregroundStyle(Color.contentError)
-              .listRowInsets(.horizontal, 24)
-            }
+          TaskSectionView(
+            filter: .overdue,
+            tasks: self._overdueTasks
           )
-          .listRowSeparator(.hidden)
         }
 
         if (self._todayTasks.isEmpty == false) {
-          Section(
-            content: {
-              ForEach(self._todayTasks) { task in
-                TaskRowView(task: task)
-              }
-            },
-            header: {
-              HStack(
-                alignment: .center,
-                spacing: 6
-              ) {
-                LucideIcon(TaskFocus.today.icon, size: 14)
-
-                Text("Today • \(self._todayTasks.count)")
-                  .font(.mono(14))
-              }
-              .foregroundStyle(Color.contentSecondary)
-              .listRowInsets(.horizontal, 24)
-            }
+          TaskSectionView(
+            filter: .today,
+            tasks: self._todayTasks
           )
-          .listRowSeparator(.hidden)
         }
 
         if (self._scheduledTasks.isEmpty == false) {
-          Section(
-            content: {
-              ForEach(self._scheduledTasks) { task in
-                TaskRowView(task: task)
-              }
-            },
-            header: {
-              HStack(
-                alignment: .center,
-                spacing: 6
-              ) {
-                LucideIcon(TaskFocus.scheduled.icon, size: 14)
-
-                Text("Scheduled • \(self._scheduledTasks.count)")
-                  .font(.mono(14))
-              }
-              .foregroundStyle(Color.contentSecondary)
-              .listRowInsets(.horizontal, 24)
-            }
+          TaskSectionView(
+            filter: .scheduled,
+            tasks: self._scheduledTasks
           )
-          .listRowSeparator(.hidden)
         }
 
         if (self._unscheduledTasks.isEmpty == false) {
-          Section(
-            content: {
-              ForEach(self._unscheduledTasks) { task in
-                TaskRowView(task: task)
-              }
-            },
-            header: {
-              HStack(
-                alignment: .center,
-                spacing: 6
-              ) {
-                LucideIcon(TaskFocus.unscheduled.icon, size: 14)
-
-                Text("Anytime • \(self._unscheduledTasks.count)")
-                  .font(.mono(14))
-              }
-              .foregroundStyle(Color.contentSecondary)
-              .listRowInsets(.horizontal, 24)
-            }
+          TaskSectionView(
+            filter: .unscheduled,
+            tasks: self._unscheduledTasks
           )
-          .listRowSeparator(.hidden)
         }
 
         if (self._completedTasks.isEmpty == false) {
-          Section(
-            content: {
-              ForEach(self._completedTasks) { task in
-                TaskRowView(task: task)
-              }
-            },
-            header: {
-              HStack(
-                alignment: .center,
-                spacing: 6
-              ) {
-                LucideIcon(TaskFocus.completed.icon, size: 14)
-
-                Text("Completed • \(self._completedTasks.count)")
-                  .font(.mono(14))
-              }
-              .foregroundStyle(Color.contentSecondary)
-              .listRowInsets(.horizontal, 24)
-            }
+          TaskSectionView(
+            filter: .completed,
+            tasks: self._completedTasks
           )
-          .listRowSeparator(.hidden)
         }
       }
     }
