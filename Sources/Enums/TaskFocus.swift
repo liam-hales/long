@@ -21,7 +21,7 @@ enum TaskFocus: CaseIterable, Identifiable {
       case .overdue: "Overdue"
       case .today: "Today"
       case .scheduled: "Scheduled"
-      case .unscheduled: "Unscheduled"
+      case .unscheduled: "Anytime"
       case .completed: "Completed"
     }
   }
@@ -33,7 +33,7 @@ enum TaskFocus: CaseIterable, Identifiable {
       case .overdue: .clockAlert
       case .today: .sun
       case .scheduled: .calendarCheck2
-      case .unscheduled: .calendarX2
+      case .unscheduled: .rotateCwClock
       case .completed: .check
     }
   }
