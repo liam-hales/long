@@ -11,6 +11,9 @@ struct ReviewTasksView: View {
   @Environment(\.dismiss)
   private var _dismiss: DismissAction
 
+  @State
+  private var _contentHeight: CGFloat = 400
+
   private var _isAddDisabled: Bool {
     (
       self._appState.isCapturing == true ||
@@ -89,10 +92,25 @@ struct ReviewTasksView: View {
       .contentMargins(.horizontal, 20, for: .scrollContent)
       .scrollContentBackground(.hidden)
       .background(Color.base)
+      .onScrollGeometryChange(
+        for: CGFloat.self,
+        of: { geometry in
+          // The top inset covers the nav bar and top margin and the bottom margin is added
+          // manually as the detent height already excludes the bottom safe area
+          (
+            geometry.contentInsets.top +
+            geometry.contentSize.height +
+            20
+          )
+        },
+        action: { _, height in
+          self._contentHeight = height
+        }
+      )
     }
     .presentationBackground(Color.base)
     .presentationDetents([
-      .height(660)
+      .height(self._contentHeight)
     ])
   }
 }
