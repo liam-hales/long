@@ -35,6 +35,10 @@ final class AppState {
   var modalSelection: ModalSelection?
   var taskFocus: TaskFilter
   var taskInput: String
+  var searchText: String
+  var searchScope: TaskSearchScope
+  var isSearching: Bool
+  var revealedTaskId: TaskModel.ID?
   var capturedTasks: [TaskModel]
   var isCapturing: Bool
   var captureError: TaskCaptureError?
@@ -73,6 +77,10 @@ final class AppState {
     self.modalSelection = nil
     self.taskFocus = .all
     self.taskInput = ""
+    self.searchText = ""
+    self.searchScope = .all
+    self.isSearching = false
+    self.revealedTaskId = nil
     self.capturedTasks = []
     self.isCapturing = false
     self.captureError = nil
@@ -171,5 +179,31 @@ final class AppState {
 
     self.capturedTasks = []
     self.taskInput = ""
+  }
+
+  /// Used to reveal a given task to the user by opening its task
+  /// sheet and setting the correct state to it is briefly highlighted
+  func revealTask(_ task: TaskModel) -> Void {
+    guard let sheet = task.sheet else {
+      return
+    }
+
+    // Reset the focus so the task is guaranteed
+    // to be visible in one of the sheet sections
+    self.taskFocus = .all
+    self.navSelection = .taskSheet(sheet.id)
+    self.revealedTaskId = task.id
+
+    Task {
+      try? await Task.sleep(for: .seconds(2))
+
+      // Clear the highlight after a moment, only if the
+      // user hasn't since revealed a different task
+      if (self.revealedTaskId == task.id) {
+        withAnimation {
+          self.revealedTaskId = nil
+        }
+      }
+    }
   }
 }

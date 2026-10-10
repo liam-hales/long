@@ -6,6 +6,9 @@ import SwiftUI
 struct TaskRowView: View {
   private let _task: TaskModel
 
+  @Environment(AppState.self)
+  private var _appState: AppState
+
   /// Initialises the view with
   /// the `task` to render
   init(task: TaskModel) {
@@ -82,6 +85,6 @@ struct TaskRowView: View {
         }
       }
     }
-    .listRow()
+    .listRow(isSelected: self._appState.revealedTaskId == self._task.id)
   }
 }

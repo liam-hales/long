@@ -4,21 +4,29 @@ import SwiftUI
 /// Used to render a section of tasks
 /// with a custom header
 struct TaskSectionView: View {
-  private let _filter: TaskFilter
+  private let _title: String
+  private let _icon: LucideIconName
+  private let _headerColour: Color
+  private let _headerInset: CGFloat
   private let _tasks: [TaskModel]
+  private let _onTaskTap: ((TaskModel) -> Void)?
 
-  private var _headerColour: Color {
-
-    // Return the header colour
-    // for the set filter
-    switch self._filter {
-      case .all: Color.contentSecondary
-      case .overdue: Color.contentError
-      case .today: Color.contentSecondary
-      case .scheduled: Color.contentSecondary
-      case .unscheduled: Color.contentSecondary
-      case .completed: Color.contentSecondary
-    }
+  /// Initialises the view with the `tasks` to render
+  /// under a header with a given `title` and `icon`
+  init(
+    title: String,
+    icon: LucideIconName,
+    tasks: [TaskModel],
+    headerColour: Color = .contentSecondary,
+    headerInset: CGFloat = 8,
+    onTaskTap: ((TaskModel) -> Void)? = nil
+  ) {
+    self._title = title
+    self._icon = icon
+    self._tasks = tasks
+    self._headerColour = headerColour
+    self._headerInset = headerInset
+    self._onTaskTap = onTaskTap
   }
 
   /// Initialises the view with the `tasks`
@@ -27,15 +35,42 @@ struct TaskSectionView: View {
     filter: TaskFilter,
     tasks: [TaskModel]
   ) {
-    self._filter = filter
-    self._tasks = tasks
+
+    // Get the header colour
+    // for the given filter
+    let headerColour: Color = switch filter {
+      case .all: .contentSecondary
+      case .overdue: .contentError
+      case .today: .contentSecondary
+      case .scheduled: .contentSecondary
+      case .unscheduled: .contentSecondary
+      case .completed: .contentSecondary
+    }
+
+    self.init(
+      title: filter.title,
+      icon: filter.icon,
+      tasks: tasks,
+      headerColour: headerColour,
+    )
   }
 
   var body: some View {
     Section(
       content: {
         ForEach(self._tasks) { task in
-          TaskRowView(task: task)
+
+          if (self._onTaskTap == nil) {
+            TaskRowView(task: task)
+          }
+
+          if (self._onTaskTap != nil) {
+            TaskRowView(task: task)
+              .accessibilityAddTraits(.isButton)
+              .onTapGesture {
+                self._onTaskTap?(task)
+              }
+          }
         }
       },
       header: {
@@ -43,13 +78,13 @@ struct TaskSectionView: View {
           alignment: .center,
           spacing: 6
         ) {
-          LucideIcon(self._filter.icon, size: 14)
+          LucideIcon(self._icon, size: 14)
 
-          Text("\(self._filter.title) • \(self._tasks.count)")
+          Text("\(self._title) • \(self._tasks.count)")
             .font(.mono(14))
         }
         .foregroundStyle(self._headerColour)
-        .listRowInsets(.horizontal, 8)
+        .listRowInsets(.horizontal, self._headerInset)
       }
     )
     .listRowSeparator(.hidden)

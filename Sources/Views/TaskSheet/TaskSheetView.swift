@@ -90,79 +90,92 @@ struct TaskSheetView: View {
     @Bindable
     var appState = _appState
 
-    List {
-      if (self._appState.taskFocus != .all) {
-        // Get the focussed tasks based
-        // on the `taskFocus` state
-        let focusedTasks = switch self._appState.taskFocus {
-          case .all: self._tasks
-          case .today: self._todayTasks
-          case .overdue: self._overdueTasks
-          case .scheduled: self._scheduledTasks
-          case .unscheduled: self._unscheduledTasks
-          case .completed: self._completedTasks
-        }
+    ScrollViewReader { proxy in
+      List {
+        if (self._appState.taskFocus != .all) {
 
-        if (focusedTasks.isEmpty == true) {
-          let focus = self._appState.taskFocus.title
-
-          NoContentView(
-            title: "No tasks.",
-            message: "There are no tasks for the \"\(focus)\" focus, try choosing a different one."
-          )
-        }
-
-        if (focusedTasks.isEmpty == false) {
-          Section {
-            ForEach(focusedTasks) { task in
-              TaskRowView(task: task)
-            }
+          // Get the focussed tasks based
+          // on the `taskFocus` state
+          let focusedTasks = switch self._appState.taskFocus {
+            case .all: self._tasks
+            case .today: self._todayTasks
+            case .overdue: self._overdueTasks
+            case .scheduled: self._scheduledTasks
+            case .unscheduled: self._unscheduledTasks
+            case .completed: self._completedTasks
           }
-          .listRowSeparator(.hidden)
+
+          if (focusedTasks.isEmpty == true) {
+            let focus = self._appState.taskFocus.title
+
+            NoContentView(
+              title: "No tasks.",
+              message: "There are no tasks for the \"\(focus)\" focus, try choosing a different one."
+            )
+          }
+
+          if (focusedTasks.isEmpty == false) {
+            Section {
+              ForEach(focusedTasks) { task in
+                TaskRowView(task: task)
+              }
+            }
+            .listRowSeparator(.hidden)
+          }
+        }
+
+        if (self._appState.taskFocus == .all) {
+          if (self._tasks.isEmpty == true) {
+            NoContentView(
+              title: "No tasks.",
+              message: "You currently have no tasks to complete, try creating one below."
+            )
+          }
+
+          if (self._overdueTasks.isEmpty == false) {
+            TaskSectionView(
+              filter: .overdue,
+              tasks: self._overdueTasks
+            )
+          }
+
+          if (self._todayTasks.isEmpty == false) {
+            TaskSectionView(
+              filter: .today,
+              tasks: self._todayTasks
+            )
+          }
+
+          if (self._scheduledTasks.isEmpty == false) {
+            TaskSectionView(
+              filter: .scheduled,
+              tasks: self._scheduledTasks
+            )
+          }
+
+          if (self._unscheduledTasks.isEmpty == false) {
+            TaskSectionView(
+              filter: .unscheduled,
+              tasks: self._unscheduledTasks
+            )
+          }
+
+          if (self._completedTasks.isEmpty == false) {
+            TaskSectionView(
+              filter: .completed,
+              tasks: self._completedTasks
+            )
+          }
         }
       }
+      .task(id: self._appState.revealedTaskId) {
 
-      if (self._appState.taskFocus == .all) {
-        if (self._tasks.isEmpty == true) {
-          NoContentView(
-            title: "No tasks.",
-            message: "You currently have no tasks to complete, try creating one below."
-          )
-        }
-
-        if (self._overdueTasks.isEmpty == false) {
-          TaskSectionView(
-            filter: .overdue,
-            tasks: self._overdueTasks
-          )
-        }
-
-        if (self._todayTasks.isEmpty == false) {
-          TaskSectionView(
-            filter: .today,
-            tasks: self._todayTasks
-          )
-        }
-
-        if (self._scheduledTasks.isEmpty == false) {
-          TaskSectionView(
-            filter: .scheduled,
-            tasks: self._scheduledTasks
-          )
-        }
-
-        if (self._unscheduledTasks.isEmpty == false) {
-          TaskSectionView(
-            filter: .unscheduled,
-            tasks: self._unscheduledTasks
-          )
-        }
-
-        if (self._completedTasks.isEmpty == false) {
-          TaskSectionView(
-            filter: .completed,
-            tasks: self._completedTasks
-          )
+        // This runs when the view appears and
+        // whenever the highlighted task changes
+        if let taskId = self._appState.revealedTaskId {
+          withAnimation {
+            proxy.scrollTo(taskId, anchor: .center)
+          }
         }
       }
     }

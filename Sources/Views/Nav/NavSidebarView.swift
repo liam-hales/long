@@ -52,24 +52,49 @@ struct NavSidebarView: View {
     var appState = _appState
 
     List(selection: $appState.navSelection) {
-      if (self._taskSheets.isEmpty == true) {
-        NoContentView(
-          title: "No task sheets.",
-          message: "You currently have no task sheets, try creating a new one above."
-        )
+
+      if (self._appState.isSearching == true) {
+
+        // Trim the search text from any
+        // whitespace and new lines
+        let query = self._appState
+          .searchText
+          .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        TaskSearchView(query: query)
       }
 
-      ForEach(self._sortedTaskSheets) { sheet in
-        let value: AppState.NavSelection = .taskSheet(sheet.id)
+      if (self._appState.isSearching == false) {
+        if (self._taskSheets.isEmpty == true) {
+          NoContentView(
+            title: "No task sheets.",
+            message: "You currently have no task sheets, try creating a new one above."
+          )
+        }
 
-        TaskSheetRowView(
-          sheet: sheet,
-          isSelected: self._appState.navSelection == value
-        )
-        .tag(value)
+        ForEach(self._sortedTaskSheets) { sheet in
+          let value: AppState.NavSelection = .taskSheet(sheet.id)
+
+          TaskSheetRowView(
+            sheet: sheet,
+            isSelected: self._appState.navSelection == value
+          )
+          .tag(value)
+        }
+        .listRowSeparator(.hidden)
       }
-      .listRowSeparator(.hidden)
     }
+    .searchable(
+      text: $appState.searchText,
+      isPresented: $appState.isSearching,
+      prompt: Text("Search tasks"),
+    )
+    .searchScopes($appState.searchScope) {
+      ForEach(TaskSearchScope.allCases) { scope in
+        Text(scope.title).tag(scope)
+      }
+    }
+    .searchToolbarBehavior(.minimize)
     .toolbar(removing: .sidebarToggle)
     .toolbarTitleDisplayMode(.large)
     .toolbar {
@@ -105,6 +130,16 @@ struct NavSidebarView: View {
           }
         )
       }
+
+      DefaultToolbarItem(
+        kind: .search,
+        placement: .topBarTrailing
+      )
+
+      ToolbarSpacer(
+        .fixed,
+        placement: .topBarTrailing
+      )
 
       ToolbarItem(placement: .topBarTrailing) {
         Button(
