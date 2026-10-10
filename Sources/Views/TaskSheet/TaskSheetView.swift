@@ -238,7 +238,7 @@ struct TaskSheetView: View {
     .navigationSubtitle("\(self._activeTasks.count) tasks to complete")
     .listRowSpacing(10)
     .listSectionSpacing(16)
-    .contentMargins(.vertical, 20, for: .scrollContent)
+    .contentMargins(.vertical, 12, for: .scrollContent)
     .scrollContentBackground(.hidden)
     .scrollDismissesKeyboard(.interactively)
     .background(Color.base)
