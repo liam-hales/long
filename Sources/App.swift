@@ -31,6 +31,7 @@ struct App: SwiftUI.App {
     // Configure the appearance of some UIKit views
     // that don't have the required SwiftUI modifiers
     UINavigationBar.configureAppearance()
+    UISearchBar.configureAppearance()
   }
 
   var body: some Scene {
