@@ -72,35 +72,41 @@ struct EditTaskSheetView: View {
   var body: some View {
     NavigationStack {
       VStack(
-        alignment: .leading,
-        spacing: 8
+        alignment: .center,
+        spacing: 0
       ) {
-        TextField(
-          "Name",
-          text: self.$_name,
-          prompt: Text("Untitled")
-            .foregroundStyle(Color.contentSecondary)
-        )
-        .font(.serif(28, .semibold))
-        .focused(self.$_isFocused)
-        .submitLabel(.done)
+        VStack(
+          alignment: .leading,
+          spacing: 8
+        ) {
+          TextField(
+            "Name",
+            text: self.$_name,
+            prompt: Text("Untitled")
+              .foregroundStyle(Color.contentSecondary)
+          )
+          .font(.serif(28, .semibold))
+          .focused(self.$_isFocused)
+          .submitLabel(.done)
 
-        // Display the current name character
-        // count so the user knowsn not to go over
-        Text("\(self._trimmedName.count) / \(Self._maxNameLength)")
-          .foregroundStyle(
-            (self._trimmedName.count > Self._maxNameLength)
+          // Display the current name character
+          // count so the user knowsn not to go over
+          Text("\(self._trimmedName.count) / \(Self._maxNameLength)")
+            .foregroundStyle(
+              (self._trimmedName.count > Self._maxNameLength)
               ? Color.contentError
               : Color.contentSecondary
-          )
-          .font(.mono(14))
+            )
+            .font(.mono(14))
+        }
+        .padding(.horizontal, 4)
       }
-      .padding(.horizontal, 20)
+      .padding(.horizontal, 16)
       .padding(.top, 26)
       .frame(
         maxWidth: .infinity,
         maxHeight: .infinity,
-        alignment: .topLeading
+        alignment: .top
       )
       .onAppear {
         self._isFocused = true
