@@ -11,6 +11,9 @@ struct TaskSectionView: View {
   private let _tasks: [TaskModel]
   private let _onTaskTap: ((TaskModel) -> Void)?
 
+  @Environment(AppState.self)
+  private var _appState: AppState
+
   /// Initialises the view with the `tasks` to render
   /// under a header with a given `title` and `icon`
   init(
@@ -59,17 +62,24 @@ struct TaskSectionView: View {
     Section(
       content: {
         ForEach(self._tasks) { task in
+          let isSelected = self._appState.revealedTaskId == task.id
 
           if (self._onTaskTap == nil) {
-            TaskRowView(task: task)
+            TaskRowView(
+              task: task,
+              isSelected: isSelected
+            )
           }
 
           if (self._onTaskTap != nil) {
-            TaskRowView(task: task)
-              .accessibilityAddTraits(.isButton)
-              .onTapGesture {
-                self._onTaskTap?(task)
-              }
+            TaskRowView(
+              task: task,
+              isSelected: isSelected
+            )
+            .accessibilityAddTraits(.isButton)
+            .onTapGesture {
+              self._onTaskTap?(task)
+            }
           }
         }
       },

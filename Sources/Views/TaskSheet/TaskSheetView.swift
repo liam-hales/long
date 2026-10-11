@@ -37,52 +37,56 @@ struct TaskSheetView: View {
     )
   }
 
-  private var _overdueTasks: [TaskModel] {
-    self._tasks.filter { task in
-      (
-        task.isSettled == false &&
-        task.schedule == .overdue
-      )
-    }
-  }
-
-  private var _todayTasks: [TaskModel] {
-    self._tasks.filter { task in
-      (
-        task.isSettled == false &&
-        task.schedule == .today
-      )
-    }
-  }
-
-  private var _scheduledTasks: [TaskModel] {
-    self._tasks.filter { task in
-      (
-        task.isSettled == false &&
-        task.schedule == .scheduled
-      )
-    }
-  }
-
-  private var _unscheduledTasks: [TaskModel] {
-    self._tasks.filter { task in
-      (
-        task.isSettled == false &&
-        task.schedule == .unscheduled
-      )
-    }
-  }
-
-  private var _completedTasks: [TaskModel] {
-    let sort = SortDescriptor(\TaskModel.completedDate, order: .reverse)
-
-    return self._tasks
-      .filter { task in task.isSettled == true }
-      .sorted(using: sort)
-  }
-
   private var _activeTasks: [TaskModel] {
     self._tasks.filter { task in task.isCompleted == false }
+  }
+
+  /// Returns the tasks for a
+  /// given task `filter`
+  private func _getTasks(for filter: TaskFilter) -> [TaskModel] {
+    switch filter {
+      case .all:
+        return self._tasks
+
+      case .overdue:
+        return self._tasks.filter { task in
+          (
+            task.isSettled == false &&
+            task.schedule == .overdue
+          )
+        }
+
+      case .today:
+        return self._tasks.filter { task in
+          (
+            task.isSettled == false &&
+            task.schedule == .today
+          )
+        }
+
+      case .scheduled:
+        return self._tasks.filter { task in
+          (
+            task.isSettled == false &&
+            task.schedule == .scheduled
+          )
+        }
+
+      case .unscheduled:
+        return self._tasks.filter { task in
+          (
+            task.isSettled == false &&
+            task.schedule == .unscheduled
+          )
+        }
+
+      case .completed:
+        let sort = SortDescriptor(\TaskModel.completedDate, order: .reverse)
+
+        return self._tasks
+          .filter { task in task.isSettled == true }
+          .sorted(using: sort)
+    }
   }
 
   var body: some View {
@@ -94,16 +98,9 @@ struct TaskSheetView: View {
       List {
         if (self._appState.taskFocus != .all) {
 
-          // Get the focussed tasks based
-          // on the `taskFocus` state
-          let focusedTasks = switch self._appState.taskFocus {
-            case .all: self._tasks
-            case .today: self._todayTasks
-            case .overdue: self._overdueTasks
-            case .scheduled: self._scheduledTasks
-            case .unscheduled: self._unscheduledTasks
-            case .completed: self._completedTasks
-          }
+          // Get the focussed tasks using
+          // the `taskFocus` state
+          let focusedTasks = self._getTasks(for: self._appState.taskFocus)
 
           if (focusedTasks.isEmpty == true) {
             let focus = self._appState.taskFocus.title
@@ -117,7 +114,10 @@ struct TaskSheetView: View {
           if (focusedTasks.isEmpty == false) {
             Section {
               ForEach(focusedTasks) { task in
-                TaskRowView(task: task)
+                TaskRowView(
+                  task: task,
+                  isSelected: self._appState.revealedTaskId == task.id
+                )
               }
             }
             .listRowSeparator(.hidden)
@@ -132,39 +132,21 @@ struct TaskSheetView: View {
             )
           }
 
-          if (self._overdueTasks.isEmpty == false) {
-            TaskSectionView(
-              filter: .overdue,
-              tasks: self._overdueTasks
-            )
-          }
+          let filters = TaskFilter
+            .allCases
+            .filter { filter in filter != .all }
 
-          if (self._todayTasks.isEmpty == false) {
-            TaskSectionView(
-              filter: .today,
-              tasks: self._todayTasks
-            )
-          }
+          // Section and render the
+          // tasks by each filter
+          ForEach(filters) { filter in
+            let tasks = self._getTasks(for: filter)
 
-          if (self._scheduledTasks.isEmpty == false) {
-            TaskSectionView(
-              filter: .scheduled,
-              tasks: self._scheduledTasks
-            )
-          }
-
-          if (self._unscheduledTasks.isEmpty == false) {
-            TaskSectionView(
-              filter: .unscheduled,
-              tasks: self._unscheduledTasks
-            )
-          }
-
-          if (self._completedTasks.isEmpty == false) {
-            TaskSectionView(
-              filter: .completed,
-              tasks: self._completedTasks
-            )
+            if (tasks.isEmpty == false) {
+              TaskSectionView(
+                filter: filter,
+                tasks: tasks
+              )
+            }
           }
         }
       }

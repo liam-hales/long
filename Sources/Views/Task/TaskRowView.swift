@@ -5,14 +5,16 @@ import SwiftUI
 /// task row for the task lists
 struct TaskRowView: View {
   private let _task: TaskModel
+  private let _isSelected: Bool
 
-  @Environment(AppState.self)
-  private var _appState: AppState
-
-  /// Initialises the view with
-  /// the `task` to render
-  init(task: TaskModel) {
+  /// Initialises the view with the `task`
+  /// to render and whether it `isSelected`
+  init(
+    task: TaskModel,
+    isSelected: Bool = false
+  ) {
     self._task = task
+    self._isSelected = isSelected
   }
 
   private var _badgeAppearance: BadgeView.Appearance {
@@ -85,6 +87,6 @@ struct TaskRowView: View {
         }
       }
     }
-    .listRow(isSelected: self._appState.revealedTaskId == self._task.id)
+    .listRow(isSelected: self._isSelected)
   }
 }
