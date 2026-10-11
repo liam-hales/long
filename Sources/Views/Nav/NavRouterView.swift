@@ -82,7 +82,7 @@ struct NavRouterView: View {
             EditTaskSheetView(sheet: sheet)
           }
 
-        case .editTask: EmptyView()
+        case .editTask(let task): EditTaskView(task: task)
         case .reviewTasks: ReviewTasksView()
         case .settings: SettingsView()
       }

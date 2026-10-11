@@ -36,7 +36,8 @@ struct TaskSectionView: View {
   /// to render for a given `filter`
   init(
     filter: TaskFilter,
-    tasks: [TaskModel]
+    tasks: [TaskModel],
+    onTaskTap: ((TaskModel) -> Void)? = nil
   ) {
 
     // Get the header colour
@@ -55,6 +56,7 @@ struct TaskSectionView: View {
       icon: filter.icon,
       tasks: tasks,
       headerColour: headerColour,
+      onTaskTap: onTaskTap
     )
   }
 

@@ -152,4 +152,18 @@ final class TaskModel: Identifiable {
       ? .now
       : nil
   }
+
+  /// Used to update the task with
+  /// a given `title` and `dueDate`
+  func update(
+    title: String,
+    dueDate: Date?
+  ) -> Void {
+    self.updateDate = .now
+    
+    // Update the task title
+    // and due date
+    self.title = title
+    self.dueDate = dueDate
+  }
 }

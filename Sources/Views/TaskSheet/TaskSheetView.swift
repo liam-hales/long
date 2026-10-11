@@ -118,6 +118,10 @@ struct TaskSheetView: View {
                   task: task,
                   isSelected: self._appState.revealedTaskId == task.id
                 )
+                .accessibilityAddTraits(.isButton)
+                .onTapGesture {
+                  self._appState.modalSelection = .editTask(task)
+                }
               }
             }
             .listRowSeparator(.hidden)
@@ -145,7 +149,9 @@ struct TaskSheetView: View {
               TaskSectionView(
                 filter: filter,
                 tasks: tasks
-              )
+              ) { task in
+                self._appState.modalSelection = .editTask(task)
+              }
             }
           }
         }
