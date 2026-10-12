@@ -160,7 +160,7 @@ final class TaskModel: Identifiable {
     dueDate: Date?
   ) -> Void {
     self.updateDate = .now
-    
+
     // Update the task title
     // and due date
     self.title = title
