@@ -110,9 +110,16 @@ struct EditTaskView: View {
           spacing: 0
         ) {
           Toggle(isOn: self.$_hasDueDate) {
-            Text("Due date")
-              .font(.mono(14))
-              .foregroundStyle(Color.contentSecondary)
+            VStack(
+              alignment: .leading,
+              spacing: 4
+            ) {
+              Text("Due date")
+                .font(.serif(16, .semibold))
+              Text("The date the task is due")
+                .font(.mono(11))
+                .foregroundStyle(Color.contentSecondary)
+            }
           }
           .padding(.horizontal, 20)
           .padding(.vertical, 20)
@@ -130,7 +137,8 @@ struct EditTaskView: View {
           )
           .padding(.leading, 8)
           .padding(.trailing, 14)
-          .padding(.vertical, 8)
+          .padding(.top, 4)
+          .padding(.bottom, 8)
           .datePickerStyle(.graphical)
           .disabled(self._hasDueDate == false)
         }
