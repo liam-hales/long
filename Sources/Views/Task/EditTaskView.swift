@@ -9,6 +9,9 @@ struct EditTaskView: View {
   @Environment(\.displayScale)
   private var _displayScale: CGFloat
 
+  @FocusState
+  private var _isFocused: Bool
+
   @State
   private var _title: String
 
@@ -78,7 +81,17 @@ struct EditTaskView: View {
           )
           .font(.serif(28, .semibold))
           .lineLimit(4)
+          .focused(self.$_isFocused)
           .submitLabel(.done)
+          .onChange(of: self._title) { _, newValue in
+
+            // A vertical text field inserts a new line when the done
+            // key is pressed, so remove it and close the keyboard instead
+            if (newValue.contains(where: \.isNewline) == true) {
+              self._title = newValue.filter { $0.isNewline == false }
+              self._isFocused = false
+            }
+          }
 
           // Display the current title character
           // count so the user knows not to go over
