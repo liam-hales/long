@@ -33,14 +33,17 @@ final class AppState {
   var navVisibility: NavigationSplitViewVisibility
   var navSelection: NavSelection?
   var modalSelection: ModalSelection?
+
   var taskFocus: TaskFilter
   var taskInput: String
+  var revealedTaskId: TaskModel.ID?
+
+  var isSearching: Bool
   var searchText: String
   var searchScope: TaskSearchScope
-  var isSearching: Bool
-  var revealedTaskId: TaskModel.ID?
-  var capturedTasks: [TaskModel]
+
   var isCapturing: Bool
+  var capturedTasks: [TaskModel]
   var captureError: TaskCaptureError?
 
   /// The currently selected task sheet
@@ -72,17 +75,20 @@ final class AppState {
     self._context = context
     self._captureService = captureService
 
-    self.navSelection = nil
     self.navVisibility = .doubleColumn
+    self.navSelection = nil
     self.modalSelection = nil
+
     self.taskFocus = .all
     self.taskInput = ""
+    self.revealedTaskId = nil
+
+    self.isSearching = false
     self.searchText = ""
     self.searchScope = .all
-    self.isSearching = false
-    self.revealedTaskId = nil
-    self.capturedTasks = []
+
     self.isCapturing = false
+    self.capturedTasks = []
     self.captureError = nil
   }
 
