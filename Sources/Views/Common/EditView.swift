@@ -67,19 +67,18 @@ struct EditView<Content: View>: View {
 
   var body: some View {
     NavigationStack {
-      VStack(
-        alignment: .center,
-        spacing: 28
-      ) {
-        self._content
+      ScrollView {
+        VStack(
+          alignment: .center,
+          spacing: 28
+        ) {
+          self._content
+        }
+        .padding(.vertical, 26)
+        .frame(maxWidth: .infinity)
       }
-      .padding(.horizontal, 16)
-      .padding(.top, 26)
-      .frame(
-        maxWidth: .infinity,
-        maxHeight: .infinity,
-        alignment: .top
-      )
+      .scrollBounceBehavior(.basedOnSize)
+      .scrollDismissesKeyboard(.interactively)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(
