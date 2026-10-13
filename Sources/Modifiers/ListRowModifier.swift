@@ -27,6 +27,7 @@ struct ListRowModifier: ViewModifier {
             lineWidth: 1
           )
       )
+      .listRowSeparator(.hidden)
       .listRowInsets(EdgeInsets())
       .listRowBackground(Color.clear)
   }

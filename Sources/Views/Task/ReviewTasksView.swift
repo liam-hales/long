@@ -36,7 +36,6 @@ struct ReviewTasksView: View {
             CapturedTaskRowView(task: task)
           }
         }
-        .listRowSeparator(.hidden)
       }
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {

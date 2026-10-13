@@ -124,7 +124,6 @@ struct TaskSheetView: View {
                 }
               }
             }
-            .listRowSeparator(.hidden)
           }
         }
 

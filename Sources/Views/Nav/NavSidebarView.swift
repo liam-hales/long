@@ -81,7 +81,6 @@ struct NavSidebarView: View {
           )
           .tag(value)
         }
-        .listRowSeparator(.hidden)
       }
     }
     .searchable(

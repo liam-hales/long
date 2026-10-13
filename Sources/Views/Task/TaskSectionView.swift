@@ -99,6 +99,5 @@ struct TaskSectionView: View {
         .listRowInsets(.horizontal, self._headerInset)
       }
     )
-    .listRowSeparator(.hidden)
   }
 }
