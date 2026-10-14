@@ -10,23 +10,31 @@ struct App: SwiftUI.App {
   @State
   private var _appState: AppState
 
-  /// Initialises the app with new app state
-  /// and custom appearance configuration
+  @State
+  private var _appSettings: AppSettings
+
+  /// Initialises the app with new app state,
+  /// settings and custom appearance configuration
   init() {
     let captureService = TaskCaptureService()
+    let appSettings = AppSettings()
 
     do {
       self._container = try ModelContainer(for: TaskModel.self, TaskSheetModel.self)
-      self.__appState = State(
-        initialValue: AppState(
-          context: self._container.mainContext,
-          captureService: captureService
-        )
-      )
     }
     catch {
       fatalError("Failed to create ModelContainer: \(error)")
     }
+
+    // Initialise the app state with the
+    // context and capture service
+    let appState = AppState(
+      context: self._container.mainContext,
+      captureService: captureService
+    )
+
+    self.__appSettings = State(initialValue: appSettings)
+    self.__appState = State(initialValue: appState)
 
     // Configure the appearance of some UIKit views
     // that don't have the required SwiftUI modifiers
@@ -43,5 +51,6 @@ struct App: SwiftUI.App {
     }
     .modelContainer(self._container)
     .environment(self._appState)
+    .environment(self._appSettings)
   }
 }
