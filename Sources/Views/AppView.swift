@@ -7,6 +7,9 @@ struct AppView: View {
   @Environment(AppState.self)
   private var _appState: AppState
 
+  @Environment(AppSettings.self)
+  private var _appSettings: AppSettings
+
   @Environment(\.horizontalSizeClass)
   private var _sizeClass: UserInterfaceSizeClass?
 
@@ -25,6 +28,7 @@ struct AppView: View {
       }
     )
     .contentMargins(.horizontal, 16, for: .scrollContent)
+    .preferredColorScheme(self._appSettings.appearance.scheme)
     .tint(.accent)
   }
 }

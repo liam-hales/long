@@ -102,6 +102,9 @@ struct SettingsView: View {
       .scrollContentBackground(.hidden)
       .background(Color.base)
     }
+    // This needs to be set as sheets are their own presentation and
+    // don't update when the app appearance changes while open
+    .preferredColorScheme(self._appSettings.appearance.scheme)
     .presentationBackground(Color.base)
     .presentationDetents([
       .height(460)
