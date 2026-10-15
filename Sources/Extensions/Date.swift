@@ -2,10 +2,14 @@ import Foundation
 
 extension Date {
 
-  /// Formats the date into a human
-  /// readable format relative to today
-  func relativeText(includeTime: Bool = false) -> String {
+  /// Formats the date into a human readable
+  /// format based on the given date `format`
+  func text(
+    _ format: DateFormat,
+    includeTime: Bool = false
+  ) -> String {
     let calendar = Calendar.current
+    let dateText: String
 
     // Extract the number of days it has been
     // from today since the date
@@ -15,20 +19,31 @@ extension Date {
       to: self
     ).day ?? 0
 
-    let relativeStyle = Self.RelativeFormatStyle(
-      allowedFields: [.day],
-      presentation: .named,
-      capitalizationContext: .middleOfSentence
-    )
+   switch format {
+     case .relative:
+       let relativeStyle = Self.RelativeFormatStyle(
+         allowedFields: [.day],
+         presentation: .named,
+         capitalizationContext: .middleOfSentence
+       )
 
-    // Dates more than a week either side of today are shown as
-    // the full date, otherwise they're shown relative
-    let dateText = (abs(days) > 7)
-      ? self.formatted(
-        date: .abbreviated,
-        time: .omitted
-      )
-      : self.formatted(relativeStyle)
+       // Dates more than a week either side of today are shown
+       // as the calendar date, otherwise they're shown relative
+       dateText = (abs(days) > 7)
+         ? self.formatted(date: .abbreviated, time: .omitted)
+         : self.formatted(relativeStyle)
+
+     case .calendar:
+       dateText = self.formatted(date: .abbreviated, time: .omitted)
+
+     case .numeric:
+       let numericStyle = Self.FormatStyle()
+         .day(.twoDigits)
+         .month(.twoDigits)
+         .year(.twoDigits)
+
+       dateText = self.formatted(numericStyle)
+    }
 
     // If the text should not include the time then
     // just return the date text as is
