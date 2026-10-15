@@ -32,11 +32,11 @@ final class AppSettings {
   init() {
     let storage = UserDefaults.standard
     self._storage = storage
-    
+
     self.appearance = AppAppearance(
       rawValue: storage.string(forKey: Self._appearanceKey) ?? ""
     ) ?? .system
-    
+
     self.dateFormat = DateFormat(
       rawValue: storage.string(forKey: Self._dateFormatKey) ?? ""
     ) ?? .relative

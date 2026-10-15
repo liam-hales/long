@@ -19,30 +19,30 @@ extension Date {
       to: self
     ).day ?? 0
 
-   switch format {
-     case .relative:
-       let relativeStyle = Self.RelativeFormatStyle(
-         allowedFields: [.day],
-         presentation: .named,
-         capitalizationContext: .middleOfSentence
-       )
+    switch format {
+      case .relative:
+        let relativeStyle = Self.RelativeFormatStyle(
+          allowedFields: [.day],
+          presentation: .named,
+          capitalizationContext: .middleOfSentence
+        )
 
-       // Dates more than a week either side of today are shown
-       // as the calendar date, otherwise they're shown relative
-       dateText = (abs(days) > 7)
-         ? self.formatted(date: .abbreviated, time: .omitted)
-         : self.formatted(relativeStyle)
+        // Dates more than a week either side of today are shown
+        // as the calendar date, otherwise they're shown relative
+        dateText = (abs(days) > 7)
+          ? self.formatted(date: .abbreviated, time: .omitted)
+          : self.formatted(relativeStyle)
 
-     case .calendar:
-       dateText = self.formatted(date: .abbreviated, time: .omitted)
+      case .calendar:
+        dateText = self.formatted(date: .abbreviated, time: .omitted)
 
-     case .numeric:
-       let numericStyle = Self.FormatStyle()
-         .day(.twoDigits)
-         .month(.twoDigits)
-         .year(.twoDigits)
+      case .numeric:
+        let numericStyle = Self.FormatStyle()
+          .day(.twoDigits)
+          .month(.twoDigits)
+          .year(.twoDigits)
 
-       dateText = self.formatted(numericStyle)
+        dateText = self.formatted(numericStyle)
     }
 
     // If the text should not include the time then

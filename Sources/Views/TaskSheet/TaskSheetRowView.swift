@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// Used to render a single
-/// task sheet row
+/// Used to render a single task sheet
+/// row for the task sheet list
 struct TaskSheetRowView: View {
   private let _sheet: TaskSheetModel
   private let _isSelected: Bool
