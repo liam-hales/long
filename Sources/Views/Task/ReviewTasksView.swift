@@ -8,6 +8,9 @@ struct ReviewTasksView: View {
   @Environment(AppState.self)
   private var _appState: AppState
 
+  @Environment(AppSettings.self)
+  private var _appSettings: AppSettings
+
   @Environment(\.dismiss)
   private var _dismiss: DismissAction
 
@@ -33,7 +36,10 @@ struct ReviewTasksView: View {
       List {
         Section {
           ForEach(self._appState.capturedTasks) { task in
-            CapturedTaskRowView(task: task)
+            CapturedTaskRowView(
+              task: task,
+              dateFormat: self._appSettings.dateFormat
+            )
           }
         }
       }

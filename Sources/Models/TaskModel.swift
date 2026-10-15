@@ -91,19 +91,19 @@ final class TaskModel: Identifiable {
   }
 
   /// The task subtitle built from the most relevant date formatted
-  /// into a human readable format relative to today
-  var subtitle: String {
+  /// into a human readable format using the `dateFormat`
+  func subtitle(dateFormat: DateFormat) -> String {
 
     // If the task has a completed date
     // then use this to build the subtitle
     if let completedDate = self.completedDate {
-      return "Completed \(completedDate.relativeText(includeTime: true))"
+      return "Completed \(completedDate.text(dateFormat, includeTime: true))"
     }
 
     // If the task has a due date then
     // use this to build the subtitle
     if let dueDate = self.dueDate {
-      return "Due \(dueDate.relativeText(includeTime: false))"
+      return "Due \(dueDate.text(dateFormat, includeTime: false))"
     }
 
     return "No due date"

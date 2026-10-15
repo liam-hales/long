@@ -14,6 +14,9 @@ struct TaskSectionView: View {
   @Environment(AppState.self)
   private var _appState: AppState
 
+  @Environment(AppSettings.self)
+  private var _appSettings: AppSettings
+
   /// Initialises the view with the `tasks` to render
   /// under a header with a given `title` and `icon`
   init(
@@ -69,6 +72,7 @@ struct TaskSectionView: View {
           if (self._onTaskTap == nil) {
             TaskRowView(
               task: task,
+              dateFormat: self._appSettings.dateFormat,
               isSelected: isSelected
             )
           }
@@ -76,6 +80,7 @@ struct TaskSectionView: View {
           if (self._onTaskTap != nil) {
             TaskRowView(
               task: task,
+              dateFormat: self._appSettings.dateFormat,
               isSelected: isSelected
             )
             .accessibilityAddTraits(.isButton)

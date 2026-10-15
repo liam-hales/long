@@ -9,6 +9,9 @@ struct TaskSheetView: View {
   @Environment(AppState.self)
   private var _appState: AppState
 
+  @Environment(AppSettings.self)
+  private var _appSettings: AppSettings
+
   /// Used for force the view to rebuild when the
   /// app comes back from the background
   @Environment(\.scenePhase)
@@ -116,6 +119,7 @@ struct TaskSheetView: View {
               ForEach(focusedTasks) { task in
                 TaskRowView(
                   task: task,
+                  dateFormat: self._appSettings.dateFormat,
                   isSelected: self._appState.revealedTaskId == task.id
                 )
                 .accessibilityAddTraits(.isButton)

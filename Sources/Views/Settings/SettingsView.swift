@@ -51,7 +51,46 @@ struct SettingsView: View {
                   spacing: 4
                 ) {
                   Text(self._appSettings.appearance.title)
-                    .font(.serif(16, .semibold))
+                    .font(.serif(14, .semibold))
+
+                  LucideIcon(.chevronsUpDown, size: 16)
+                    .foregroundStyle(Color.contentSecondary)
+                }
+              }
+            )
+            .tint(.contentPrimary)
+          }
+
+          SettingsRowView(
+            title: "Date Format",
+            subtitle: "Date e.g. \"\(self._appSettings.dateFormat.example)\""
+          ) {
+            Menu(
+              content: {
+                Picker("Date Format", selection: $appSettings.dateFormat) {
+                  ForEach(DateFormat.allCases) { dateFormat in
+                    Label(
+                      title: {
+                        Text(dateFormat.title)
+                      },
+                      icon: {
+                        Image(
+                          lucide: dateFormat.icon,
+                          size: .init(width: 22, height: 22)
+                        )
+                      }
+                    )
+                  }
+                }
+                .pickerStyle(.inline)
+              },
+              label: {
+                HStack(
+                  alignment: .center,
+                  spacing: 4
+                ) {
+                  Text(self._appSettings.dateFormat.title)
+                    .font(.serif(14, .semibold))
 
                   LucideIcon(.chevronsUpDown, size: 16)
                     .foregroundStyle(Color.contentSecondary)
@@ -107,7 +146,7 @@ struct SettingsView: View {
     .preferredColorScheme(self._appSettings.appearance.scheme)
     .presentationBackground(Color.base)
     .presentationDetents([
-      .height(460)
+      .height(540)
     ])
   }
 }
