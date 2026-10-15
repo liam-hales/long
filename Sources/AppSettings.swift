@@ -7,6 +7,7 @@ import Observation
 @Observable
 final class AppSettings {
   private static let _appearanceKey = "appearance"
+  private static let _dateFormatKey = "dateFormat"
 
   private let _storage: UserDefaults
 
@@ -18,14 +19,26 @@ final class AppSettings {
     }
   }
 
+  /// The preferred date
+  /// format setting
+  var dateFormat: DateFormat {
+    didSet {
+      self._storage.set(self.dateFormat.rawValue, forKey: Self._dateFormatKey)
+    }
+  }
+
   /// Initialises the `AppSettings` with the values stored in
   /// `UserDefaults` or their defaults if non have been set
   init() {
     let storage = UserDefaults.standard
-
     self._storage = storage
+    
     self.appearance = AppAppearance(
       rawValue: storage.string(forKey: Self._appearanceKey) ?? ""
     ) ?? .system
+    
+    self.dateFormat = DateFormat(
+      rawValue: storage.string(forKey: Self._dateFormatKey) ?? ""
+    ) ?? .relative
   }
 }
