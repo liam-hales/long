@@ -5,11 +5,16 @@ import SwiftUI
 /// task for the user to review
 struct CapturedTaskRowView: View {
   private let _task: TaskModel
+  private let _dateFormat: DateFormat
 
-  /// Initialises the view with
-  /// the `task` to render
-  init(task: TaskModel) {
+  /// Initialises the view with the `task` to
+  /// render, along with the `dateFormat`
+  init(
+    task: TaskModel,
+    dateFormat: DateFormat
+  ) {
     self._task = task
+    self._dateFormat = dateFormat
   }
 
   private var _opacity: Double {
@@ -57,14 +62,19 @@ struct CapturedTaskRowView: View {
         alignment: .leading,
         spacing: 6
       ) {
-        Text(self._task.title)
+        let title = self._task.title
+        let subtitle = self._task.subtitle(
+          dateFormat: self._dateFormat
+        )
+
+        Text(title)
           .foregroundStyle(
             (self._task.reviewStatus == .confirmed)
               ? Color.contentPrimary
               : Color.contentSecondary
           )
 
-        Text(self._task.subtitle)
+        Text(subtitle)
           .foregroundStyle(Color.contentSecondary)
           .font(.mono(11))
       }

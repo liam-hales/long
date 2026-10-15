@@ -5,15 +5,18 @@ import SwiftUI
 /// task row for the task lists
 struct TaskRowView: View {
   private let _task: TaskModel
+  private let _dateFormat: DateFormat
   private let _isSelected: Bool
 
-  /// Initialises the view with the `task`
-  /// to render and whether it `isSelected`
+  /// Initialises the view with the `task` to render,
+  /// along with the `dateFormat` and `isSelected`
   init(
     task: TaskModel,
+    dateFormat: DateFormat,
     isSelected: Bool = false
   ) {
     self._task = task
+    self._dateFormat = dateFormat
     self._isSelected = isSelected
   }
 
@@ -65,7 +68,12 @@ struct TaskRowView: View {
         alignment: .leading,
         spacing: 8
       ) {
-        Text(self._task.title)
+        let title = self._task.title
+        let subtitle = self._task.subtitle(
+          dateFormat: self._dateFormat
+        )
+
+        Text(title)
           .strikethrough(self._task.isCompleted)
           .foregroundStyle(
             (self._task.isCompleted == true)
@@ -74,7 +82,7 @@ struct TaskRowView: View {
           )
 
         if (self._task.isCompleted == true) {
-          Text(self._task.subtitle)
+          Text(subtitle)
             .foregroundStyle(Color.contentSecondary)
             .font(.mono(11))
         }
@@ -82,7 +90,7 @@ struct TaskRowView: View {
         if (self._task.isCompleted == false) {
           BadgeView(
             appearance: self._badgeAppearance,
-            text: self._task.subtitle
+            text: subtitle
           )
         }
       }
