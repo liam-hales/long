@@ -139,7 +139,7 @@ final class AppState {
 
   /// Used to capture tasks from the task input and present
   /// them for the user to review, or set an error if it fails
-  func captureTasks() async -> Void {
+  func captureTasks(shouldReview: Bool) async -> Void {
     self.isCapturing = true
 
     // Reset the capturing state and start a new session once the
@@ -151,7 +151,15 @@ final class AppState {
 
     do {
       self.capturedTasks = try await self._captureService.capture(from: self.taskInput)
-      self.modalSelection = .reviewTasks
+
+      // Check if the user should review
+      // the tasks first or not
+      if (shouldReview == true) {
+        self.modalSelection = .reviewTasks
+        return
+      }
+
+      self.addConfirmedTasks()
     }
     catch {
       print("Failed to capture tasks: \(error)")

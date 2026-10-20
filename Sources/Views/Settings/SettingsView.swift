@@ -99,6 +99,14 @@ struct SettingsView: View {
             )
             .tint(.contentPrimary)
           }
+
+          SettingsRowView(
+            title: "Review Tasks",
+            subtitle: "Review tasks before they are added"
+          ) {
+            Toggle("Review Tasks", isOn: $appSettings.isReviewEnabled)
+              .labelsHidden()
+          }
         }
 
         Section {
@@ -146,7 +154,7 @@ struct SettingsView: View {
     .preferredColorScheme(self._appSettings.appearance.scheme)
     .presentationBackground(Color.base)
     .presentationDetents([
-      .height(540)
+      .height(616)
     ])
   }
 }

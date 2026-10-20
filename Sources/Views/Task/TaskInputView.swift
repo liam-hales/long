@@ -8,6 +8,9 @@ struct TaskInputView: View {
   @Environment(AppState.self)
   private var _appState: AppState
 
+  @Environment(AppSettings.self)
+  private var _appSettings: AppSettings
+
   @Environment(\.displayScale)
   private var _displayScale: CGFloat
 
@@ -23,8 +26,10 @@ struct TaskInputView: View {
   /// Used to capture tasks
   /// from the task input
   private func _capture() -> Void {
+    let shouldReview = self._appSettings.isReviewEnabled
+
     Task {
-      await self._appState.captureTasks()
+      await self._appState.captureTasks(shouldReview: shouldReview)
     }
   }
 

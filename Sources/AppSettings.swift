@@ -8,6 +8,7 @@ import Observation
 final class AppSettings {
   private static let _appearanceKey = "appearance"
   private static let _dateFormatKey = "dateFormat"
+  private static let _isReviewEnabledKey = "isReviewEnabled"
 
   private let _storage: UserDefaults
 
@@ -27,6 +28,14 @@ final class AppSettings {
     }
   }
 
+  /// Whether captured tasks are presented
+  /// for review before they are added
+  var isReviewEnabled: Bool {
+    didSet {
+      self._storage.set(self.isReviewEnabled, forKey: Self._isReviewEnabledKey)
+    }
+  }
+
   /// Initialises the `AppSettings` with the values stored in
   /// `UserDefaults` or their defaults if non have been set
   init() {
@@ -40,5 +49,9 @@ final class AppSettings {
     self.dateFormat = DateFormat(
       rawValue: storage.string(forKey: Self._dateFormatKey) ?? ""
     ) ?? .relative
+
+    self.isReviewEnabled = (
+      storage.object(forKey: Self._isReviewEnabledKey) as? Bool
+    ) ?? true
   }
 }
