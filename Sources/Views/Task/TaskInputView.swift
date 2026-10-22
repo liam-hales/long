@@ -124,7 +124,7 @@ struct TaskInputView: View {
           .padding(.horizontal, 6)
       }
       .padding(.horizontal, 16)
-      .padding(.vertical, 16)
+      .padding(.top, 16)
     }
     .background(Color.base)
   }

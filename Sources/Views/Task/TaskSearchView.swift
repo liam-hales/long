@@ -127,7 +127,6 @@ struct TaskSearchView: View {
             title: title,
             icon: .fileText,
             tasks: tasks,
-            headerInset: 24,
           ) { task in
             self._appState.revealTask(task)
           }
