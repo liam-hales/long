@@ -44,54 +44,6 @@ struct TaskSheetView: View {
     self._tasks.filter { task in task.isCompleted == false }
   }
 
-  /// Returns the tasks for a
-  /// given task `filter`
-  private func _getTasks(for filter: TaskFilter) -> [TaskModel] {
-    switch filter {
-      case .all:
-        return self._tasks
-
-      case .overdue:
-        return self._tasks.filter { task in
-          (
-            task.isSettled == false &&
-            task.schedule == .overdue
-          )
-        }
-
-      case .today:
-        return self._tasks.filter { task in
-          (
-            task.isSettled == false &&
-            task.schedule == .today
-          )
-        }
-
-      case .scheduled:
-        return self._tasks.filter { task in
-          (
-            task.isSettled == false &&
-            task.schedule == .scheduled
-          )
-        }
-
-      case .unscheduled:
-        return self._tasks.filter { task in
-          (
-            task.isSettled == false &&
-            task.schedule == .unscheduled
-          )
-        }
-
-      case .completed:
-        let sort = SortDescriptor(\TaskModel.completedDate, order: .reverse)
-
-        return self._tasks
-          .filter { task in task.isSettled == true }
-          .sorted(using: sort)
-    }
-  }
-
   var body: some View {
 
     @Bindable
@@ -103,7 +55,7 @@ struct TaskSheetView: View {
 
           // Get the focussed tasks using
           // the `taskFocus` state
-          let focusedTasks = self._getTasks(for: self._appState.taskFocus)
+          let focusedTasks = self._tasks.filtered(by: self._appState.taskFocus)
 
           if (focusedTasks.isEmpty == true) {
             let focus = self._appState.taskFocus.title
@@ -146,7 +98,7 @@ struct TaskSheetView: View {
           // Section and render the
           // tasks by each filter
           ForEach(filters) { filter in
-            let tasks = self._getTasks(for: filter)
+            let tasks = self._tasks.filtered(by: filter)
 
             if (tasks.isEmpty == false) {
               TaskSectionView(
