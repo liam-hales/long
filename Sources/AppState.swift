@@ -11,6 +11,7 @@ final class AppState {
   /// Describes what the user has
   /// currently selected for navigation
   enum NavSelection: Hashable {
+    case welcome
     case taskSheet(_ id: TaskSheetModel.ID)
   }
 
@@ -66,6 +67,13 @@ final class AppState {
       .first
   }
 
+  /// Specifies if the user
+  /// has any task sheets
+  private var _hasTaskSheets: Bool {
+    let count = try? self._context.fetchCount(FetchDescriptor<TaskSheetModel>())
+    return (count ?? 0) > 0
+  }
+
   /// Initialises the `AppState` with a given model context
   /// and the service used to capture tasks
   init(
@@ -90,6 +98,12 @@ final class AppState {
     self.isCapturing = false
     self.capturedTasks = []
     self.captureError = nil
+
+    // Send the user to the welcome view
+    // if they have no task sheets yet
+    if (self._hasTaskSheets == false) {
+      self.navSelection = .welcome
+    }
   }
 
   /// Used to create and save a new
@@ -129,6 +143,12 @@ final class AppState {
     // persists, tasks will cascade delete
     self._context.delete(sheet)
     try? self._context.save()
+
+    // Send the user to the welcome view if
+    // they have just deleted their last sheet
+    if (self._hasTaskSheets == false) {
+      self.navSelection = .welcome
+    }
   }
 
   /// Used to start the
