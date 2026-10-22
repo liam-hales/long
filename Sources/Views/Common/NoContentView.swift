@@ -23,9 +23,9 @@ struct NoContentView: View {
 
       Text(self._message)
         .foregroundStyle(Color.contentSecondary)
-        .font(.mono(12))
+        .font(.serif(14, .regular))
         .lineHeight(.multiple(factor: 1.4))
-        .frame(maxWidth: 250)
+        .frame(maxWidth: 260)
         .multilineTextAlignment(.center)
     }
     .frame(maxWidth: .infinity)
