@@ -3,7 +3,7 @@ import SwiftData
 import SwiftUI
 
 /// Used to display the navigation
-/// sidebar options for the app
+/// sidebar for the app
 struct NavSidebarView: View {
   private let _sizeClass: UserInterfaceSizeClass?
 
@@ -13,23 +13,27 @@ struct NavSidebarView: View {
   @Environment(\.displayScale)
   private var _displayScale: CGFloat
 
+  /// Used to force the view to rebuild when the
+  /// app comes back from the background
+  @Environment(\.scenePhase)
+  private var _scenePhase: ScenePhase
+
   @Query
   private var _taskSheets: [TaskSheetModel]
 
-  @Query
+  @Query(sort: \TaskModel.dueDate, order: .forward)
   private var _tasks: [TaskModel]
 
-  private var _activeTasks: [TaskModel] {
-    self._tasks.filter { task in task.isCompleted == false }
+  /// The title greeting
+  /// to the user
+  private var _title: String {
+    "Hello there."
   }
 
-  /// The subtitle summarising the number of task
-  /// sheets and tasks yet to be completed
+  /// The subtitle which will always be today's date written
+  /// out in full e.g. "Wednesday, 21 October 2026"
   private var _subtitle: String {
-    let sheetText = "\(self._taskSheets.count) \((self._taskSheets.count == 1) ? "sheet" : "sheets")"
-    let taskText = "\(self._activeTasks.count) \((self._activeTasks.count == 1) ? "task" : "tasks") to complete"
-
-    return "\(sheetText) • \(taskText)"
+    Date.now.formatted(date: .complete, time: .omitted)
   }
 
   /// The task sheets ordered by
@@ -65,22 +69,60 @@ struct NavSidebarView: View {
       }
 
       if (self._appState.isSearching == false) {
-        if (self._taskSheets.isEmpty == true) {
-          NoContentView(
-            title: "No task sheets.",
-            message: "You currently have no task sheets, try creating a new one above."
-          )
+        
+        let filters = [
+          TaskFilter.overdue,
+          TaskFilter.today
+        ]
+        
+        // Section and render the tasks by
+        // the overdue and today filters
+        ForEach(filters) { filter in
+          let tasks = self._tasks.filtered(by: filter)
+
+          if (tasks.isEmpty == false) {
+            TaskSectionView(
+              filter: filter,
+              tasks: tasks
+            ) { task in
+              self._appState.revealTask(task)
+            }
+          }
         }
 
-        ForEach(self._sortedTaskSheets) { sheet in
-          let value: AppState.NavSelection = .taskSheet(sheet.id)
+        Section(
+          content: {
+            if (self._taskSheets.isEmpty == true) {
+              NoContentView(
+                title: "No task sheets.",
+                message: "Task sheets you create will appear here."
+              )
+            }
 
-          TaskSheetRowView(
-            sheet: sheet,
-            isSelected: self._appState.navSelection == value
-          )
-          .tag(value)
-        }
+            ForEach(self._sortedTaskSheets) { sheet in
+              let value: AppState.NavSelection = .taskSheet(sheet.id)
+
+              TaskSheetRowView(
+                sheet: sheet,
+                isSelected: self._appState.navSelection == value
+              )
+              .tag(value)
+            }
+          },
+          header: {
+            HStack(
+              alignment: .center,
+              spacing: 6
+            ) {
+              LucideIcon(.fileText, size: 14)
+
+              Text("Task Sheets • \(self._taskSheets.count)")
+                .font(.mono(14))
+            }
+            .foregroundStyle(Color.contentSecondary)
+            .listRowInsets(.horizontal, 8)
+          }
+        )
       }
     }
     .searchable(
@@ -98,13 +140,12 @@ struct NavSidebarView: View {
     .toolbarTitleDisplayMode(.large)
     .toolbar {
       ToolbarItem(placement: .largeTitle) {
-        Text("Task Sheets")
+        Text(self._title)
           .font(.serif(28, .semibold))
-          .padding(.horizontal, 4)
           .padding(.top, 32)
           .frame(
             maxWidth: .infinity,
-            alignment: .leading
+            alignment: .center
           )
       }
 
@@ -112,10 +153,9 @@ struct NavSidebarView: View {
         Text(self._subtitle)
           .foregroundStyle(Color.contentSecondary)
           .font(.mono(14))
-          .padding(.horizontal, 4)
           .frame(
             maxWidth: .infinity,
-            alignment: .leading
+            alignment: .center
           )
       }
 
@@ -130,32 +170,13 @@ struct NavSidebarView: View {
         )
       }
 
-      DefaultToolbarItem(
-        kind: .search,
-        placement: .topBarTrailing
-      )
-
-      ToolbarSpacer(
-        .fixed,
-        placement: .topBarTrailing
-      )
-
       ToolbarItem(placement: .topBarTrailing) {
         Button(
           action: {
             self._appState.createTaskSheet(name: "Untitled")
           },
           label: {
-            HStack(
-              alignment: .center,
-              spacing: 8
-            ) {
-              LucideIcon(.filePlusCorner, size: 22)
-
-              Text("New Sheet")
-                .font(.serif(14, .semibold))
-            }
-            .padding(.horizontal, 6)
+            LucideIcon(.filePlusCorner, size: 22)
           }
         )
       }
@@ -179,7 +200,20 @@ struct NavSidebarView: View {
           )
         }
       }
+
+      ToolbarSpacer(
+        .flexible,
+        placement: .bottomBar
+      )
+
+      DefaultToolbarItem(
+        kind: .search,
+        placement: .bottomBar
+      )
     }
+    // Match the leading safe area padding used by `TaskSheetView`
+    // so section headers line up the same in both lists
+    .safeAreaPadding(.leading, 16)
     .safeAreaInset(
       edge: .trailing,
       spacing: 0
@@ -196,10 +230,11 @@ struct NavSidebarView: View {
       }
     }
     .listStyle(.plain)
-    .navigationTitle("Task Sheets")
+    .navigationTitle(self._title)
     .navigationSubtitle(self._subtitle)
     .listRowSpacing(10)
-    .contentMargins(.vertical, 20, for: .scrollContent)
+    .listSectionSpacing(16)
+    .contentMargins(.vertical, 8, for: .scrollContent)
     .scrollContentBackground(.hidden)
     .background(Color.base)
   }
