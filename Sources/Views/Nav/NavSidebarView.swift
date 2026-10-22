@@ -69,12 +69,12 @@ struct NavSidebarView: View {
       }
 
       if (self._appState.isSearching == false) {
-        
+
         let filters = [
           TaskFilter.overdue,
-          TaskFilter.today
+          TaskFilter.today,
         ]
-        
+
         // Section and render the tasks by
         // the overdue and today filters
         ForEach(filters) { filter in
