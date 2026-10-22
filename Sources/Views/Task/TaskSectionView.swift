@@ -7,7 +7,6 @@ struct TaskSectionView: View {
   private let _title: String
   private let _icon: LucideIconName
   private let _headerColour: Color
-  private let _headerInset: CGFloat
   private let _tasks: [TaskModel]
   private let _onTaskTap: ((TaskModel) -> Void)?
 
@@ -24,14 +23,12 @@ struct TaskSectionView: View {
     icon: LucideIconName,
     tasks: [TaskModel],
     headerColour: Color = .contentSecondary,
-    headerInset: CGFloat = 8,
     onTaskTap: ((TaskModel) -> Void)? = nil
   ) {
     self._title = title
     self._icon = icon
     self._tasks = tasks
     self._headerColour = headerColour
-    self._headerInset = headerInset
     self._onTaskTap = onTaskTap
   }
 
@@ -101,7 +98,7 @@ struct TaskSectionView: View {
             .font(.mono(14))
         }
         .foregroundStyle(self._headerColour)
-        .listRowInsets(.horizontal, self._headerInset)
+        .listRowInsets(.horizontal, 8)
       }
     )
   }
