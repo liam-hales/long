@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 /// The main entry point view
@@ -13,20 +14,31 @@ struct AppView: View {
   @Environment(\.horizontalSizeClass)
   private var _sizeClass: UserInterfaceSizeClass?
 
+  @Query
+  private var _taskSheets: [TaskSheetModel]
+
   var body: some View {
 
     @Bindable
     var appState = _appState
 
-    NavigationSplitView(
-      columnVisibility: $appState.navVisibility,
-      sidebar: {
-        NavSidebarView(sizeClass: self._sizeClass)
-      },
-      detail: {
-        NavRouterView(sizeClass: self._sizeClass)
+    Group {
+      if (self._taskSheets.isEmpty == true) {
+        WelcomeView()
       }
-    )
+
+      if (self._taskSheets.isEmpty == false) {
+        NavigationSplitView(
+          columnVisibility: $appState.navVisibility,
+          sidebar: {
+            NavSidebarView(sizeClass: self._sizeClass)
+          },
+          detail: {
+            NavRouterView(sizeClass: self._sizeClass)
+          }
+        )
+      }
+    }
     .contentMargins(.horizontal, 16, for: .scrollContent)
     .preferredColorScheme(self._appSettings.appearance.scheme)
     .tint(.accent)
