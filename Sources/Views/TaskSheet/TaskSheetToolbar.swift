@@ -100,6 +100,38 @@ struct TaskSheetToolbar: ToolbarContent {
     )
 
     ToolbarItemGroup(placement: .topBarTrailing) {
+      let undoManager = self._sheet.undoManager
+
+      if (undoManager.canUndo == true) {
+        Button(
+          action: {
+            undoManager.undo()
+          },
+          label: {
+            LucideIcon(.undo2, size: 22)
+          }
+        )
+      }
+
+      if (undoManager.canRedo == true) {
+        Button(
+          action: {
+            undoManager.redo()
+          },
+          label: {
+            LucideIcon(.redo2, size: 22)
+          }
+        )
+      }
+    }
+    .toolbarAxis(.vertical)
+
+    ToolbarSpacer(
+      .fixed,
+      placement: .topBarTrailing
+    )
+
+    ToolbarItemGroup(placement: .topBarTrailing) {
       Button(
         action: {
           self._appState.modalSelection = .editTaskSheet

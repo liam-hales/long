@@ -143,27 +143,54 @@ final class TaskModel: Identifiable {
 
   /// Used to toggle the task between
   /// active and completed
+  @MainActor
   func toggleCompleted() -> Void {
-    self.updateDate = .now
 
     // Set the completed date to either the current
     // date or `nil` depending on its current value
     self.completedDate = (self.completedDate == nil)
       ? .now
       : nil
+
+    // The task completed status is toggled
+    // again if the user chooses to undo
+    self._registerUpdate {
+      self.toggleCompleted()
+    }
   }
 
   /// Used to update the task with
   /// a given `title` and `dueDate`
+  @MainActor
   func update(
     title: String,
     dueDate: Date?
   ) -> Void {
-    self.updateDate = .now
+    let oldTitle = self.title
+    let oldDueDate = self.dueDate
 
     // Update the task title
     // and due date
     self.title = title
     self.dueDate = dueDate
+
+    // The title and due date are reverted
+    // if the user chooses to undo
+    self._registerUpdate {
+      self.update(
+        title: oldTitle,
+        dueDate: oldDueDate
+      )
+    }
+  }
+
+  /// Used to set the update date and register
+  /// the undo with the task sheet undo manager
+  @MainActor
+  private func _registerUpdate(undo: @escaping () -> Void) -> Void {
+    self.updateDate = .now
+    self.sheet?.undoManager.registerUndo(withTarget: self) { _ in
+      undo()
+    }
   }
 }

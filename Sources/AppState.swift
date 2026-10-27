@@ -4,7 +4,6 @@ import SwiftUI
 
 /// Used to store state for
 /// the entire app
-@MainActor
 @Observable
 final class AppState {
 
@@ -177,19 +176,12 @@ final class AppState {
       return
     }
 
-    self.capturedTasks
+    let confirmed = self.capturedTasks
       .filter { $0.reviewStatus == .confirmed }
-      .forEach { task in
 
-        // Assign each confirmed task to the sheet and
-        // insert it so it only persists once added
-        task.assign(to: sheet)
-        self._context.insert(task)
-      }
-
-    // Immediately save so the
-    // data persists
-    try? self._context.save()
+    // Add the confirmed tasks
+    // to the task sheet
+    sheet.addTasks(confirmed)
 
     self.capturedTasks = []
     self.taskInput = ""
