@@ -1,4 +1,5 @@
 import LucideSwift
+import SwiftData
 import SwiftUI
 
 /// Used to render a section of tasks

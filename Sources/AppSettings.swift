@@ -3,7 +3,6 @@ import Observation
 
 /// Used to store the app settings and
 /// persist their values in `UserDefaults`
-@MainActor
 @Observable
 final class AppSettings {
   private static let _appearanceKey = "appearance"

@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension Color {
+nonisolated extension Color {
 
   static let accent = Color(light: "#cc785c", dark: "#cc785c")
   static let contentPrimary = Color(light: "#141413", dark: "#faf9f5")

@@ -4,7 +4,6 @@ import FoundationModels
 
 /// Used to capture tasks from a users
 /// input text using the on-device model
-@MainActor
 final class TaskCaptureService {
 
   /// Describes a single captured

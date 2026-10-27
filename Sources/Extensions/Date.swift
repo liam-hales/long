@@ -1,6 +1,6 @@
 import Foundation
 
-extension Date {
+nonisolated extension Date {
 
   /// Formats the date into a human readable
   /// format based on the given date `format`
