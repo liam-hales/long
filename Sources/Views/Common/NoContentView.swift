@@ -32,6 +32,5 @@ struct NoContentView: View {
     .padding(.vertical, 20)
     .listRowBackground(Color.clear)
     .listRowSeparator(.hidden)
-    .listRowInsets(.horizontal, 0)
   }
 }

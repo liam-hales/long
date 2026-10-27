@@ -94,7 +94,6 @@ struct ReviewTasksView: View {
       .navigationBarTitleDisplayMode(.inline)
       .listRowSpacing(10)
       .contentMargins(.vertical, 20, for: .scrollContent)
-      .contentMargins(.horizontal, 20, for: .scrollContent)
       .scrollContentBackground(.hidden)
       .background(Color.base)
       .onScrollGeometryChange(

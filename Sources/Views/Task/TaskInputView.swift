@@ -123,8 +123,8 @@ struct TaskInputView: View {
           .multilineTextAlignment(.center)
           .padding(.horizontal, 6)
       }
-      .padding(.horizontal, 16)
       .padding(.top, 16)
+      .containerMargins()
     }
     .background(Color.base)
   }

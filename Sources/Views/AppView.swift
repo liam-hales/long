@@ -39,7 +39,6 @@ struct AppView: View {
         )
       }
     }
-    .contentMargins(.horizontal, 16, for: .scrollContent)
     .preferredColorScheme(self._appSettings.appearance.scheme)
     .tint(.accent)
   }

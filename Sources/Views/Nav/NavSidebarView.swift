@@ -120,7 +120,7 @@ struct NavSidebarView: View {
                 .font(.mono(14))
             }
             .foregroundStyle(Color.contentSecondary)
-            .listRowInsets(.horizontal, 8)
+            .padding(.horizontal, 8)
           }
         )
       }
@@ -211,24 +211,6 @@ struct NavSidebarView: View {
         placement: .bottomBar
       )
     }
-    // Match the leading safe area padding used by `TaskSheetView`
-    // so section headers line up the same in both lists
-    .safeAreaPadding(.leading, 16)
-    .safeAreaInset(
-      edge: .trailing,
-      spacing: 0
-    ) {
-
-      // Show the divider only if the
-      // size class is set to `regular`
-      if (self._sizeClass == .regular) {
-        Rectangle()
-          .fill(Color.outline)
-          .frame(width: 2 / self._displayScale)
-          .ignoresSafeArea(edges: .vertical)
-          .allowsHitTesting(false)
-      }
-    }
     .listStyle(.plain)
     .navigationTitle(self._title)
     .navigationSubtitle(self._subtitle)
@@ -236,6 +218,22 @@ struct NavSidebarView: View {
     .listSectionSpacing(16)
     .contentMargins(.vertical, 8, for: .scrollContent)
     .scrollContentBackground(.hidden)
-    .background(Color.base)
+    .background {
+
+      // The background fills the whole column including its safe area, so the
+      // divider drawn on its trailing edge sits where the columns meet
+      Color.base
+        .overlay(alignment: .trailing) {
+
+          // Show the divider only if the
+          // size class is set to `regular`
+          if (self._sizeClass == .regular) {
+            Rectangle()
+              .fill(Color.outline)
+              .frame(width: 2 / self._displayScale)
+          }
+        }
+        .ignoresSafeArea()
+    }
   }
 }

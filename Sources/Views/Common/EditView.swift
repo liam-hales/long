@@ -75,6 +75,7 @@ struct EditView<Content: View>: View {
           self._content
         }
         .padding(.vertical, 26)
+        .containerMargins()
         .frame(maxWidth: .infinity)
       }
       .scrollBounceBehavior(.basedOnSize)

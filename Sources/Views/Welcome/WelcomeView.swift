@@ -91,8 +91,8 @@ struct WelcomeView: View {
         }
       }
       .frame(maxWidth: 400)
-      .padding(.horizontal, 8)
       .padding(.top, 32)
+      .containerMargins()
       // Stretch the content to the full width so the scroll
       // view fills the screen and its indicator sits at the edge
       .frame(maxWidth: .infinity)

@@ -98,7 +98,7 @@ struct TaskSectionView: View {
             .font(.mono(14))
         }
         .foregroundStyle(self._headerColour)
-        .listRowInsets(.horizontal, 8)
+        .padding(.horizontal, 8)
       }
     )
   }
