@@ -27,6 +27,7 @@ attributes:
     - "@Query"
     - "@FocusState"
     - "@Transient"
+    - "@MainActor"
 
 type_contents_order:
   order:
