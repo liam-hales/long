@@ -56,6 +56,7 @@ struct NavRouterView: View {
             }
           )
         }
+        .toolbarAxis(.vertical)
       }
 
       if (
@@ -72,6 +73,7 @@ struct NavRouterView: View {
             }
           )
         }
+        .toolbarAxis(.vertical)
       }
     }
     .sheet(item: $appState.modalSelection) { modal in

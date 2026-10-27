@@ -92,65 +92,33 @@ struct TaskSheetToolbar: ToolbarContent {
         }
       )
     }
+    .toolbarAxis(.horizontal)
 
     ToolbarSpacer(
       .fixed,
       placement: .topBarTrailing
     )
 
-    ToolbarItem(placement: .topBarTrailing) {
-      Menu(
-        content: {
-          Section {
-            Button(
-              action: {
-                self._appState.modalSelection = .editTaskSheet
-              },
-              label: {
-                Label(
-                  title: {
-                    Text("Edit")
-                  },
-                  icon: {
-                    Image(
-                      lucide: .pencil,
-                      size: .init(width: 22, height: 22)
-                    )
-                  }
-                )
-              }
-            )
-            .tint(.contentPrimary)
-          }
-
-          Section {
-            Button(
-              role: .destructive,
-              action: {
-                self._showDeleteConfirmation = true
-              },
-              label: {
-                Label(
-                  title: {
-                    Text("Delete")
-                  },
-                  icon: {
-                    Image(
-                      lucide: .trash,
-                      size: .init(width: 22, height: 22)
-                    )
-                  }
-                )
-              }
-            )
-            .tint(nil)
-          }
+    ToolbarItemGroup(placement: .topBarTrailing) {
+      Button(
+        action: {
+          self._appState.modalSelection = .editTaskSheet
         },
         label: {
-          LucideIcon(.ellipsis, size: 22)
+          LucideIcon(.pencil, size: 22)
         }
       )
-      .menuOrder(.fixed)
+
+      Button(
+        role: .destructive,
+        action: {
+          self._showDeleteConfirmation = true
+        },
+        label: {
+          LucideIcon(.trash, size: 22)
+            .foregroundStyle(Color.contentError)
+        }
+      )
       .confirmationDialog(
         "Delete \"\(self._sheet.name)\"?",
         isPresented: self.$_showDeleteConfirmation,
@@ -167,5 +135,6 @@ struct TaskSheetToolbar: ToolbarContent {
         }
       )
     }
+    .toolbarAxis(.vertical)
   }
 }

@@ -169,6 +169,7 @@ struct NavSidebarView: View {
           }
         )
       }
+      .toolbarAxis(.vertical)
 
       ToolbarItem(placement: .topBarTrailing) {
         Button(
@@ -180,6 +181,7 @@ struct NavSidebarView: View {
           }
         )
       }
+      .toolbarAxis(.vertical)
 
       // Show the sidebar open button only
       // if the size class is set to `regular`
@@ -199,6 +201,7 @@ struct NavSidebarView: View {
             }
           )
         }
+        .toolbarAxis(.vertical)
       }
 
       ToolbarSpacer(
