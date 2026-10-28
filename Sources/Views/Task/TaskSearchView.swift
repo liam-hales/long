@@ -101,7 +101,8 @@ struct TaskSearchView: View {
     if (self._query.isEmpty == true) {
       NoContentView(
         title: "Search tasks.",
-        message: "Search for tasks by title across all of your task sheets."
+        message: "Search for tasks by title across all of your task sheets.",
+        icon: .search
       )
     }
 
@@ -111,7 +112,8 @@ struct TaskSearchView: View {
 
         NoContentView(
           title: "No results.",
-          message: "There were no \(tasks) found matching your search \"\(self._query)\"."
+          message: "There were no \(tasks) found matching your search \"\(self._query)\".",
+          icon: .searchX
         )
       }
 

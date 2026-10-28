@@ -26,7 +26,8 @@ struct NavRouterView: View {
       if (self._appState.navSelection == nil) {
         NoContentView(
           title: "Nothing selected.",
-          message: "You have nothing selected, select a task sheet from the sidebar."
+          message: "You have nothing selected, select a task sheet from the sidebar.",
+          icon: .panelLeft
         )
         .frame(
           maxWidth: .infinity,

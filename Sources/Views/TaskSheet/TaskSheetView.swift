@@ -1,3 +1,4 @@
+import LucideSwift
 import SwiftData
 import SwiftUI
 
@@ -62,7 +63,8 @@ struct TaskSheetView: View {
 
             NoContentView(
               title: "No tasks.",
-              message: "There are no tasks for the \"\(focus)\" focus, try choosing a different one."
+              message: "There are no tasks for the \"\(focus)\" focus, try choosing a different one.",
+              icon: self._appState.taskFocus.icon
             )
           }
 
@@ -87,7 +89,8 @@ struct TaskSheetView: View {
           if (self._tasks.isEmpty == true) {
             NoContentView(
               title: "No tasks.",
-              message: "You currently have no tasks to complete, try creating one below."
+              message: "You currently have no tasks to complete, try creating one below.",
+              icon: .listCheck
             )
           }
 

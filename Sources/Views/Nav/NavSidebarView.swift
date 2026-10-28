@@ -102,7 +102,8 @@ struct NavSidebarView: View {
             if (self._taskSheets.isEmpty == true) {
               NoContentView(
                 title: "No task sheets.",
-                message: "Task sheets you create will appear here."
+                message: "Task sheets you create will appear here.",
+                icon: .files
               )
             }
 
