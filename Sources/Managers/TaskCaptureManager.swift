@@ -4,7 +4,7 @@ import FoundationModels
 
 /// Used to capture tasks from a users
 /// input text using the on-device model
-final class TaskCaptureService {
+final class TaskCaptureManager {
 
   /// Describes a single captured
   /// task the model should generate
@@ -40,7 +40,7 @@ final class TaskCaptureService {
   private var _modelSession: LanguageModelSession?
   private let _instructions: String
 
-  /// Initialises the `TaskCaptureService` with
+  /// Initialises the `TaskCaptureManager` with
   /// the model instructions
   init() {
     self._instructions =

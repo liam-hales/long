@@ -27,7 +27,7 @@ final class AppState {
   }
 
   private let _context: ModelContext
-  private let _captureService: TaskCaptureService
+  private let _captureManager: TaskCaptureManager
 
   var navVisibility: NavigationSplitViewVisibility
   var navSelection: NavSelection?
@@ -66,13 +66,13 @@ final class AppState {
   }
 
   /// Initialises the `AppState` with a given model context
-  /// and the service used to capture tasks
+  /// and the manager used to capture tasks
   init(
     context: ModelContext,
-    captureService: TaskCaptureService
+    captureManager: TaskCaptureManager
   ) {
     self._context = context
-    self._captureService = captureService
+    self._captureManager = captureManager
 
     self.navVisibility = .doubleColumn
     self.navSelection = nil
@@ -133,7 +133,7 @@ final class AppState {
   /// Used to start the
   /// capture session
   func startCaptureSession() -> Void {
-    self._captureService.startSession()
+    self._captureManager.startSession()
   }
 
   /// Used to capture tasks from the task input and present
@@ -145,11 +145,11 @@ final class AppState {
     // capture finishes, even if it fails, so a new session is ready
     defer {
       self.isCapturing = false
-      self._captureService.startSession()
+      self._captureManager.startSession()
     }
 
     do {
-      self.capturedTasks = try await self._captureService.capture(from: self.taskInput)
+      self.capturedTasks = try await self._captureManager.capture(from: self.taskInput)
 
       // Check if the user should review
       // the tasks first or not

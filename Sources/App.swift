@@ -16,7 +16,7 @@ struct App: SwiftUI.App {
   /// Initialises the app with new app state,
   /// settings and custom appearance configuration
   init() {
-    let captureService = TaskCaptureService()
+    let captureManager = TaskCaptureManager()
     let appSettings = AppSettings()
 
     do {
@@ -27,10 +27,10 @@ struct App: SwiftUI.App {
     }
 
     // Initialise the app state with the
-    // context and capture service
+    // context and capture manager
     let appState = AppState(
       context: self._container.mainContext,
-      captureService: captureService
+      captureManager: captureManager
     )
 
     self.__appSettings = State(initialValue: appSettings)

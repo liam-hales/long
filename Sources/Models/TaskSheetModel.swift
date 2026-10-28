@@ -7,7 +7,7 @@ import SwiftData
 final class TaskSheetModel: Identifiable {
 
   @MainActor
-  private static var _undoManagers: [TaskSheetModel.ID: AppUndoManager] = [:]
+  private static var _undoManagers: [TaskSheetModel.ID: TaskSheetUndoManager] = [:]
 
   private(set) var name: String = ""
 
@@ -23,7 +23,7 @@ final class TaskSheetModel: Identifiable {
   /// The undo manager used to undo and redo
   /// changes made to the task sheet and its tasks
   @MainActor
-  var undoManager: AppUndoManager {
+  var undoManager: TaskSheetUndoManager {
 
     // Check if there is an existing undo
     // manager first before creating a new one
@@ -31,7 +31,7 @@ final class TaskSheetModel: Identifiable {
       return manager
     }
 
-    let newManager = AppUndoManager()
+    let newManager = TaskSheetUndoManager()
     Self._undoManagers[self.id] = newManager
 
     return newManager

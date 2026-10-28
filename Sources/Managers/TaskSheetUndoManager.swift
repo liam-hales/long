@@ -1,9 +1,9 @@
 import Foundation
 import Observation
 
-/// The undo manager used as a recorder of operations
-/// that enables undo and redo across the app
-final class AppUndoManager: UndoManager, Observable {
+/// The undo manager used to record changes made to a task
+/// sheet and its tasks, with observable undo and redo states
+final class TaskSheetUndoManager: UndoManager, Observable {
   private let _registrar = ObservationRegistrar()
   private var _tokens: [NotificationCenter.ObservationToken] = []
 
