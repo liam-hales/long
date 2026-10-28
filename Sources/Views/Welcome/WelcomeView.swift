@@ -51,6 +51,10 @@ struct WelcomeView: View {
             message: "Use focus to see what’s due and tick off tasks as you go."
           )
         }
+        .frame(
+          maxWidth: .infinity,
+          alignment: .leading
+        )
         .padding(20)
         .background(
           RoundedRectangle(cornerRadius: 14)
