@@ -8,6 +8,7 @@ final class AppSettings {
   private static let _appearanceKey = "appearance"
   private static let _dateFormatKey = "dateFormat"
   private static let _isReviewEnabledKey = "isReviewEnabled"
+  private static let _preferredNameKey = "preferredName"
 
   private let _storage: UserDefaults
 
@@ -35,6 +36,14 @@ final class AppSettings {
     }
   }
 
+  /// The name the user prefers
+  /// to be greeted by
+  var preferredName: String {
+    didSet {
+      self._storage.set(self.preferredName, forKey: Self._preferredNameKey)
+    }
+  }
+
   /// Initialises the `AppSettings` with the values stored in
   /// `UserDefaults` or their defaults if non have been set
   init() {
@@ -52,5 +61,7 @@ final class AppSettings {
     self.isReviewEnabled = (
       storage.object(forKey: Self._isReviewEnabledKey) as? Bool
     ) ?? true
+
+    self.preferredName = storage.string(forKey: Self._preferredNameKey) ?? ""
   }
 }

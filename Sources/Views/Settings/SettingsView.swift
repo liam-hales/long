@@ -11,6 +11,9 @@ struct SettingsView: View {
   @Environment(\.dismiss)
   private var _dismiss: DismissAction
 
+  @State
+  private var _isEditingName: Bool = false
+
   var body: some View {
 
     @Bindable
@@ -22,6 +25,37 @@ struct SettingsView: View {
     NavigationStack {
       List {
         Section {
+          SettingsRowView(
+            title: "Name",
+            subtitle: "The name used to greet you"
+          ) {
+            Button(
+              action: {
+                self._isEditingName = true
+              },
+              label: {
+                HStack(
+                  alignment: .center,
+                  spacing: 6
+                ) {
+                  Text(
+                    (self._appSettings.preferredName.isEmpty == true)
+                      ? "Add name"
+                      : self._appSettings.preferredName
+                  )
+                  .font(.serif(14, .semibold))
+
+                  LucideIcon(.penLine, size: 14)
+                    .foregroundStyle(Color.contentSecondary)
+                }
+              }
+            )
+            .buttonStyle(.borderless)
+            .sheet(isPresented: self.$_isEditingName) {
+              EditNameView(name: self._appSettings.preferredName)
+            }
+          }
+
           SettingsRowView(
             title: "Appearance",
             subtitle: "The preferred app appearance"
@@ -156,8 +190,5 @@ struct SettingsView: View {
     // don't update when the app appearance changes while open
     .preferredColorScheme(self._appSettings.appearance.scheme)
     .presentationBackground(Color.base)
-    .presentationDetents([
-      .height(616)
-    ])
   }
 }
