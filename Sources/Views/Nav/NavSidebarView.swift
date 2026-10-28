@@ -10,6 +10,9 @@ struct NavSidebarView: View {
   @Environment(AppState.self)
   private var _appState: AppState
 
+  @Environment(AppSettings.self)
+  private var _appSettings: AppSettings
+
   @Environment(\.displayScale)
   private var _displayScale: CGFloat
 
@@ -24,10 +27,14 @@ struct NavSidebarView: View {
   @Query(sort: \TaskModel.dueDate, order: .forward)
   private var _tasks: [TaskModel]
 
-  /// The title greeting
-  /// to the user
+  /// The title greeting to the user which
+  /// uses their preferred name if it's set
   private var _title: String {
-    "Hello there."
+    if (self._appSettings.preferredName.isEmpty == true) {
+      return "Hello there."
+    }
+
+    return "Hello, \(self._appSettings.preferredName)."
   }
 
   /// The subtitle which will always be today's date written
