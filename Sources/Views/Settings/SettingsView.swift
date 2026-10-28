@@ -108,25 +108,6 @@ struct SettingsView: View {
               .labelsHidden()
           }
         }
-
-        Section {
-          VStack(
-            alignment: .center,
-            spacing: 6
-          ) {
-            Text("LONG")
-              .font(.logo(60))
-            Text("Created by Liam Hales")
-              .font(.serif(14, .regular))
-            Text("Version \(version) (build \(build))")
-              .foregroundStyle(Color.contentSecondary)
-              .font(.mono(12))
-          }
-        }
-        .frame(maxWidth: .infinity)
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
-        .listRowInsets(.horizontal, 0)
       }
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
@@ -148,6 +129,28 @@ struct SettingsView: View {
       .contentMargins(.vertical, 20, for: .scrollContent)
       .scrollContentBackground(.hidden)
       .background(Color.base)
+
+      VStack(
+        alignment: .center,
+        spacing: 6
+      ) {
+        Text("LONG")
+          .font(.logo(54))
+
+        VStack(
+          alignment: .center,
+          spacing: 4
+        ) {
+          Text("Created by Liam Hales")
+            .font(.serif(12, .regular))
+
+          Text("Version \(version) (build \(build))")
+            .foregroundStyle(Color.contentSecondary)
+            .font(.mono(10))
+        }
+      }
+      .frame(maxWidth: .infinity)
+      .padding(.vertical, 10)
     }
     // This needs to be set as sheets are their own presentation and
     // don't update when the app appearance changes while open
