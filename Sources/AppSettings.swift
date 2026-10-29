@@ -9,6 +9,7 @@ final class AppSettings {
   private static let _dateFormatKey = "dateFormat"
   private static let _isReviewEnabledKey = "isReviewEnabled"
   private static let _preferredNameKey = "preferredName"
+  private static let _taskSheetSortKey = "taskSheetSort"
 
   private let _storage: UserDefaults
 
@@ -44,6 +45,14 @@ final class AppSettings {
     }
   }
 
+  /// The preferred order to
+  /// sort the task sheets
+  var taskSheetSort: TaskSheetSort {
+    didSet {
+      self._storage.set(self.taskSheetSort.rawValue, forKey: Self._taskSheetSortKey)
+    }
+  }
+
   /// Initialises the `AppSettings` with the values stored in
   /// `UserDefaults` or their defaults if non have been set
   init() {
@@ -63,5 +72,9 @@ final class AppSettings {
     ) ?? true
 
     self.preferredName = storage.string(forKey: Self._preferredNameKey) ?? ""
+
+    self.taskSheetSort = TaskSheetSort(
+      rawValue: storage.string(forKey: Self._taskSheetSortKey) ?? ""
+    ) ?? .lastActive
   }
 }

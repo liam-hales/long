@@ -50,3 +50,27 @@ extension Array where Element == TaskModel {
     }
   }
 }
+
+extension Array where Element == TaskSheetModel {
+
+  /// Returns the task sheets
+  /// for a given `sort`
+  func sorted(by sort: TaskSheetSort) -> [TaskSheetModel] {
+    switch sort {
+      case .lastActive:
+        return self.sorted { first, second in
+          first.activityDate > second.activityDate
+        }
+
+      case .name:
+        return self.sorted { first, second in
+          first.name.localizedStandardCompare(second.name) == .orderedAscending
+        }
+
+      case .created:
+        return self.sorted { first, second in
+          first.createDate > second.createDate
+        }
+    }
+  }
+}

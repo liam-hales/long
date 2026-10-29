@@ -44,11 +44,9 @@ struct NavSidebarView: View {
   }
 
   /// The task sheets ordered by
-  /// most recently active
+  /// the users preferred sort
   private var _sortedTaskSheets: [TaskSheetModel] {
-    self._taskSheets.sorted { first, second in
-      first.activityDate > second.activityDate
-    }
+    self._taskSheets.sorted(by: self._appSettings.taskSheetSort)
   }
 
   /// The placement for the toolbar items which
@@ -69,6 +67,9 @@ struct NavSidebarView: View {
 
     @Bindable
     var appState = _appState
+
+    @Bindable
+    var appSettings = _appSettings
 
     List(selection: $appState.navSelection) {
 
@@ -178,6 +179,39 @@ struct NavSidebarView: View {
         )
       }
       .toolbarAxis(.vertical)
+
+      ToolbarItem(placement: self._toolbarItemPlacement) {
+        Menu(
+          content: {
+            Picker("Sort By", selection: $appSettings.taskSheetSort) {
+              ForEach(TaskSheetSort.allCases) { sort in
+                Label(
+                  title: {
+                    Text(sort.title)
+                  },
+                  icon: {
+                    Image(
+                      lucide: sort.icon,
+                      size: .init(width: 22, height: 22)
+                    )
+                  }
+                )
+              }
+            }
+            .tint(.contentPrimary)
+            .pickerStyle(.inline)
+          },
+          label: {
+            LucideIcon(.arrowUpDown, size: 22)
+          }
+        )
+      }
+      .toolbarAxis(.vertical)
+
+      ToolbarSpacer(
+        .fixed,
+        placement: self._toolbarItemPlacement
+      )
 
       ToolbarItem(placement: self._toolbarItemPlacement) {
         Button(
