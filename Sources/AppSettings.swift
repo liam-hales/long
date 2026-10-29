@@ -5,13 +5,21 @@ import Observation
 /// persist their values in `UserDefaults`
 @Observable
 final class AppSettings {
+  private static let _preferredNameKey = "preferredName"
   private static let _appearanceKey = "appearance"
   private static let _dateFormatKey = "dateFormat"
   private static let _isReviewEnabledKey = "isReviewEnabled"
-  private static let _preferredNameKey = "preferredName"
   private static let _taskSheetSortKey = "taskSheetSort"
 
   private let _storage: UserDefaults
+
+  /// The name the user prefers
+  /// to be greeted by
+  var preferredName: String {
+    didSet {
+      self._storage.set(self.preferredName, forKey: Self._preferredNameKey)
+    }
+  }
 
   /// The preferred app
   /// appearance setting
@@ -37,14 +45,6 @@ final class AppSettings {
     }
   }
 
-  /// The name the user prefers
-  /// to be greeted by
-  var preferredName: String {
-    didSet {
-      self._storage.set(self.preferredName, forKey: Self._preferredNameKey)
-    }
-  }
-
   /// The preferred order to
   /// sort the task sheets
   var taskSheetSort: TaskSheetSort {
@@ -59,6 +59,8 @@ final class AppSettings {
     let storage = UserDefaults.standard
     self._storage = storage
 
+    self.preferredName = storage.string(forKey: Self._preferredNameKey) ?? ""
+
     self.appearance = AppAppearance(
       rawValue: storage.string(forKey: Self._appearanceKey) ?? ""
     ) ?? .system
@@ -70,8 +72,6 @@ final class AppSettings {
     self.isReviewEnabled = (
       storage.object(forKey: Self._isReviewEnabledKey) as? Bool
     ) ?? true
-
-    self.preferredName = storage.string(forKey: Self._preferredNameKey) ?? ""
 
     self.taskSheetSort = TaskSheetSort(
       rawValue: storage.string(forKey: Self._taskSheetSortKey) ?? ""
