@@ -149,6 +149,15 @@ final class TaskSheetModel: Identifiable {
     try? self.modelContext?.save()
   }
 
+  /// Used to complete all of the tasks
+  /// in the sheet that are still active
+  @MainActor
+  func completeAllTasks() -> Void {
+    self.tasks
+      .filter { task in task.isCompleted == false }
+      .forEach { task in task.toggleCompleted() }
+  }
+
   /// Used to set the update date and register
   /// the undo with the task sheet undo manager
   @MainActor

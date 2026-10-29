@@ -10,6 +10,9 @@ struct TaskSheetToolbar: ToolbarContent {
   private var _appState: AppState
 
   @State
+  private var _showCompleteConfirmation: Bool = false
+
+  @State
   private var _showDeleteConfirmation: Bool = false
 
   /// Initialises the toolbar with
@@ -108,9 +111,20 @@ struct TaskSheetToolbar: ToolbarContent {
             undoManager.undo()
           },
           label: {
-            LucideIcon(.undo2, size: 22)
+            Label(
+              title: {
+                Text("Undo")
+              },
+              icon: {
+                Image(
+                  lucide: .undo2,
+                  size: .init(width: 22, height: 22)
+                )
+              }
+            )
           }
         )
+        .tint(.contentPrimary)
       }
 
       if (undoManager.canRedo == true) {
@@ -119,9 +133,20 @@ struct TaskSheetToolbar: ToolbarContent {
             undoManager.redo()
           },
           label: {
-            LucideIcon(.redo2, size: 22)
+            Label(
+              title: {
+                Text("Redo")
+              },
+              icon: {
+                Image(
+                  lucide: .redo2,
+                  size: .init(width: 22, height: 22)
+                )
+              }
+            )
           }
         )
+        .tint(.contentPrimary)
       }
     }
     .toolbarAxis(.vertical)
@@ -131,26 +156,88 @@ struct TaskSheetToolbar: ToolbarContent {
       placement: .topBarTrailing
     )
 
-    ToolbarItemGroup(placement: .topBarTrailing) {
+    ToolbarItem(placement: .topBarTrailing) {
       Button(
         action: {
           self._appState.modalSelection = .editTaskSheet
         },
         label: {
-          LucideIcon(.pencil, size: 22)
+          Label(
+            title: {
+              Text("Edit")
+            },
+            icon: {
+              Image(
+                lucide: .pencil,
+                size: .init(width: 22, height: 22)
+              )
+            }
+          )
         }
       )
+      .tint(.contentPrimary)
+    }
+    .toolbarAxis(.vertical)
 
+    ToolbarItem(placement: .topBarTrailing) {
+      Button(
+        action: {
+          self._showCompleteConfirmation = true
+        },
+        label: {
+          Label(
+            title: {
+              Text("Complete All")
+            },
+            icon: {
+              Image(
+                lucide: .checkCheck,
+                size: .init(width: 22, height: 22)
+              )
+            }
+          )
+        }
+      )
+      .tint(.contentPrimary)
+      .disabled(self._sheet.activeCount == 0)
+      .confirmationDialog(
+        "Complete all tasks?",
+        isPresented: self.$_showCompleteConfirmation,
+        titleVisibility: .visible,
+        actions: {
+          Button("Complete All") {
+            self._sheet.completeAllTasks()
+          }
+        },
+        message: {
+          Text("All tasks in this task sheet will be marked as completed.")
+        }
+      )
+    }
+    .toolbarAxis(.vertical)
+    .visibilityPriority(.low)
+
+    ToolbarItem(placement: .topBarTrailing) {
       Button(
         role: .destructive,
         action: {
           self._showDeleteConfirmation = true
         },
         label: {
-          LucideIcon(.trash, size: 22)
-            .foregroundStyle(Color.contentError)
+          Label(
+            title: {
+              Text("Delete")
+            },
+            icon: {
+              Image(
+                lucide: .trash,
+                size: .init(width: 22, height: 22)
+              )
+            }
+          )
         }
       )
+      .tint(.contentError)
       .confirmationDialog(
         "Delete \"\(self._sheet.name)\"?",
         isPresented: self.$_showDeleteConfirmation,
@@ -168,5 +255,6 @@ struct TaskSheetToolbar: ToolbarContent {
       )
     }
     .toolbarAxis(.vertical)
+    .visibilityPriority(.low)
   }
 }
