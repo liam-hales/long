@@ -51,6 +51,14 @@ struct NavSidebarView: View {
     }
   }
 
+  /// The placement for the toolbar items which
+  /// depends on the device size class
+  private var _toolbarItemPlacement: ToolbarItemPlacement {
+    (self._sizeClass == .regular)
+      ? .topBarLeading
+      : .topBarTrailing
+  }
+
   /// Initialises the view with
   /// the app `sizeClass`
   init(sizeClass: UserInterfaceSizeClass?) {
@@ -159,25 +167,25 @@ struct NavSidebarView: View {
           )
       }
 
-      ToolbarItem(placement: .topBarLeading) {
-        Button(
-          action: {
-            self._appState.modalSelection = .settings
-          },
-          label: {
-            LucideIcon(.settings, size: 22)
-          }
-        )
-      }
-      .toolbarAxis(.vertical)
-
-      ToolbarItem(placement: .topBarTrailing) {
+      ToolbarItem(placement: self._toolbarItemPlacement) {
         Button(
           action: {
             self._appState.createTaskSheet(name: "Untitled")
           },
           label: {
             LucideIcon(.filePlusCorner, size: 22)
+          }
+        )
+      }
+      .toolbarAxis(.vertical)
+
+      ToolbarItem(placement: self._toolbarItemPlacement) {
+        Button(
+          action: {
+            self._appState.modalSelection = .settings
+          },
+          label: {
+            LucideIcon(.settings, size: 22)
           }
         )
       }
