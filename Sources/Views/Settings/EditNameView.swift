@@ -49,7 +49,7 @@ struct EditNameView: View {
           TextField(
             "Name",
             text: self.$_name,
-            prompt: Text("Your name")
+            prompt: Text("Name")
               .foregroundStyle(Color.contentSecondary)
           )
           .font(.serif(28, .semibold))
