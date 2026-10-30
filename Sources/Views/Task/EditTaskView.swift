@@ -127,7 +127,6 @@ struct EditTaskView: View {
           Rectangle()
             .fill(Color.outline)
             .frame(height: 2 / self._displayScale)
-            .ignoresSafeArea(edges: .horizontal)
             .allowsHitTesting(false)
 
           DatePicker(
