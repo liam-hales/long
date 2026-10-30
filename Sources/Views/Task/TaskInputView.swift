@@ -57,7 +57,7 @@ struct TaskInputView: View {
           spacing: 8
         ) {
           TextField(
-            "Add tasks",
+            "New tasks",
             text: $appState.taskInput,
             prompt: Text("What do you need to get done?")
               .foregroundStyle(Color.contentSecondary),
