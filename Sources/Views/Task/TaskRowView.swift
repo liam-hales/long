@@ -8,6 +8,9 @@ struct TaskRowView: View {
   private let _dateFormat: DateFormat
   private let _isSelected: Bool
 
+  @Environment(AppState.self)
+  private var _appState: AppState
+
   /// Initialises the view with the `task` to render,
   /// along with the `dateFormat` and `isSelected`
   init(
@@ -96,5 +99,76 @@ struct TaskRowView: View {
       }
     }
     .listRow(isSelected: self._isSelected)
+    .contentShape(
+      .contextMenuPreview,
+      .rect(cornerRadius: 14)
+    )
+    .contextMenu {
+      Button(
+        action: {
+          self._task.toggleCompleted()
+        },
+        label: {
+          Label(
+            title: {
+              Text(
+                (self._task.isCompleted == true)
+                  ? "Uncomplete"
+                  : "Complete"
+              )
+            },
+            icon: {
+              Image(
+                lucide: (self._task.isCompleted == true)
+                  ? LucideIconName.x
+                  : .check,
+                size: .init(width: 22, height: 22)
+              )
+            }
+          )
+        }
+      )
+      .tint(.contentPrimary)
+
+      Button(
+        action: {
+          self._appState.modalSelection = .editTask(self._task)
+        },
+        label: {
+          Label(
+            title: {
+              Text("Edit")
+            },
+            icon: {
+              Image(
+                lucide: .pencil,
+                size: .init(width: 22, height: 22)
+              )
+            }
+          )
+        }
+      )
+      .tint(.contentPrimary)
+
+      Button(
+        action: {
+          self._task.sheet?.removeTasks([self._task])
+        },
+        label: {
+          Label(
+            title: {
+              Text("Delete")
+            },
+            icon: {
+              Image(
+                lucide: .trash,
+                size: .init(width: 22, height: 22)
+              )
+            }
+          )
+        }
+      )
+      .tint(.contentPrimary)
+    }
   }
 }
