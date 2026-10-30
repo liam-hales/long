@@ -146,6 +146,7 @@ struct SettingsView: View {
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(
+            role: .close,
             action: {
               self._dismiss()
             },

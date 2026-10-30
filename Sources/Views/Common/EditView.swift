@@ -83,6 +83,7 @@ struct EditView<Content: View>: View {
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(
+            role: .cancel,
             action: self._close
           ) {
             LucideIcon(.x, size: 22)
@@ -107,6 +108,7 @@ struct EditView<Content: View>: View {
 
         ToolbarItem(placement: .confirmationAction) {
           Button(
+            role: .confirm,
             action: self._save
           ) {
             HStack(

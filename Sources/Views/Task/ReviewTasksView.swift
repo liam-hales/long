@@ -46,6 +46,7 @@ struct ReviewTasksView: View {
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(
+            role: .cancel,
             action: {
               self._dismiss()
             },
@@ -57,6 +58,7 @@ struct ReviewTasksView: View {
 
         ToolbarItem(placement: .confirmationAction) {
           Button(
+            role: .confirm,
             action: self._add
           ) {
             HStack(

@@ -219,7 +219,6 @@ struct TaskSheetToolbar: ToolbarContent {
 
     ToolbarItem(placement: .topBarTrailing) {
       Button(
-        role: .destructive,
         action: {
           self._showDeleteConfirmation = true
         },
