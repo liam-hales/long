@@ -114,7 +114,14 @@ struct ReviewTasksView: View {
         }
       )
     }
+    .frame(idealWidth: 440)
     .presentationBackground(Color.base)
+    .presentationSizing(
+      .form.fitted(
+        horizontal: true,
+        vertical: false
+      )
+    )
     .presentationDetents([
       .height(self._contentHeight)
     ])

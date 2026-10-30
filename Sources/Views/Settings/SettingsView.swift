@@ -190,6 +190,13 @@ struct SettingsView: View {
     // This needs to be set as sheets are their own presentation and
     // don't update when the app appearance changes while open
     .preferredColorScheme(self._appSettings.appearance.scheme)
+    .frame(idealWidth: 440)
     .presentationBackground(Color.base)
+    .presentationSizing(
+      .form.fitted(
+        horizontal: true,
+        vertical: false
+      )
+    )
   }
 }
