@@ -96,6 +96,7 @@ struct TaskSheetToolbar: ToolbarContent {
       )
     }
     .toolbarAxis(.horizontal)
+    .visibilityPriority(.high)
 
     ToolbarSpacer(
       .fixed,
