@@ -13,6 +13,9 @@ struct TaskSheetView: View {
   @Environment(AppSettings.self)
   private var _appSettings: AppSettings
 
+  @Environment(\.hasVerticalBar)
+  private var _hasVerticalBar: Bool
+
   /// Used for force the view to rebuild when the
   /// app comes back from the background
   @Environment(\.scenePhase)
@@ -41,6 +44,12 @@ struct TaskSheetView: View {
     )
   }
 
+  /// The subtitle which shows the number
+  /// of tasks left to complete
+  private var _subtitle: String {
+    "\(self._activeTasks.count) tasks to complete"
+  }
+
   private var _activeTasks: [TaskModel] {
     self._tasks.filter { task in task.isCompleted == false }
   }
@@ -52,6 +61,28 @@ struct TaskSheetView: View {
 
     ScrollViewReader { proxy in
       List {
+
+        // Show the title and subtitle in the `List` only when the veritcal bar
+        // is present as the navigation bar behaves differently when it is
+        if (self._hasVerticalBar == true) {
+          VStack(
+            alignment: .leading,
+            spacing: 4
+          ) {
+            Text(self._sheet.name)
+              .font(.serif(28, .semibold))
+
+            Text(self._subtitle)
+              .foregroundStyle(Color.contentSecondary)
+              .font(.mono(14))
+          }
+          .padding(.horizontal, 6)
+          .padding(.bottom, 10)
+          .listRowInsets(.vertical, 0)
+          .listRowBackground(Color.clear)
+          .listRowSeparator(.hidden)
+        }
+
         if (self._appState.taskFocus != .all) {
 
           // Get the focussed tasks using
@@ -125,29 +156,36 @@ struct TaskSheetView: View {
         }
       }
     }
+    .toolbar(removing: (self._hasVerticalBar == true) ? .title : nil)
+    .toolbarTitleDisplayMode((self._hasVerticalBar == true) ? .inline : .large)
     .toolbar {
       TaskSheetToolbar(sheet: self._sheet)
 
-      ToolbarItem(placement: .largeTitle) {
-        Text(self._sheet.name)
-          .font(.serif(28, .semibold))
-          .padding(.horizontal, 4)
-          .padding(.top, 32)
-          .frame(
-            maxWidth: .infinity,
-            alignment: .leading
-          )
-      }
+      // Show the custom large title only when there is no vertical
+      // bar as the navigation bar behaves differently when it is
+      if (self._hasVerticalBar == false) {
+        ToolbarItem(placement: .largeTitle) {
+          Text(self._sheet.name)
+            .font(.serif(28, .semibold))
+            .padding(.horizontal, 6)
+            .padding(.top, 42)
+            .padding(.bottom, -2)
+            .frame(
+              maxWidth: .infinity,
+              alignment: .leading
+            )
+        }
 
-      ToolbarItem(placement: .largeSubtitle) {
-        Text("\(self._activeTasks.count) tasks to complete")
-          .foregroundStyle(Color.contentSecondary)
-          .font(.mono(14))
-          .padding(.horizontal, 4)
-          .frame(
-            maxWidth: .infinity,
-            alignment: .leading
-          )
+        ToolbarItem(placement: .largeSubtitle) {
+          Text(self._subtitle)
+            .foregroundStyle(Color.contentSecondary)
+            .font(.mono(14))
+            .padding(.horizontal, 6)
+            .frame(
+              maxWidth: .infinity,
+              alignment: .leading
+            )
+        }
       }
     }
     .safeAreaInset(
@@ -178,10 +216,11 @@ struct TaskSheetView: View {
     )
     .listStyle(.plain)
     .navigationTitle(self._sheet.name)
-    .navigationSubtitle("\(self._activeTasks.count) tasks to complete")
+    .navigationSubtitle(self._subtitle)
     .listRowSpacing(10)
     .listSectionSpacing(16)
-    .contentMargins(.vertical, 16, for: .scrollContent)
+    .contentMargins(.top, (self._hasVerticalBar == true) ? -20 : 16, for: .scrollContent)
+    .contentMargins(.bottom, 16, for: .scrollContent)
     .scrollContentBackground(.hidden)
     .scrollDismissesKeyboard(.interactively)
     .background(Color.base)

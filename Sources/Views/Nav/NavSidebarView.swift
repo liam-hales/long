@@ -49,14 +49,6 @@ struct NavSidebarView: View {
     self._taskSheets.sorted(by: self._appSettings.taskSheetSort)
   }
 
-  /// The placement for the toolbar items which
-  /// depends on the device size class
-  private var _toolbarItemPlacement: ToolbarItemPlacement {
-    (self._sizeClass == .regular)
-      ? .topBarLeading
-      : .topBarTrailing
-  }
-
   /// Initialises the view with
   /// the app `sizeClass`
   init(sizeClass: UserInterfaceSizeClass?) {
@@ -85,6 +77,22 @@ struct NavSidebarView: View {
       }
 
       if (self._appState.isSearching == false) {
+        VStack(
+          alignment: .center,
+          spacing: 4
+        ) {
+          Text(self._title)
+            .font(.serif(28, .semibold))
+
+          Text(self._subtitle)
+            .foregroundStyle(Color.contentSecondary)
+            .font(.mono(14))
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .listRowInsets(.vertical, 0)
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
 
         let filters = [
           TaskFilter.overdue,
@@ -146,29 +154,9 @@ struct NavSidebarView: View {
     }
     .searchToolbarBehavior(.minimize)
     .toolbar(removing: .sidebarToggle)
-    .toolbarTitleDisplayMode(.large)
+    .toolbarMinimizationBehavior(.onScrollDown, for: .navigationBar)
     .toolbar {
-      ToolbarItem(placement: .largeTitle) {
-        Text(self._title)
-          .font(.serif(28, .semibold))
-          .padding(.top, 32)
-          .frame(
-            maxWidth: .infinity,
-            alignment: .center
-          )
-      }
-
-      ToolbarItem(placement: .largeSubtitle) {
-        Text(self._subtitle)
-          .foregroundStyle(Color.contentSecondary)
-          .font(.mono(14))
-          .frame(
-            maxWidth: .infinity,
-            alignment: .center
-          )
-      }
-
-      ToolbarItem(placement: self._toolbarItemPlacement) {
+      ToolbarItem(placement: .topBarTrailing) {
         Button(
           action: {
             self._appState.createTaskSheet(name: "Untitled")
@@ -180,7 +168,7 @@ struct NavSidebarView: View {
       }
       .toolbarAxis(.vertical)
 
-      ToolbarItem(placement: self._toolbarItemPlacement) {
+      ToolbarItem(placement: .topBarTrailing) {
         Menu(
           content: {
             Picker("Sort By", selection: $appSettings.taskSheetSort) {
@@ -208,12 +196,7 @@ struct NavSidebarView: View {
       }
       .toolbarAxis(.vertical)
 
-      ToolbarSpacer(
-        .fixed,
-        placement: self._toolbarItemPlacement
-      )
-
-      ToolbarItem(placement: self._toolbarItemPlacement) {
+      ToolbarItem(placement: .topBarLeading) {
         Button(
           action: {
             self._appState.modalSelection = .settings
@@ -257,11 +240,9 @@ struct NavSidebarView: View {
       )
     }
     .listStyle(.plain)
-    .navigationTitle(self._title)
-    .navigationSubtitle(self._subtitle)
     .listRowSpacing(10)
     .listSectionSpacing(16)
-    .contentMargins(.vertical, 8, for: .scrollContent)
+    .contentMargins(.vertical, 16, for: .scrollContent)
     .scrollContentBackground(.hidden)
     .background {
 
