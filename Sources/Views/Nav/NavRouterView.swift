@@ -80,11 +80,7 @@ struct NavRouterView: View {
     .sheet(item: $appState.modalSelection) { modal in
       switch modal {
 
-        case .editTaskSheet:
-          if let sheet = self._appState.selectedTaskSheet {
-            EditTaskSheetView(sheet: sheet)
-          }
-
+        case .editTaskSheet(let sheet): EditTaskSheetView(sheet: sheet)
         case .editTask(let task): EditTaskView(task: task)
         case .reviewTasks: ReviewTasksView()
         case .settings: SettingsView()

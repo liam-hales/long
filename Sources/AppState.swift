@@ -16,7 +16,7 @@ final class AppState {
   /// Describes which modal the user
   /// currently has presented
   enum ModalSelection: Identifiable, Hashable {
-    case editTaskSheet
+    case editTaskSheet(_ sheet: TaskSheetModel)
     case editTask(_ task: TaskModel)
     case reviewTasks
     case settings

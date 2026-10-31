@@ -1,3 +1,4 @@
+import LucideSwift
 import SwiftUI
 
 /// Used to render a single task sheet
@@ -5,6 +6,12 @@ import SwiftUI
 struct TaskSheetRowView: View {
   private let _sheet: TaskSheetModel
   private let _isSelected: Bool
+
+  @Environment(AppState.self)
+  private var _appState: AppState
+
+  @State
+  private var _showDeleteConfirmation: Bool = false
 
   /// Initialises the view with the given
   /// task `sheet` to render
@@ -56,5 +63,67 @@ struct TaskSheetRowView: View {
     }
     .padding(.leading, 6)
     .listRow(isSelected: self._isSelected)
+    .contentShape(
+      .contextMenuPreview,
+      .rect(cornerRadius: 14)
+    )
+    .contextMenu {
+      Button(
+        action: {
+          self._appState.modalSelection = .editTaskSheet(self._sheet)
+        },
+        label: {
+          Label(
+            title: {
+              Text("Edit")
+            },
+            icon: {
+              Image(
+                lucide: .pencil,
+                size: .init(width: 22, height: 22)
+              )
+            }
+          )
+        }
+      )
+      .tint(.contentPrimary)
+
+      Button(
+        action: {
+          self._showDeleteConfirmation = true
+        },
+        label: {
+          Label(
+            title: {
+              Text("Delete")
+            },
+            icon: {
+              Image(
+                lucide: .trash,
+                size: .init(width: 22, height: 22)
+              )
+            }
+          )
+        }
+      )
+      .tint(.contentPrimary)
+    }
+    .confirmationDialog(
+      "Delete \"\(self._sheet.name)\"?",
+      isPresented: self.$_showDeleteConfirmation,
+      titleVisibility: .visible,
+      actions: {
+        Button(
+          "Delete",
+          role: .destructive,
+          action: {
+            self._appState.deleteTaskSheet(self._sheet)
+          }
+        )
+      },
+      message: {
+        Text("This task sheet and all of its tasks will be permanently deleted.")
+      }
+    )
   }
 }
