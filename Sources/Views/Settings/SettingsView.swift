@@ -143,6 +143,7 @@ struct SettingsView: View {
           }
         }
       }
+      .toolbarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(
@@ -158,7 +159,6 @@ struct SettingsView: View {
       }
       .listStyle(.plain)
       .navigationTitle("Settings")
-      .navigationBarTitleDisplayMode(.inline)
       .listRowSpacing(10)
       .listSectionSpacing(40)
       .contentMargins(.vertical, 20, for: .scrollContent)

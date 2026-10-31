@@ -78,8 +78,7 @@ struct EditView<Content: View>: View {
         .containerMargins()
         .frame(maxWidth: .infinity)
       }
-      .scrollBounceBehavior(.basedOnSize)
-      .scrollDismissesKeyboard(.interactively)
+      .toolbarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(
@@ -142,8 +141,9 @@ struct EditView<Content: View>: View {
       }
       .navigationTitle("Edit")
       .navigationSubtitle("Update \(self._subject) details")
-      .navigationBarTitleDisplayMode(.inline)
       .interactiveDismissDisabled(self._hasChanges)
+      .scrollBounceBehavior(.basedOnSize)
+      .scrollDismissesKeyboard(.interactively)
     }
     .frame(idealWidth: 440)
     .presentationBackground(Color.base)

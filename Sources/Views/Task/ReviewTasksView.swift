@@ -43,6 +43,7 @@ struct ReviewTasksView: View {
           }
         }
       }
+      .toolbarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(
@@ -93,7 +94,6 @@ struct ReviewTasksView: View {
       .listStyle(.plain)
       .navigationTitle("Review")
       .navigationSubtitle("You have \(self._appState.capturedTasks.count) tasks to review")
-      .navigationBarTitleDisplayMode(.inline)
       .listRowSpacing(10)
       .contentMargins(.vertical, 20, for: .scrollContent)
       .scrollContentBackground(.hidden)
