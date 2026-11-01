@@ -59,3 +59,9 @@ indentation_width:
 closure_body_length:
   warning: 150
   error: 200
+
+identifier_name:
+  excluded:
+    - "id"
+    - "_update.*"
+    - "_recordChange.*"
