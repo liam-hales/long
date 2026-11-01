@@ -4,7 +4,7 @@ import SwiftData
 /// Describes a single task
 /// the user can create
 @Model
-final class TaskModel: Identifiable {
+final class TaskModel: Identifiable, BaseModel {
 
   /// Describes where a task sits in
   /// the schedule based on its due date
@@ -29,7 +29,7 @@ final class TaskModel: Identifiable {
   private(set) var sheet: TaskSheetModel?
 
   private(set) var createDate: Date = Date.now
-  private(set) var updateDate: Date = Date.now
+  var updateDate: Date = Date.now
 
   @Transient
   private var _reviewStatus: ReviewStatus = .added
@@ -90,6 +90,17 @@ final class TaskModel: Identifiable {
     return (delayDate <= .now)
   }
 
+  /// The undo manager of the task sheet the task is
+  /// assigned to, which is required to record changes
+  @MainActor
+  var undoManager: TaskSheetUndoManager {
+    guard let sheet = self.sheet else {
+      fatalError("A task must be assigned to a sheet in order to use its \"undoManager\"")
+    }
+
+    return sheet.undoManager
+  }
+
   /// The task subtitle built from the most relevant date formatted
   /// into a human readable format using the `dateFormat`
   func subtitle(dateFormat: DateFormat) -> String {
@@ -122,6 +133,30 @@ final class TaskModel: Identifiable {
     self._reviewStatus = .confirmed
   }
 
+  /// Used to update the task with
+  /// a given `title` and `dueDate`
+  @MainActor
+  func update(
+    title: String,
+    dueDate: Date?
+  ) -> Void {
+    self._update(\.title, to: title)
+    self._update(\.dueDate, to: dueDate)
+  }
+
+  /// Used to update the task with
+  /// a given `completedDate`
+  @MainActor
+  func update(completedDate: Date?) -> Void {
+    self._update(\.completedDate, to: completedDate)
+  }
+
+  /// Used to update the task with a given
+  /// `reviewStatus` while it is being reviewed
+  func update(reviewStatus: ReviewStatus) -> Void {
+    self.reviewStatus = reviewStatus
+  }
+
   /// Used to assign the task
   /// to a given task sheet
   func assign(to sheet: TaskSheetModel) -> Void {
@@ -133,64 +168,10 @@ final class TaskModel: Identifiable {
     self.reviewStatus = .added
   }
 
-  /// Used to toggle the task between confirmed
-  /// and discarded while it is being reviewed
-  func toggleConfirmed() -> Void {
-    self.reviewStatus = (self.reviewStatus == .confirmed)
-      ? .discarded
-      : .confirmed
-  }
-
-  /// Used to toggle the task between
-  /// active and completed
-  @MainActor
-  func toggleCompleted() -> Void {
-
-    // Set the completed date to either the current
-    // date or `nil` depending on its current value
-    self.completedDate = (self.completedDate == nil)
-      ? .now
-      : nil
-
-    // The task completed status is toggled
-    // again if the user chooses to undo
-    self._registerUpdate {
-      self.toggleCompleted()
-    }
-  }
-
-  /// Used to update the task with
-  /// a given `title` and `dueDate`
-  @MainActor
-  func update(
-    title: String,
-    dueDate: Date?
-  ) -> Void {
-    let oldTitle = self.title
-    let oldDueDate = self.dueDate
-
-    // Update the task title
-    // and due date
-    self.title = title
-    self.dueDate = dueDate
-
-    // The title and due date are reverted
-    // if the user chooses to undo
-    self._registerUpdate {
-      self.update(
-        title: oldTitle,
-        dueDate: oldDueDate
-      )
-    }
-  }
-
-  /// Used to set the update date and register
-  /// the undo with the task sheet undo manager
-  @MainActor
-  private func _registerUpdate(undo: @escaping () -> Void) -> Void {
+  /// Used to unassign the task
+  /// from its task sheet
+  func unassign() -> Void {
     self.updateDate = .now
-    self.sheet?.undoManager.registerUndo(withTarget: self) { _ in
-      undo()
-    }
+    self.sheet = nil
   }
 }
