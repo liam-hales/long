@@ -116,10 +116,9 @@ struct TaskSheetRowView: View {
         Button(
           "Delete",
           role: .destructive,
-          action: {
-            self._appState.deleteTaskSheet(self._sheet)
-          }
-        )
+        ) {
+          self._appState.deleteTaskSheet(self._sheet)
+        }
       },
       message: {
         Text("This task sheet and all of its tasks will be permanently deleted.")

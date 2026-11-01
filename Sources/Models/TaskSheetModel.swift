@@ -100,7 +100,7 @@ final class TaskSheetModel: Identifiable, BaseModel {
       task.assign(to: self)
       self.modelContext?.insert(task)
     }
-    
+
     self._recordChange {
       self.removeTasks(tasks)
     }
@@ -120,7 +120,7 @@ final class TaskSheetModel: Identifiable, BaseModel {
     tasks.forEach { task in
       task.unassign()
     }
-    
+
     self._recordChange {
       self.addTasks(tasks)
     }
