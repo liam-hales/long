@@ -26,6 +26,10 @@ struct App: SwiftUI.App {
       fatalError("Failed to create ModelContainer: \(error)")
     }
 
+    // Clean up any data that's no longer needed
+    // before the app state starts using it
+    self._container.mainContext.cleanup()
+
     // Initialise the app state with the
     // context and capture manager
     let appState = AppState(
