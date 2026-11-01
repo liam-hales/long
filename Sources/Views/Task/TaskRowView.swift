@@ -39,7 +39,11 @@ struct TaskRowView: View {
     ) {
       Button(
         action: {
-          self._task.toggleCompleted()
+          self._task.update(
+            completedDate: (self._task.isCompleted == true)
+              ? nil
+              : .now
+          )
         },
         label: {
           ZStack(alignment: .center) {
@@ -106,7 +110,11 @@ struct TaskRowView: View {
     .contextMenu {
       Button(
         action: {
-          self._task.toggleCompleted()
+          self._task.update(
+            completedDate: (self._task.isCompleted == true)
+              ? nil
+              : .now
+          )
         },
         label: {
           Label(

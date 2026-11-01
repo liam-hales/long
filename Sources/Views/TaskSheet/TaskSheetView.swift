@@ -36,9 +36,7 @@ struct TaskSheetView: View {
     // Query for all tasks for the sheet
     // ordered by ones that are due first
     self.__tasks = Query(
-      filter: #Predicate<TaskModel> { task in
-        task.sheet?.id == sheetId
-      },
+      filter: #Predicate<TaskModel> { $0.sheet?.id == sheetId },
       sort: \TaskModel.dueDate,
       order: .forward
     )

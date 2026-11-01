@@ -30,7 +30,11 @@ struct CapturedTaskRowView: View {
     ) {
       Button(
         action: {
-          self._task.toggleConfirmed()
+          self._task.update(
+            reviewStatus: (self._task.reviewStatus == .confirmed)
+              ? .discarded
+              : .confirmed
+          )
         },
         label: {
           ZStack(alignment: .center) {

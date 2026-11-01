@@ -24,7 +24,11 @@ struct NavSidebarView: View {
   @Query
   private var _taskSheets: [TaskSheetModel]
 
-  @Query(sort: \TaskModel.dueDate, order: .forward)
+  @Query(
+    filter: #Predicate<TaskModel> { $0.sheet != nil },
+    sort: \TaskModel.dueDate,
+    order: .forward
+  )
   private var _tasks: [TaskModel]
 
   /// The title greeting to the user which

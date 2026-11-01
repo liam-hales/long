@@ -33,8 +33,11 @@ struct TaskSearchView: View {
     // Query for all tasks across all task sheets filtered by
     // the given `query` ordered by ones that are due first
     self.__tasks = Query(
-      filter: #Predicate<TaskModel> { task in
-        task.title.localizedStandardContains(query)
+      filter: #Predicate<TaskModel> {
+        (
+          $0.sheet != nil &&
+          $0.title.localizedStandardContains(query)
+        )
       },
       sort: \TaskModel.dueDate,
       order: .forward

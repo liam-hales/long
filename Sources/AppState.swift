@@ -55,9 +55,7 @@ final class AppState {
     // Define the descriptor to fetch
     // the task sheet via its ID
     let descriptor = FetchDescriptor<TaskSheetModel>(
-      predicate: #Predicate { sheet in
-        sheet.id == id
-      }
+      predicate: #Predicate { $0.id == id }
     )
 
     return try? self._context

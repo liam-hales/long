@@ -41,7 +41,7 @@ struct EditTaskSheetView: View {
       hasChanges: self._hasChanges,
       isValid: self._isNameValid,
       onSave: {
-        self._sheet.rename(to: self._trimmedName)
+        self._sheet.update(name: self._trimmedName)
       },
       content: {
         VStack(
