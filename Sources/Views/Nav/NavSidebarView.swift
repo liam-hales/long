@@ -31,22 +31,6 @@ struct NavSidebarView: View {
   )
   private var _tasks: [TaskModel]
 
-  /// The title greeting to the user which
-  /// uses their preferred name if it's set
-  private var _title: String {
-    if (self._appSettings.preferredName.isEmpty == true) {
-      return "Hello there."
-    }
-
-    return "Hello, \(self._appSettings.preferredName)."
-  }
-
-  /// The subtitle which will always be today's date written
-  /// out in full e.g. "Wednesday, 21 October 2026"
-  private var _subtitle: String {
-    Date.now.formatted(date: .complete, time: .omitted)
-  }
-
   /// The task sheets ordered by
   /// the users preferred sort
   private var _sortedTaskSheets: [TaskSheetModel] {
@@ -81,22 +65,7 @@ struct NavSidebarView: View {
       }
 
       if (self._appState.isSearching == false) {
-        VStack(
-          alignment: .center,
-          spacing: 4
-        ) {
-          Text(self._title)
-            .font(.serif(28, .semibold))
-
-          Text(self._subtitle)
-            .foregroundStyle(Color.contentSecondary)
-            .font(.mono(14))
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 12)
-        .listRowInsets(.vertical, 0)
-        .listRowBackground(Color.clear)
-        .listRowSeparator(.hidden)
+        NavHeaderView()
 
         let filters = [
           TaskFilter.overdue,
