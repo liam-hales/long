@@ -10,6 +10,9 @@ final class AppSettings {
   private static let _dateFormatKey = "dateFormat"
   private static let _isReviewEnabledKey = "isReviewEnabled"
   private static let _taskSheetSortKey = "taskSheetSort"
+  private static let _isOverdueNotificationEnabledKey = "isOverdueNotificationEnabled"
+  private static let _isDueTodayNotificationEnabledKey = "isDueTodayNotificationEnabled"
+  private static let _notificationTimeKey = "notificationTime"
 
   private let _storage: UserDefaults
 
@@ -53,12 +56,44 @@ final class AppSettings {
     }
   }
 
+  /// Whether a summary notification is
+  /// sent for tasks that are overdue
+  var isOverdueNotificationEnabled: Bool {
+    didSet {
+      self._storage.set(self.isOverdueNotificationEnabled, forKey: Self._isOverdueNotificationEnabledKey)
+    }
+  }
+
+  /// Whether a summary notification is
+  /// sent for tasks that are due today
+  var isDueTodayNotificationEnabled: Bool {
+    didSet {
+      self._storage.set(self.isDueTodayNotificationEnabled, forKey: Self._isDueTodayNotificationEnabledKey)
+    }
+  }
+
+  /// The time of day the summary
+  /// notifications are sent
+  var notificationTime: Date {
+    didSet {
+      self._storage.set(self.notificationTime, forKey: Self._notificationTimeKey)
+    }
+  }
+
   /// Initialises the `AppSettings` with the values stored in
   /// `UserDefaults` or their defaults if non have been set
   init() {
     let storage = UserDefaults.standard
-    self._storage = storage
+    let calendar = Calendar.current
 
+    let defaultNotificationTime = calendar.date(
+      bySettingHour: 8,
+      minute: 0,
+      second: 0,
+      of: .now
+    ) ?? .now
+
+    self._storage = storage
     self.preferredName = storage.string(forKey: Self._preferredNameKey) ?? ""
 
     self.appearance = AppAppearance(
@@ -76,5 +111,17 @@ final class AppSettings {
     self.taskSheetSort = TaskSheetSort(
       rawValue: storage.string(forKey: Self._taskSheetSortKey) ?? ""
     ) ?? .lastActive
+
+    self.isOverdueNotificationEnabled = (
+      storage.object(forKey: Self._isOverdueNotificationEnabledKey) as? Bool
+    ) ?? true
+
+    self.isDueTodayNotificationEnabled = (
+      storage.object(forKey: Self._isDueTodayNotificationEnabledKey) as? Bool
+    ) ?? true
+
+    self.notificationTime = (
+      storage.object(forKey: Self._notificationTimeKey) as? Date
+    ) ?? defaultNotificationTime
   }
 }

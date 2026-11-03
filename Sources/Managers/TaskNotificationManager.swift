@@ -6,12 +6,17 @@ import UserNotifications
 /// for tasks that are overdue or due that day
 final class TaskNotificationManager {
   private let _context: ModelContext
+  private let _appSettings: AppSettings
   private let _notificationCenter: UNUserNotificationCenter
 
   /// Initialises the `TaskNotificationManager` with
-  /// the model context used to fetch the tasks
-  init(context: ModelContext) {
+  /// a given model context and the app settings
+  init(
+    context: ModelContext,
+    appSettings: AppSettings
+  ) {
     self._context = context
+    self._appSettings = appSettings
     self._notificationCenter = .current()
   }
 
@@ -25,6 +30,18 @@ final class TaskNotificationManager {
   /// built from the active tasks due on or before each day
   func schedule() -> Void {
     let calendar = Calendar.current
+
+    let hour = calendar.component(.hour, from: self._appSettings.notificationTime)
+    let minute = calendar.component(.minute, from: self._appSettings.notificationTime)
+
+    // Only send summary notifications for
+    // the schedules enabled in the settings
+    let schedules =
+      [
+        (self._appSettings.isOverdueNotificationEnabled == true) ? TaskModel.Schedule.overdue : nil,
+        (self._appSettings.isDueTodayNotificationEnabled == true) ? TaskModel.Schedule.today : nil,
+      ]
+      .compactMap(\.self)
 
     // Define the descriptor to fetch active tasks that are
     // assigned to a sheet, ordered by ones that are due first
@@ -50,7 +67,7 @@ final class TaskNotificationManager {
     for offset in 0 ..< 14 {
       guard
         let day = calendar.date(byAdding: .day, value: offset, to: .now),
-        let date = calendar.date(bySettingHour: 8, minute: 0, second: 0, of: day)
+        let date = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: day)
       else {
         continue
       }
@@ -62,11 +79,8 @@ final class TaskNotificationManager {
       }
 
       // Send separate summary notifications
-      // for the overdue and due today schedules
-      for schedule in [
-        TaskModel.Schedule.overdue,
-        TaskModel.Schedule.today,
-      ] {
+      // for each of the enabled schedules
+      for schedule in schedules {
         let scheduledTasks = tasks.filter { $0.schedule(at: date) == schedule }
 
         // Skip the summary notification if
@@ -86,7 +100,7 @@ final class TaskNotificationManager {
           ],
           from: date
         )
-        
+
         let trigger = UNCalendarNotificationTrigger(
           dateMatching: components,
           repeats: false
@@ -100,7 +114,7 @@ final class TaskNotificationManager {
         content.body = scheduledTasks
           .map(\.title)
           .joined(separator: ", ")
-        
+
         // Add the notification to the
         // notification center
         self._notificationCenter.add(

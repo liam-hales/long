@@ -14,6 +14,9 @@ struct SettingsView: View {
   @State
   private var _isEditingName: Bool = false
 
+  @State
+  private var _isEditingTime: Bool = false
+
   var body: some View {
 
     @Bindable
@@ -24,124 +27,207 @@ struct SettingsView: View {
 
     NavigationStack {
       List {
-        Section {
-          SettingsRowView(
-            title: "Name",
-            subtitle: "The name used to greet you"
-          ) {
-            Button(
-              action: {
-                self._isEditingName = true
-              },
-              label: {
-                HStack(
-                  alignment: .center,
-                  spacing: 6
-                ) {
-                  Text(
-                    (self._appSettings.preferredName.isEmpty == true)
-                      ? "Add name"
-                      : self._appSettings.preferredName
-                  )
-                  .font(.serif(14, .semibold))
+        Section(
+          content: {
+            SettingsRowView(
+              title: "Name",
+              subtitle: "The name used to greet you"
+            ) {
+              Button(
+                action: {
+                  self._isEditingName = true
+                },
+                label: {
+                  HStack(
+                    alignment: .center,
+                    spacing: 6
+                  ) {
+                    Text(
+                      (self._appSettings.preferredName.isEmpty == true)
+                        ? "Add name"
+                        : self._appSettings.preferredName
+                    )
+                    .font(.serif(14, .semibold))
 
-                  LucideIcon(.penLine, size: 14)
-                    .foregroundStyle(Color.contentSecondary)
+                    LucideIcon(.penLine, size: 14)
+                      .foregroundStyle(Color.contentSecondary)
+                  }
                 }
+              )
+              .buttonStyle(.borderless)
+              .sheet(isPresented: self.$_isEditingName) {
+                EditNameView(name: self._appSettings.preferredName)
               }
-            )
-            .buttonStyle(.borderless)
-            .sheet(isPresented: self.$_isEditingName) {
-              EditNameView(name: self._appSettings.preferredName)
             }
-          }
 
-          SettingsRowView(
-            title: "Appearance",
-            subtitle: "The preferred app appearance"
-          ) {
-            Menu(
-              content: {
-                Picker("Appearance", selection: $appSettings.appearance) {
-                  ForEach(AppAppearance.allCases) { appearance in
-                    Label(
-                      title: {
-                        Text(appearance.title)
-                      },
-                      icon: {
-                        Image(
-                          lucide: appearance.icon,
-                          size: .init(width: 22, height: 22)
-                        )
-                      }
-                    )
+            SettingsRowView(
+              title: "Appearance",
+              subtitle: "The preferred app appearance"
+            ) {
+              Menu(
+                content: {
+                  Picker("Appearance", selection: $appSettings.appearance) {
+                    ForEach(AppAppearance.allCases) { appearance in
+                      Label(
+                        title: {
+                          Text(appearance.title)
+                        },
+                        icon: {
+                          Image(
+                            lucide: appearance.icon,
+                            size: .init(width: 22, height: 22)
+                          )
+                        }
+                      )
+                    }
+                  }
+                  .pickerStyle(.inline)
+                },
+                label: {
+                  HStack(
+                    alignment: .center,
+                    spacing: 4
+                  ) {
+                    Text(self._appSettings.appearance.title)
+                      .font(.serif(14, .semibold))
+
+                    LucideIcon(.chevronsUpDown, size: 16)
+                      .foregroundStyle(Color.contentSecondary)
                   }
                 }
-                .pickerStyle(.inline)
-              },
-              label: {
-                HStack(
-                  alignment: .center,
-                  spacing: 4
-                ) {
-                  Text(self._appSettings.appearance.title)
-                    .font(.serif(14, .semibold))
+              )
+              .tint(.contentPrimary)
+            }
 
-                  LucideIcon(.chevronsUpDown, size: 16)
-                    .foregroundStyle(Color.contentSecondary)
-                }
-              }
-            )
-            .tint(.contentPrimary)
-          }
+            SettingsRowView(
+              title: "Date Format",
+              subtitle: "Date e.g. \"\(self._appSettings.dateFormat.example)\""
+            ) {
+              Menu(
+                content: {
+                  Picker("Date Format", selection: $appSettings.dateFormat) {
+                    ForEach(DateFormat.allCases) { dateFormat in
+                      Label(
+                        title: {
+                          Text(dateFormat.title)
+                        },
+                        icon: {
+                          Image(
+                            lucide: dateFormat.icon,
+                            size: .init(width: 22, height: 22)
+                          )
+                        }
+                      )
+                    }
+                  }
+                  .pickerStyle(.inline)
+                },
+                label: {
+                  HStack(
+                    alignment: .center,
+                    spacing: 4
+                  ) {
+                    Text(self._appSettings.dateFormat.title)
+                      .font(.serif(14, .semibold))
 
-          SettingsRowView(
-            title: "Date Format",
-            subtitle: "Date e.g. \"\(self._appSettings.dateFormat.example)\""
-          ) {
-            Menu(
-              content: {
-                Picker("Date Format", selection: $appSettings.dateFormat) {
-                  ForEach(DateFormat.allCases) { dateFormat in
-                    Label(
-                      title: {
-                        Text(dateFormat.title)
-                      },
-                      icon: {
-                        Image(
-                          lucide: dateFormat.icon,
-                          size: .init(width: 22, height: 22)
-                        )
-                      }
-                    )
+                    LucideIcon(.chevronsUpDown, size: 16)
+                      .foregroundStyle(Color.contentSecondary)
                   }
                 }
-                .pickerStyle(.inline)
-              },
-              label: {
-                HStack(
-                  alignment: .center,
-                  spacing: 4
-                ) {
-                  Text(self._appSettings.dateFormat.title)
-                    .font(.serif(14, .semibold))
+              )
+              .tint(.contentPrimary)
+            }
 
-                  LucideIcon(.chevronsUpDown, size: 16)
-                    .foregroundStyle(Color.contentSecondary)
+            SettingsRowView(
+              title: "Review Tasks",
+              subtitle: "Review tasks before they are added"
+            ) {
+              Toggle("Review Tasks", isOn: $appSettings.isReviewEnabled)
+                .labelsHidden()
+            }
+          },
+          header: {
+            HStack(
+              alignment: .center,
+              spacing: 6
+            ) {
+              LucideIcon(.slidersHorizontal, size: 14)
+
+              Text("General")
+                .font(.mono(14))
+            }
+            .foregroundStyle(Color.contentSecondary)
+            .padding(.horizontal, 8)
+          }
+        )
+
+        Section(
+          content: {
+            SettingsRowView(
+              title: "Overdue",
+              subtitle: "Daily reminder of overdue tasks"
+            ) {
+              Toggle("Overdue Notifications", isOn: $appSettings.isOverdueNotificationEnabled)
+                .labelsHidden()
+            }
+
+            SettingsRowView(
+              title: "Due Today",
+              subtitle: "Daily reminder of tasks due today"
+            ) {
+              Toggle("Due Today Notifications", isOn: $appSettings.isDueTodayNotificationEnabled)
+                .labelsHidden()
+            }
+
+            SettingsRowView(
+              title: "Time",
+              subtitle: "The time notifications are sent"
+            ) {
+              Button(
+                action: {
+                  self._isEditingTime = true
+                },
+                label: {
+                  HStack(
+                    alignment: .center,
+                    spacing: 4
+                  ) {
+                    Text(self._appSettings.notificationTime, format: .dateTime.hour().minute())
+                      .font(.serif(14, .semibold))
+
+                    LucideIcon(.chevronsUpDown, size: 16)
+                      .foregroundStyle(Color.contentSecondary)
+                  }
                 }
+              )
+              .buttonStyle(.borderless)
+              .popover(isPresented: self.$_isEditingTime) {
+                DatePicker(
+                  "Notification Time",
+                  selection: $appSettings.notificationTime,
+                  displayedComponents: .hourAndMinute
+                )
+                .frame(width: 210)
+                .datePickerStyle(.wheel)
+                .labelsHidden()
+                .presentationCompactAdaptation(.popover)
               }
-            )
-            .tint(.contentPrimary)
-          }
+            }
+          },
+          header: {
+            HStack(
+              alignment: .center,
+              spacing: 6
+            ) {
+              LucideIcon(.bell, size: 14)
 
-          SettingsRowView(
-            title: "Review Tasks",
-            subtitle: "Review tasks before they are added"
-          ) {
-            Toggle("Review Tasks", isOn: $appSettings.isReviewEnabled)
-              .labelsHidden()
+              Text("Notifications")
+                .font(.mono(14))
+            }
+            .foregroundStyle(Color.contentSecondary)
+            .padding(.horizontal, 8)
           }
-        }
+        )
       }
       .toolbarTitleDisplayMode(.inline)
       .toolbar {
@@ -160,7 +246,7 @@ struct SettingsView: View {
       .listStyle(.plain)
       .navigationTitle("Settings")
       .listRowSpacing(10)
-      .listSectionSpacing(40)
+      .listSectionSpacing(16)
       .contentMargins(.vertical, 20, for: .scrollContent)
       .scrollContentBackground(.hidden)
       .background(Color.base)

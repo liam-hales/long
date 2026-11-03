@@ -21,6 +21,8 @@ struct App: SwiftUI.App {
   /// Initialises the app with new app state,
   /// settings and custom appearance configuration
   init() {
+    let appSettings = AppSettings()
+
     do {
       self._container = try ModelContainer(for: TaskModel.self, TaskSheetModel.self)
     }
@@ -29,13 +31,15 @@ struct App: SwiftUI.App {
     }
 
     self._captureManager = TaskCaptureManager()
-    self._notificationManager = TaskNotificationManager(context: self._container.mainContext)
+    self._notificationManager = TaskNotificationManager(
+      context: self._container.mainContext,
+      appSettings: appSettings
+    )
 
     // Cleanup any stored model data which
     // should be removed on app launch
     self._container.mainContext.cleanup()
 
-    let appSettings = AppSettings()
     let appState = AppState(
       context: self._container.mainContext,
       captureManager: self._captureManager
