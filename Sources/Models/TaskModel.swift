@@ -51,22 +51,7 @@ final class TaskModel: Identifiable, BaseModel {
   /// Calculates where the task sits in
   /// the schedule based on its `dueDate`
   var schedule: Schedule {
-
-    // Check if the task has a due date, if not then the
-    // task can be completed at anytime and is unscheduled
-    guard let dueDate = self.dueDate else {
-      return .unscheduled
-    }
-
-    // A task due at any point today is treated
-    // as something that needs completing today
-    if (Calendar.current.isDateInToday(dueDate)) {
-      return .today
-    }
-
-    return (dueDate < .now)
-      ? .overdue
-      : .scheduled
+    self.schedule(at: .now)
   }
 
   /// Determines whether the task has
@@ -99,6 +84,27 @@ final class TaskModel: Identifiable, BaseModel {
     }
 
     return sheet.undoManager
+  }
+
+  /// Used to calculate the task schedule
+  /// for a given `date` based on its `dueDate`
+  func schedule(at date: Date) -> Schedule {
+
+    // Check if the task has a due date, if not then the
+    // task can be completed at anytime and is unscheduled
+    guard let dueDate = self.dueDate else {
+      return .unscheduled
+    }
+
+    // A task due at any point on the day is treated
+    // as something that needs completing that day
+    if (Calendar.current.isDate(dueDate, inSameDayAs: date)) {
+      return .today
+    }
+
+    return (dueDate < date)
+      ? .overdue
+      : .scheduled
   }
 
   /// The task subtitle built from the most relevant date formatted
