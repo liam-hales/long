@@ -50,13 +50,13 @@ struct TaskSearchView: View {
 
     // Filter the tasks by ones
     // that are currently active
-    let active = self._tasks.filter { task in task.isSettled == false }
+    let active = self._tasks.filter { $0.isSettled == false }
 
     // Sort the tasks by ones
     // that have been completed
     let sort = SortDescriptor(\TaskModel.completedDate, order: .reverse)
     let completed = self._tasks
-      .filter { task in task.isSettled == true }
+      .filter { $0.isSettled == true }
       .sorted(using: sort)
 
     // Return the tasks for
@@ -79,7 +79,7 @@ struct TaskSearchView: View {
 
     // Group the tasks by the
     // task sheet they belong to
-    let tasksBySheet = Dictionary(grouping: self._scopedTasks) { task in task.sheet }
+    let tasksBySheet = Dictionary(grouping: self._scopedTasks) { $0.sheet }
 
     // Map the tasks grouped by sheet into a result group
     // and sort them by task sheet activity date

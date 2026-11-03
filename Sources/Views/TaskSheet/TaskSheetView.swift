@@ -49,7 +49,7 @@ struct TaskSheetView: View {
   }
 
   private var _activeTasks: [TaskModel] {
-    self._tasks.filter { task in task.isCompleted == false }
+    self._tasks.filter { $0.isCompleted == false }
   }
 
   var body: some View {
@@ -125,7 +125,7 @@ struct TaskSheetView: View {
 
           let filters = TaskFilter
             .allCases
-            .filter { filter in filter != .all }
+            .filter { $0 != .all }
 
           // Section and render the
           // tasks by each filter

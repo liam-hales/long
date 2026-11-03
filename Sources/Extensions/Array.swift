@@ -45,7 +45,7 @@ extension Array where Element == TaskModel {
         let sort = SortDescriptor(\TaskModel.completedDate, order: .reverse)
 
         return self
-          .filter { task in task.isSettled == true }
+          .filter { $0.isSettled == true }
           .sorted(using: sort)
     }
   }

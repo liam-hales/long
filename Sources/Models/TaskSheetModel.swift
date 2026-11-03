@@ -48,7 +48,7 @@ final class TaskSheetModel: Identifiable, BaseModel {
   /// The number of active tasks assigned to
   /// the sheet that are yet to be completed
   var activeCount: Int {
-    self.tasks.count { task in task.isCompleted == false }
+    self.tasks.count { $0.isCompleted == false }
   }
 
   /// The number of overdue tasks
@@ -117,9 +117,7 @@ final class TaskSheetModel: Identifiable, BaseModel {
 
     // Unassign the tasks rather than deleting them so the same
     // tasks are added back if the user chooses to undo
-    tasks.forEach { task in
-      task.unassign()
-    }
+    tasks.forEach { $0.unassign() }
 
     self._recordChange {
       self.addTasks(tasks)
@@ -135,7 +133,7 @@ final class TaskSheetModel: Identifiable, BaseModel {
   @MainActor
   func completeAllTasks() -> Void {
     self.tasks
-      .filter { task in task.isCompleted == false }
-      .forEach { task in task.update(completedDate: .now) }
+      .filter { $0.isCompleted == false }
+      .forEach { $0.update(completedDate: .now) }
   }
 }
