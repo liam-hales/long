@@ -203,6 +203,31 @@ struct SettingsView: View {
               .presentationCompactAdaptation(.popover)
             }
           }
+
+          VStack(
+            alignment: .center,
+            spacing: 6
+          ) {
+            Text("LONG")
+              .font(.logo(52))
+
+            VStack(
+              alignment: .center,
+              spacing: 4
+            ) {
+              Text("© 2026 - Liam Hales")
+                .font(.serif(12, .regular))
+
+              Text("Version \(version) (build \(build))")
+                .foregroundStyle(Color.contentSecondary)
+                .font(.mono(10))
+            }
+          }
+          .frame(maxWidth: .infinity)
+          .padding(.top, 32)
+          .listRowInsets(.vertical, 0)
+          .listRowBackground(Color.clear)
+          .listRowSeparator(.hidden)
         }
       }
       .toolbarTitleDisplayMode(.inline)
@@ -226,28 +251,6 @@ struct SettingsView: View {
       .contentMargins(.vertical, 20, for: .scrollContent)
       .scrollContentBackground(.hidden)
       .background(Color.base)
-
-      VStack(
-        alignment: .center,
-        spacing: 6
-      ) {
-        Text("LONG")
-          .font(.logo(54))
-
-        VStack(
-          alignment: .center,
-          spacing: 4
-        ) {
-          Text("Created by Liam Hales")
-            .font(.serif(12, .regular))
-
-          Text("Version \(version) (build \(build))")
-            .foregroundStyle(Color.contentSecondary)
-            .font(.mono(10))
-        }
-      }
-      .frame(maxWidth: .infinity)
-      .padding(.vertical, 10)
     }
     // This needs to be set as sheets are their own presentation and
     // don't update when the app appearance changes while open
