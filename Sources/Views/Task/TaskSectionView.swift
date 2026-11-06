@@ -62,45 +62,35 @@ struct TaskSectionView: View {
   }
 
   var body: some View {
-    Section(
-      content: {
-        ForEach(self._tasks) { task in
-          let isSelected = self._appState.revealedTaskId == task.id
+    SectionView(
+      title: self._title,
+      icon: self._icon,
+      count: self._tasks.count,
+      headerColour: self._headerColour
+    ) {
+      ForEach(self._tasks) { task in
+        let isSelected = self._appState.revealedTaskId == task.id
 
-          if (self._onTaskTap == nil) {
-            TaskRowView(
-              task: task,
-              dateFormat: self._appSettings.dateFormat,
-              isSelected: isSelected
-            )
-          }
+        if (self._onTaskTap == nil) {
+          TaskRowView(
+            task: task,
+            dateFormat: self._appSettings.dateFormat,
+            isSelected: isSelected
+          )
+        }
 
-          if (self._onTaskTap != nil) {
-            TaskRowView(
-              task: task,
-              dateFormat: self._appSettings.dateFormat,
-              isSelected: isSelected
-            )
-            .accessibilityAddTraits(.isButton)
-            .onTapGesture {
-              self._onTaskTap?(task)
-            }
+        if (self._onTaskTap != nil) {
+          TaskRowView(
+            task: task,
+            dateFormat: self._appSettings.dateFormat,
+            isSelected: isSelected
+          )
+          .accessibilityAddTraits(.isButton)
+          .onTapGesture {
+            self._onTaskTap?(task)
           }
         }
-      },
-      header: {
-        HStack(
-          alignment: .center,
-          spacing: 6
-        ) {
-          LucideIcon(self._icon, size: 14)
-
-          Text("\(self._title) • \(self._tasks.count)")
-            .font(.mono(14))
-        }
-        .foregroundStyle(self._headerColour)
-        .padding(.horizontal, 8)
       }
-    )
+    }
   }
 }

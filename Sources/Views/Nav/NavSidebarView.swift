@@ -87,32 +87,21 @@ struct NavSidebarView: View {
           }
         }
 
-        Section(
-          content: {
-            ForEach(self._sortedTaskSheets) { sheet in
-              let value: AppState.NavSelection = .taskSheet(sheet.id)
+        SectionView(
+          title: "Task Sheets",
+          icon: .fileText,
+          count: self._taskSheets.count
+        ) {
+          ForEach(self._sortedTaskSheets) { sheet in
+            let value: AppState.NavSelection = .taskSheet(sheet.id)
 
-              TaskSheetRowView(
-                sheet: sheet,
-                isSelected: self._appState.navSelection == value
-              )
-              .tag(value)
-            }
-          },
-          header: {
-            HStack(
-              alignment: .center,
-              spacing: 6
-            ) {
-              LucideIcon(.fileText, size: 14)
-
-              Text("Task Sheets • \(self._taskSheets.count)")
-                .font(.mono(14))
-            }
-            .foregroundStyle(Color.contentSecondary)
-            .padding(.horizontal, 8)
+            TaskSheetRowView(
+              sheet: sheet,
+              isSelected: self._appState.navSelection == value
+            )
+            .tag(value)
           }
-        )
+        }
       }
     }
     .searchable(
