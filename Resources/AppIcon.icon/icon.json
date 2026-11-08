@@ -33,7 +33,7 @@
           "image-name": "text.svg",
           "name": "Text",
           "position": {
-            "scale": 0.56,
+            "scale": 0.60,
             "translation-in-points": [0, 0]
           }
         }
