@@ -132,6 +132,7 @@ struct TaskInputView: View {
           .padding(.horizontal, 6)
       }
       .padding(.top, 16)
+      .padding(.bottom, (self._isFocused.wrappedValue == true) ? 16 : 0)
       .containerMargins()
     }
     .background(Color.base)
