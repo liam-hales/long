@@ -100,27 +100,11 @@ struct TaskSearchView: View {
   }
 
   var body: some View {
+    List {
 
-    if (self._query.isEmpty == true) {
-      NoContentView(
-        title: "Search tasks.",
-        message: "Search for tasks by title across all of your task sheets.",
-        icon: .search
-      )
-    }
-
-    if (self._query.isEmpty == false) {
-      if (self._resultGroups.isEmpty == true) {
-        let tasks = self._appState.searchScope.tasksDescription
-
-        NoContentView(
-          title: "No results.",
-          message: "There were no \(tasks) found matching your search \"\(self._query)\".",
-          icon: .searchX
-        )
-      }
-
-      if (self._resultGroups.isEmpty == false) {
+      // Only render results once the user has
+      // entered a query to search tasks by
+      if (self._query.isEmpty == false) {
         ForEach(self._resultGroups) { group in
 
           // Extract the title and tasks
@@ -138,5 +122,33 @@ struct TaskSearchView: View {
         }
       }
     }
+    // Used to render the no content views over the list so
+    // they are centred in the visible space rather than a row
+    .overlay {
+      if (self._query.isEmpty == true) {
+        NoContentView(
+          title: "Search tasks.",
+          message: "Search for tasks by title across all of your task sheets.",
+          icon: .search
+        )
+      }
+
+      if (
+        self._query.isEmpty == false &&
+        self._resultGroups.isEmpty == true
+      ) {
+        let description = self._appState.searchScope.tasksDescription
+
+        NoContentView(
+          title: "No results.",
+          message: "There were no \(description) found matching your search \"\(self._query)\".",
+          icon: .searchX
+        )
+      }
+    }
+    .scrollDisabled(
+      self._query.isEmpty == true ||
+      self._resultGroups.isEmpty == true
+    )
   }
 }

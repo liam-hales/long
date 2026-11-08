@@ -52,6 +52,12 @@ struct TaskSheetView: View {
     self._tasks.filter { $0.isCompleted == false }
   }
 
+  /// Whether there are no tasks to show
+  /// for the current task focus
+  private var _isEmpty: Bool {
+    self._tasks.filtered(by: self._appState.taskFocus).isEmpty
+  }
+
   var body: some View {
 
     @Bindable
@@ -87,16 +93,6 @@ struct TaskSheetView: View {
           // the `taskFocus` state
           let focusedTasks = self._tasks.filtered(by: self._appState.taskFocus)
 
-          if (focusedTasks.isEmpty == true) {
-            let focus = self._appState.taskFocus.title
-
-            NoContentView(
-              title: "No tasks.",
-              message: "There are no tasks for the \"\(focus)\" focus, try choosing a different one.",
-              icon: self._appState.taskFocus.icon
-            )
-          }
-
           if (focusedTasks.isEmpty == false) {
             Section {
               ForEach(focusedTasks) { task in
@@ -115,14 +111,6 @@ struct TaskSheetView: View {
         }
 
         if (self._appState.taskFocus == .all) {
-          if (self._tasks.isEmpty == true) {
-            NoContentView(
-              title: "No tasks.",
-              message: "You currently have no tasks to complete, try creating one below.",
-              icon: .listCheck
-            )
-          }
-
           let filters = TaskFilter
             .allCases
             .filter { $0 != .all }
@@ -153,6 +141,30 @@ struct TaskSheetView: View {
           }
         }
       }
+      // Used to render the no content views over the list so
+      // they are centred in the visible space rather than a row
+      .overlay {
+        if (self._isEmpty == true) {
+          if (self._appState.taskFocus == .all) {
+            NoContentView(
+              title: "No tasks.",
+              message: "You currently have no tasks to complete, try creating one below.",
+              icon: .listCheck
+            )
+          }
+
+          if (self._appState.taskFocus != .all) {
+            let focus = self._appState.taskFocus.title
+
+            NoContentView(
+              title: "No tasks.",
+              message: "There are no tasks for the \"\(focus)\" focus, try choosing a different one.",
+              icon: self._appState.taskFocus.icon
+            )
+          }
+        }
+      }
+      .scrollDisabled(self._isEmpty == true)
     }
     .toolbar(removing: (self._hasVerticalBar == true) ? .title : nil)
     .toolbarTitleDisplayMode((self._hasVerticalBar == true) ? .inline : .large)

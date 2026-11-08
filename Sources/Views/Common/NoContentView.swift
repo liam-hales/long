@@ -51,9 +51,9 @@ struct NoContentView: View {
           .multilineTextAlignment(.center)
       }
     }
-    .frame(maxWidth: .infinity)
-    .padding(.vertical, 20)
-    .listRowBackground(Color.clear)
-    .listRowSeparator(.hidden)
+    .frame(
+      maxWidth: .infinity,
+      maxHeight: .infinity
+    )
   }
 }

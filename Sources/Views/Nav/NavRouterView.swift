@@ -29,10 +29,6 @@ struct NavRouterView: View {
           message: "You have nothing selected, select a task sheet from the sidebar.",
           icon: .panelLeft
         )
-        .frame(
-          maxWidth: .infinity,
-          maxHeight: .infinity
-        )
         .background(Color.base)
       }
 

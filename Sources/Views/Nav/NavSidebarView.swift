@@ -51,8 +51,9 @@ struct NavSidebarView: View {
     @Bindable
     var appSettings = _appSettings
 
-    List(selection: $appState.navSelection) {
-
+    // Swap between the search and sidebar lists in a `ZStack` so the
+    // search and toolbar modifiers stay attached to a single view
+    ZStack {
       if (self._appState.isSearching == true) {
 
         // Trim the search text from any
@@ -65,41 +66,43 @@ struct NavSidebarView: View {
       }
 
       if (self._appState.isSearching == false) {
-        NavHeaderView()
+        List(selection: $appState.navSelection) {
+          NavHeaderView()
 
-        let filters = [
-          TaskFilter.overdue,
-          TaskFilter.today,
-        ]
+          let filters = [
+            TaskFilter.overdue,
+            TaskFilter.today,
+          ]
 
-        // Section and render the tasks by
-        // the overdue and today filters
-        ForEach(filters) { filter in
-          let tasks = self._tasks.filtered(by: filter)
+          // Section and render the tasks by
+          // the overdue and today filters
+          ForEach(filters) { filter in
+            let tasks = self._tasks.filtered(by: filter)
 
-          if (tasks.isEmpty == false) {
-            TaskSectionView(
-              filter: filter,
-              tasks: tasks
-            ) { task in
-              self._appState.revealTask(task)
+            if (tasks.isEmpty == false) {
+              TaskSectionView(
+                filter: filter,
+                tasks: tasks
+              ) { task in
+                self._appState.revealTask(task)
+              }
             }
           }
-        }
 
-        SectionView(
-          title: "Task Sheets",
-          icon: .fileText,
-          count: self._taskSheets.count
-        ) {
-          ForEach(self._sortedTaskSheets) { sheet in
-            let value: AppState.NavSelection = .taskSheet(sheet.id)
+          SectionView(
+            title: "Task Sheets",
+            icon: .fileText,
+            count: self._taskSheets.count
+          ) {
+            ForEach(self._sortedTaskSheets) { sheet in
+              let value: AppState.NavSelection = .taskSheet(sheet.id)
 
-            TaskSheetRowView(
-              sheet: sheet,
-              isSelected: self._appState.navSelection == value
-            )
-            .tag(value)
+              TaskSheetRowView(
+                sheet: sheet,
+                isSelected: self._appState.navSelection == value
+              )
+              .tag(value)
+            }
           }
         }
       }
