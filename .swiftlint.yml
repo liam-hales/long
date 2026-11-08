@@ -56,9 +56,13 @@ large_tuple:
 indentation_width:
   indentation_width: 2
 
+function_body_length:
+  warning: 250
+  error: 300
+
 closure_body_length:
-  warning: 150
-  error: 200
+  warning: 250
+  error: 300
 
 identifier_name:
   excluded:
