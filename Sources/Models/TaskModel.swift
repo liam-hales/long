@@ -157,6 +157,13 @@ final class TaskModel: Identifiable, BaseModel {
     self._update(\.completedDate, to: completedDate)
   }
 
+  /// Used to update the task with
+  /// a given `dueDate`
+  @MainActor
+  func update(dueDate: Date?) -> Void {
+    self._update(\.dueDate, to: dueDate)
+  }
+
   /// Used to update the task with a given
   /// `reviewStatus` while it is being reviewed
   func update(reviewStatus: ReviewStatus) -> Void {

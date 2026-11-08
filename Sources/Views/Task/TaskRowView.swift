@@ -138,6 +138,48 @@ struct TaskRowView: View {
       )
       .tint(.contentPrimary)
 
+      if (self._task.isCompleted == false) {
+        Menu(
+          content: {
+            ForEach(TaskReschedule.allCases) { option in
+              Button(
+                action: {
+                  self._task.update(dueDate: option.dueDate)
+                },
+                label: {
+                  Label(
+                    title: {
+                      Text(option.title)
+                    },
+                    icon: {
+                      Image(
+                        lucide: option.icon,
+                        size: .init(width: 22, height: 22)
+                      )
+                    }
+                  )
+                }
+              )
+              .tint(.contentPrimary)
+            }
+          },
+          label: {
+            Label(
+              title: {
+                Text("Reschedule")
+              },
+              icon: {
+                Image(
+                  lucide: .calendarClock,
+                  size: .init(width: 22, height: 22)
+                )
+              }
+            )
+          }
+        )
+        .tint(.contentPrimary)
+      }
+
       Button(
         action: {
           self._appState.modalSelection = .editTask(self._task)
