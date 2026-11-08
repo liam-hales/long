@@ -4,6 +4,7 @@ import SwiftUI
 /// Used to display the task input the
 /// user can use to create tasks
 struct TaskInputView: View {
+  private let _isFocused: FocusState<Bool>.Binding
 
   @Environment(AppState.self)
   private var _appState: AppState
@@ -13,6 +14,12 @@ struct TaskInputView: View {
 
   @Environment(\.displayScale)
   private var _displayScale: CGFloat
+
+  /// Initialises the view with the `isFocused`
+  /// binding used to control the input focus
+  init(isFocused: FocusState<Bool>.Binding) {
+    self._isFocused = isFocused
+  }
 
   private var _isDisabled: Bool {
     (
@@ -67,6 +74,7 @@ struct TaskInputView: View {
           .padding(.vertical, 8)
           .lineLimit(8)
           .submitLabel(.return)
+          .focused(self._isFocused)
           .disabled(self._appState.isCapturing)
           .onChange(of: self._appState.taskInput) { oldValue, newValue in
 

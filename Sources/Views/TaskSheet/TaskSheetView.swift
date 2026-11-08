@@ -24,6 +24,9 @@ struct TaskSheetView: View {
   @Query
   private var _tasks: [TaskModel]
 
+  @FocusState
+  private var _isInputFocused: Bool
+
   /// Initialises the view with the task
   /// `sheet` to display tasks for
   init(sheet: TaskSheetModel) {
@@ -165,6 +168,14 @@ struct TaskSheetView: View {
         }
       }
       .scrollDisabled(self._isEmpty == true)
+      .gesture(
+
+        // Dismiss the keyboard on tap when the list is empty
+        // as it can't be scrolled to dismiss it interactively
+        TapGesture().onEnded {
+          self._isInputFocused = false
+        }
+      )
     }
     .toolbar(removing: (self._hasVerticalBar == true) ? .title : nil)
     .toolbarTitleDisplayMode((self._hasVerticalBar == true) ? .inline : .large)
@@ -202,7 +213,7 @@ struct TaskSheetView: View {
       edge: .bottom,
       spacing: 0
     ) {
-      TaskInputView()
+      TaskInputView(isFocused: self.$_isInputFocused)
     }
     .alert(
       self._appState.captureError?.title ?? "",
