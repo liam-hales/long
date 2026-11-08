@@ -216,7 +216,7 @@ struct SettingsView: View {
               spacing: 4
             ) {
               Text("© 2026 - Liam Hales")
-                .font(.serif(12, .regular))
+                .font(.serif(12, .semibold))
 
               Text("Version \(version) (build \(build))")
                 .foregroundStyle(Color.contentSecondary)
