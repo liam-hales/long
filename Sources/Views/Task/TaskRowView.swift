@@ -201,6 +201,7 @@ struct TaskRowView: View {
       .tint(.contentPrimary)
 
       Button(
+        role: .destructive,
         action: {
           self._task.sheet?.removeTasks([self._task])
         },
@@ -218,7 +219,7 @@ struct TaskRowView: View {
           )
         }
       )
-      .tint(.contentPrimary)
+      .tint(.red)
     }
   }
 }

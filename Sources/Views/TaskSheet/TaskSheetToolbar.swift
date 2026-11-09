@@ -220,6 +220,7 @@ struct TaskSheetToolbar: ToolbarContent {
 
     ToolbarItem(placement: .topBarTrailing) {
       Button(
+        role: .destructive,
         action: {
           self._showDeleteConfirmation = true
         },
@@ -237,7 +238,7 @@ struct TaskSheetToolbar: ToolbarContent {
           )
         }
       )
-      .tint(.contentError)
+      .tint(.red)
       .confirmationDialog(
         "Delete \"\(self._sheet.name)\"?",
         isPresented: self.$_showDeleteConfirmation,

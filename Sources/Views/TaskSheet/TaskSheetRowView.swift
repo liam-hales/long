@@ -89,6 +89,7 @@ struct TaskSheetRowView: View {
       .tint(.contentPrimary)
 
       Button(
+        role: .destructive,
         action: {
           self._showDeleteConfirmation = true
         },
@@ -106,7 +107,7 @@ struct TaskSheetRowView: View {
           )
         }
       )
-      .tint(.contentPrimary)
+      .tint(.red)
     }
     .confirmationDialog(
       "Delete \"\(self._sheet.name)\"?",
