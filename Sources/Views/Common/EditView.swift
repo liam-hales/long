@@ -74,7 +74,8 @@ struct EditView<Content: View>: View {
         ) {
           self._content
         }
-        .padding(.vertical, 26)
+        .padding(.top, 26)
+        .padding(.bottom, 16)
         .containerMargins()
         .frame(maxWidth: .infinity)
       }
