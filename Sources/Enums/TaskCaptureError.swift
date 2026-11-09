@@ -77,7 +77,7 @@ enum TaskCaptureError: Error, CustomStringConvertible {
         "Apple Intelligence is currently unavailable, please try again later."
 
       case .noTasks:
-        "Could not find any tasks. Rephrase what you need to get done and try again."
+        "Could not find any tasks. Try rephrasing what you need to get done and try again."
 
       case .sessionNotStarted, .failed:
         "Failed to capture tasks, please try again."
