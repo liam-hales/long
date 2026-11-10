@@ -32,7 +32,7 @@ enum TaskFilter: CaseIterable, Identifiable {
   var icon: LucideIconName {
     switch self {
       case .all: .listCheck
-      case .overdue: .clockAlert
+      case .overdue: .clockExclamationPoint
       case .today: .sun
       case .scheduled: .calendarCheck2
       case .unscheduled: .rotateCwClock
