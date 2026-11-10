@@ -181,6 +181,8 @@ struct TaskSheetToolbar: ToolbarContent {
     .toolbarAxis(.vertical)
 
     ToolbarItem(placement: .topBarTrailing) {
+      let isDisabled = (self._sheet.activeCount == 0)
+
       Button(
         action: {
           self._showCompleteConfirmation = true
@@ -199,8 +201,12 @@ struct TaskSheetToolbar: ToolbarContent {
           )
         }
       )
-      .tint(.contentPrimary)
-      .disabled(self._sheet.activeCount == 0)
+      .tint(
+        (isDisabled == true)
+          ? nil
+          : .contentPrimary
+      )
+      .disabled(isDisabled)
       .confirmationDialog(
         "Complete all tasks?",
         isPresented: self.$_showCompleteConfirmation,
