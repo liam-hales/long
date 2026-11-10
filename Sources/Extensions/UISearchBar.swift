@@ -10,13 +10,22 @@ extension UISearchBar {
       .fontDescriptor
       .withDesign(.serif)
 
-    guard let scopeDescriptor else {
+    let scopeSelectedDescriptor = UIFont
+      .systemFont(ofSize: 13, weight: .semibold)
+      .fontDescriptor
+      .withDesign(.serif)
+
+    guard
+      let scopeDescriptor,
+      let scopeSelectedDescriptor
+    else {
       preconditionFailure("Failed to create fonts for \"UISearchBar\"")
     }
 
-    // Create the scope font from the descriptor
-    // and the new `UINavigationBar` appearance
+    // Create the scope fonts from the descriptors
+    // for the normal and selected states
     let scopeFont = UIFont(descriptor: scopeDescriptor, size: 14)
+    let scopeSelectedFont = UIFont(descriptor: scopeSelectedDescriptor, size: 14)
 
     // Configure the appearance scope
     // bar title text attributes
@@ -34,7 +43,7 @@ extension UISearchBar {
       .appearance()
       .setScopeBarButtonTitleTextAttributes(
         [
-          .font: scopeFont,
+          .font: scopeSelectedFont,
           .foregroundColor: UIColor(Color.contentPrimary),
         ],
         for: .selected
