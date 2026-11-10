@@ -7,6 +7,11 @@ enum TaskCaptureError: Error, CustomStringConvertible {
   case modelUnavailable
   case sessionNotStarted
   case noTasks
+  case inputBlocked
+  case inputTooLong
+  case unsupportedLanguage
+  case rateLimited
+  case timedOut
   case failed
 
   /// Describes the error description message
@@ -30,6 +35,21 @@ enum TaskCaptureError: Error, CustomStringConvertible {
 
       case .noTasks:
         "No tasks were captured from the given text"
+
+      case .inputBlocked:
+        "The input was blocked by the model guardrails or the model refused to respond"
+
+      case .inputTooLong:
+        "The input is larger than the model context size"
+
+      case .unsupportedLanguage:
+        "The text is in a language or locale the model does not support"
+
+      case .rateLimited:
+        "The model rate limited the request"
+
+      case .timedOut:
+        "The model took too long to respond"
 
       case .failed:
         "An error occurred while capturing tasks"
@@ -55,6 +75,21 @@ enum TaskCaptureError: Error, CustomStringConvertible {
       case .noTasks:
         "No tasks found"
 
+      case .inputBlocked:
+        "Unable to capture tasks"
+
+      case .inputTooLong:
+        "Too much text"
+
+      case .unsupportedLanguage:
+        "Language not supported"
+
+      case .rateLimited:
+        "Apple Intelligence is busy"
+
+      case .timedOut:
+        "Capture timed out"
+
       case .sessionNotStarted, .failed:
         "Failed to capture tasks"
     }
@@ -78,6 +113,21 @@ enum TaskCaptureError: Error, CustomStringConvertible {
 
       case .noTasks:
         "Could not find any tasks. Try rephrasing what you need to get done and try again."
+
+      case .inputBlocked:
+        "Apple Intelligence has blocked this text from being captured. Try rephrasing it and try again."
+
+      case .inputTooLong:
+        "There is too much text to capture tasks from. Try capturing fewer tasks at a time."
+
+      case .unsupportedLanguage:
+        "Apple Intelligence doesn't support this language yet. Try writing your tasks in another language."
+
+      case .rateLimited:
+        "Too many tasks have been captured in a short time, please wait a moment and try again."
+
+      case .timedOut:
+        "Capturing tasks took too long, please try again."
 
       case .sessionNotStarted, .failed:
         "Failed to capture tasks, please try again."
