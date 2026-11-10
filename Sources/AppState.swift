@@ -158,12 +158,19 @@ final class AppState {
 
       self.addConfirmedTasks()
     }
-    catch {
-      print("Failed to capture tasks: \(error)")
+    catch let error as TaskCaptureError {
 
-      // Use the capture error if there is one, otherwise
-      // fall back to a generic failed error
-      self.captureError = (error as? TaskCaptureError) ?? .failed
+      // If the error is already a task
+      // capture error then keep it as is
+      print("Failed to capture tasks: \(error)")
+      self.captureError = error
+    }
+    catch {
+
+      // Fall back to a generic failed error
+      // for any other unexpected errors
+      print("Failed to capture tasks: \(error)")
+      self.captureError = .failed
     }
   }
 
