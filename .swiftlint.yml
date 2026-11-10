@@ -19,6 +19,7 @@ disabled_rules:
   - required_deinit
   - switch_case_on_newline
   - sorted_enum_cases
+  - accessibility_trait_for_button
 
 attributes:
   always_on_line_above:
@@ -63,6 +64,12 @@ function_body_length:
 closure_body_length:
   warning: 250
   error: 300
+
+cyclomatic_complexity:
+  ignores_case_statements: true
+
+line_length:
+  ignores_regex_literals: true
 
 identifier_name:
   excluded:

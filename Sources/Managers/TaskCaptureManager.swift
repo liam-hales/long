@@ -154,31 +154,31 @@ final class TaskCaptureManager {
     // Map the captured tasks into an array of
     // tasks with their due dates resolved
     let tasks = await capturedTasks.asyncCompactMap { task -> TaskModel? in
-      let trimmed = task.title.trimmingCharacters(in: .whitespacesAndNewlines)
+      let trimmedTitle = task.title.trimmingCharacters(in: .whitespacesAndNewlines)
 
       // Make sure the task title set
       // by the model is not empty
-      if (trimmed.isEmpty == true) {
+      if (trimmedTitle.isEmpty == true) {
         return nil
       }
 
       // Make sure the title is grounded in the input text, if
       // not it's most likely a task that the model has made up
-      if (self._isGrounded(trimmed, in: text) == false) {
+      if (self._isGrounded(trimmedTitle, in: text) == false) {
         return nil
       }
 
       // Make sure the title starts with a capital
       // letter as the model doesn't always do this
-      let cap = trimmed.prefix(1).uppercased()
-      let title = "\(cap)\(trimmed.dropFirst())"
+      let cap = trimmedTitle.prefix(1).uppercased()
+      let title = "\(cap)\(trimmedTitle.dropFirst())"
 
       if let dueDateText = task.dueDateText {
 
         // Only resolve a due date if the
         // model generated due date text
-        let trimmed = dueDateText.trimmingCharacters(in: .whitespacesAndNewlines)
-        let dueDate = await self._resolveDate(from: trimmed)
+        let trimmedDate = dueDateText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let dueDate = await self._resolveDate(from: trimmedDate)
 
         return TaskModel(
           title: title,

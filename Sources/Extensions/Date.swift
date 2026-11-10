@@ -4,10 +4,7 @@ nonisolated extension Date {
 
   /// Formats the date into a human readable
   /// format based on the given date `format`
-  func text(
-    _ format: DateFormat,
-    includeTime: Bool = false
-  ) -> String {
+  func text(_ format: DateFormat, includeTime: Bool = false) -> String {
     let calendar = Calendar.current
     let dateText: String
 
