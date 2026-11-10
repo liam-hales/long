@@ -35,6 +35,10 @@ struct TaskInputView: View {
   private func _capture() -> Void {
     let shouldReview = self._appSettings.isReviewEnabled
 
+    // Drop the focus before capturing so it isn't restored
+    // when the input is enabled again or the review closes
+    self._isFocused.wrappedValue = false
+
     Task {
       await self._appState.captureTasks(shouldReview: shouldReview)
     }
@@ -85,6 +89,17 @@ struct TaskInputView: View {
               newValue.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
             ) {
               self._appState.startCaptureSession()
+            }
+          }
+          .onChange(of: self._appState.isCaptureActive) { _, isActive in
+
+            // Once capturing finishes only refocus the input if it still
+            // has text, meaning the review was dismissed or capturing failed
+            if (
+              isActive == false &&
+              self._appState.taskInput.isEmpty == false
+            ) {
+              self._isFocused.wrappedValue = true
             }
           }
 

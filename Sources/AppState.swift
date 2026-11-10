@@ -63,6 +63,16 @@ final class AppState {
       .first
   }
 
+  /// Whether the user is part way through capturing
+  /// tasks, including reviewing them or seeing an error
+  var isCaptureActive: Bool {
+    (
+      self.isCapturing == true ||
+      self.modalSelection == .reviewTasks ||
+      self.captureError != nil
+    )
+  }
+
   /// Initialises the `AppState` with a given model context
   /// and the manager used to capture tasks
   init(
