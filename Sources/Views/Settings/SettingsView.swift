@@ -197,7 +197,10 @@ struct SettingsView: View {
                 selection: $appSettings.notificationTime,
                 displayedComponents: .hourAndMinute
               )
-              .frame(width: 210)
+              .frame(
+                width: 200,
+                height: 180
+              )
               .datePickerStyle(.wheel)
               .labelsHidden()
               .presentationCompactAdaptation(.popover)
@@ -246,6 +249,7 @@ struct SettingsView: View {
       }
       .listStyle(.plain)
       .navigationTitle("Settings")
+      .navigationSubtitle("Customise your app preferences")
       .listRowSpacing(10)
       .listSectionSpacing(16)
       .contentMargins(.vertical, 20, for: .scrollContent)
