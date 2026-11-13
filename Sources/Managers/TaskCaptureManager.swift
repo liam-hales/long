@@ -72,9 +72,12 @@ final class TaskCaptureManager {
       - Keep items that belong to one action in one task, such as several things to buy.
       - Dates always go in dueDateText and never in the title.
 
-    Example:
+    Examples:
       Text: "Water the garden on Saturday"
       Task: title "Water the garden", dueDateText "on Saturday"
+
+      Text: "Return the jacket to Zara this weekend because it's too small"
+      Task: title "Return the jacket to Zara because it's too small", dueDateText "this weekend"
     """
   }
 
