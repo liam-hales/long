@@ -7,20 +7,23 @@ struct TaskRowView: View {
   private let _task: TaskModel
   private let _dateFormat: DateFormat
   private let _isSelected: Bool
+  private let _isCompact: Bool
 
   @Environment(AppState.self)
   private var _appState: AppState
 
-  /// Initialises the view with the `task` to render,
-  /// along with the `dateFormat` and `isSelected`
+  /// Initialises the view with the `task` to render, along
+  /// with the `dateFormat`, `isSelected` and `isCompact`
   init(
     task: TaskModel,
     dateFormat: DateFormat,
-    isSelected: Bool = false
+    isSelected: Bool = false,
+    isCompact: Bool = false
   ) {
     self._task = task
     self._dateFormat = dateFormat
     self._isSelected = isSelected
+    self._isCompact = isCompact
   }
 
   private var _badgeAppearance: BadgeView.Appearance {
@@ -71,34 +74,67 @@ struct TaskRowView: View {
       )
       .buttonStyle(.plain)
 
-      VStack(
-        alignment: .leading,
-        spacing: 8
-      ) {
-        let title = self._task.title
-        let subtitle = self._task.subtitle(
-          dateFormat: self._dateFormat
-        )
+      if (self._isCompact == true) {
+        VStack(
+          alignment: .leading,
+          spacing: 8
+        ) {
+          Text(self._task.title)
+            .strikethrough(self._task.isCompleted)
+            .foregroundStyle(
+              (self._task.isCompleted == true)
+                ? Color.contentSecondary
+                : Color.contentPrimary
+            )
 
-        Text(title)
-          .strikethrough(self._task.isCompleted)
-          .foregroundStyle(
-            (self._task.isCompleted == true)
-              ? Color.contentSecondary
-              : Color.contentPrimary
-          )
+          if (
+            self._task.isCompleted == false &&
+            self._task.schedule == .overdue
+          ) {
 
-        if (self._task.isCompleted == true) {
-          Text(subtitle)
-            .foregroundStyle(Color.contentSecondary)
-            .font(.mono(11))
+            // Render the task due date on its
+            // own with no "Due" prefix
+            if let dueDate = self._task.dueDate {
+              let dateText = dueDate.text(self._dateFormat, includeTime: false)
+
+              Text(dateText)
+                .foregroundStyle(Color.contentError)
+                .font(.mono(11))
+            }
+          }
         }
+      }
 
-        if (self._task.isCompleted == false) {
-          BadgeView(
-            appearance: self._badgeAppearance,
-            text: subtitle
+      if (self._isCompact == false) {
+        VStack(
+          alignment: .leading,
+          spacing: 8
+        ) {
+          let title = self._task.title
+          let subtitle = self._task.subtitle(
+            dateFormat: self._dateFormat
           )
+
+          Text(title)
+            .strikethrough(self._task.isCompleted)
+            .foregroundStyle(
+              (self._task.isCompleted == true)
+                ? Color.contentSecondary
+                : Color.contentPrimary
+            )
+
+          if (self._task.isCompleted == true) {
+            Text(subtitle)
+              .foregroundStyle(Color.contentSecondary)
+              .font(.mono(11))
+          }
+
+          if (self._task.isCompleted == false) {
+            BadgeView(
+              appearance: self._badgeAppearance,
+              text: subtitle
+            )
+          }
         }
       }
     }

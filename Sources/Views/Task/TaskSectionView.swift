@@ -9,6 +9,7 @@ struct TaskSectionView: View {
   private let _icon: LucideIconName
   private let _headerColour: Color
   private let _tasks: [TaskModel]
+  private let _isCompact: Bool
   private let _onTaskTap: ((TaskModel) -> Void)?
 
   @Environment(AppState.self)
@@ -24,12 +25,14 @@ struct TaskSectionView: View {
     icon: LucideIconName,
     tasks: [TaskModel],
     headerColour: Color = .contentSecondary,
+    isCompact: Bool = false,
     onTaskTap: ((TaskModel) -> Void)? = nil
   ) {
     self._title = title
     self._icon = icon
     self._tasks = tasks
     self._headerColour = headerColour
+    self._isCompact = isCompact
     self._onTaskTap = onTaskTap
   }
 
@@ -38,6 +41,7 @@ struct TaskSectionView: View {
   init(
     filter: TaskFilter,
     tasks: [TaskModel],
+    isCompact: Bool = false,
     onTaskTap: ((TaskModel) -> Void)? = nil
   ) {
 
@@ -46,7 +50,7 @@ struct TaskSectionView: View {
     let headerColour: Color = switch filter {
       case .all: .contentSecondary
       case .overdue: .contentError
-      case .today: .contentSecondary
+      case .today: .contentWarning
       case .scheduled: .contentSecondary
       case .unscheduled: .contentSecondary
       case .completed: .contentSecondary
@@ -57,6 +61,7 @@ struct TaskSectionView: View {
       icon: filter.icon,
       tasks: tasks,
       headerColour: headerColour,
+      isCompact: isCompact,
       onTaskTap: onTaskTap
     )
   }
@@ -75,7 +80,8 @@ struct TaskSectionView: View {
           TaskRowView(
             task: task,
             dateFormat: self._appSettings.dateFormat,
-            isSelected: isSelected
+            isSelected: isSelected,
+            isCompact: self._isCompact
           )
         }
 
@@ -83,7 +89,8 @@ struct TaskSectionView: View {
           TaskRowView(
             task: task,
             dateFormat: self._appSettings.dateFormat,
-            isSelected: isSelected
+            isSelected: isSelected,
+            isCompact: self._isCompact
           )
           .accessibilityAddTraits(.isButton)
           .onTapGesture {

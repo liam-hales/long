@@ -82,7 +82,8 @@ struct NavSidebarView: View {
             if (tasks.isEmpty == false) {
               TaskSectionView(
                 filter: filter,
-                tasks: tasks
+                tasks: tasks,
+                isCompact: true
               ) { task in
                 self._appState.revealTask(task)
               }
