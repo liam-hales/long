@@ -21,47 +21,37 @@ struct TaskSheetRowView: View {
   }
 
   var body: some View {
-    VStack(
-      alignment: .leading,
+    HStack(
+      alignment: .center,
       spacing: 8
     ) {
       Text(self._sheet.name)
+        .lineLimit(1)
+        .frame(
+          maxWidth: .infinity,
+          alignment: .leading
+        )
 
-      HStack(
-        alignment: .center,
-        spacing: 8
-      ) {
-        if (self._sheet.overdueCount > 0) {
-          BadgeView(
-            appearance: .error,
-            text: "\(self._sheet.overdueCount)",
-            icon: TaskFilter.overdue.icon
-          )
-        }
-
-        if (self._sheet.todayCount > 0) {
-          BadgeView(
-            appearance: .warning,
-            text: "\(self._sheet.todayCount)",
-            icon: TaskFilter.today.icon
-          )
-        }
-
-        if (
-          self._sheet.overdueCount > 0 ||
-          self._sheet.todayCount > 0
-        ) {
-          Text("•")
-            .foregroundStyle(Color.contentSecondary)
-            .font(.mono(11))
-        }
-
-        Text("\(self._sheet.activeCount) \((self._sheet.activeCount == 1) ? "task" : "tasks") to complete")
-          .foregroundStyle(Color.contentSecondary)
-          .font(.mono(11))
+      if (self._sheet.overdueCount > 0) {
+        LucideIcon(
+          TaskFilter.overdue.icon,
+          size: 16,
+          color: .contentError
+        )
       }
+
+      if (self._sheet.todayCount > 0) {
+        LucideIcon(
+          TaskFilter.today.icon,
+          size: 16,
+          color: .contentWarning
+        )
+      }
+
+      Text("\(self._sheet.activeCount)")
+        .foregroundStyle(Color.contentSecondary)
+        .font(.mono(12))
     }
-    .padding(.leading, 6)
     .listRow(isSelected: self._isSelected)
     .contentShape(
       .contextMenuPreview,
