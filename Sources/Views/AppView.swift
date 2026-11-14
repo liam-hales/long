@@ -17,6 +17,31 @@ struct AppView: View {
   @Query
   private var _taskSheets: [TaskSheetModel]
 
+  /// The column shown when the split view is collapsed, calculated
+  /// from the nav selection so it doesn't rely on the sidebar list
+  private var _navColumn: Binding<NavigationSplitViewColumn> {
+    Binding(
+      get: {
+
+        // Show the sidebar if there is
+        // nothing currently selected
+        if (self._appState.navSelection == nil) {
+          return .sidebar
+        }
+
+        return .detail
+      },
+      set: { column in
+
+        // Clear the nav selection if the
+        // system navigates back to the sidebar
+        if (column == .sidebar) {
+          self._appState.navSelection = nil
+        }
+      }
+    )
+  }
+
   var body: some View {
 
     @Bindable
@@ -30,6 +55,7 @@ struct AppView: View {
       if (self._taskSheets.isEmpty == false) {
         NavigationSplitView(
           columnVisibility: $appState.navVisibility,
+          preferredCompactColumn: self._navColumn,
           sidebar: {
             NavSidebarView(sizeClass: self._sizeClass)
           },
