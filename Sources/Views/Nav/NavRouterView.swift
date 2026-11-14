@@ -29,7 +29,6 @@ struct NavRouterView: View {
           message: "You have nothing selected, select a task sheet from the sidebar.",
           icon: .panelLeft
         )
-        .background(Color.base)
       }
 
       if let sheet = self._appState.selectedTaskSheet {

@@ -61,6 +61,7 @@ struct AppView: View {
           },
           detail: {
             NavRouterView(sizeClass: self._sizeClass)
+              .containerBackground(Color.base, for: .navigation)
           }
         )
       }

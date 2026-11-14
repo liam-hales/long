@@ -244,6 +244,5 @@ struct TaskSheetView: View {
     .contentMargins(.bottom, 16, for: .scrollContent)
     .scrollContentBackground(.hidden)
     .scrollDismissesKeyboard(.interactively)
-    .background(Color.base)
   }
 }
