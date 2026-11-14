@@ -1,4 +1,5 @@
 import Foundation
+import LucideSwift
 import SwiftData
 
 /// Describes a task sheet the user
@@ -10,6 +11,8 @@ final class TaskSheetModel: Identifiable, BaseModel {
   private static var _undoManagers: [TaskSheetModel.ID: TaskSheetUndoManager] = [:]
 
   private(set) var name: String = ""
+  private(set) var tagline: String = ""
+  private(set) var iconName: String = LucideIconName.notebook.rawValue
 
   @Relationship(
     deleteRule: .cascade,
@@ -35,6 +38,12 @@ final class TaskSheetModel: Identifiable, BaseModel {
     Self._undoManagers[self.id] = newManager
 
     return newManager
+  }
+
+  /// The task sheet icon falling back to the default
+  /// icon if the stored icon no longer exists
+  var icon: LucideIconName {
+    LucideIconName(rawValue: self.iconName) ?? .notebook
   }
 
   /// The most recent date calculated based on its own
@@ -77,16 +86,24 @@ final class TaskSheetModel: Identifiable, BaseModel {
   /// with a given `name`
   init(name: String) {
     self.name = name
+    self.tagline = ""
+    self.iconName = LucideIconName.notebook.rawValue
     self.tasks = []
     self.createDate = .now
     self.updateDate = .now
   }
 
-  /// Used to update the task
-  /// sheet with a given `name`
+  /// Used to update the task sheet with
+  /// a given `name`, `tagline` and `icon`
   @MainActor
-  func update(name: String) -> Void {
+  func update(
+    name: String,
+    tagline: String,
+    icon: LucideIconName
+  ) -> Void {
     self._update(\.name, to: name)
+    self._update(\.tagline, to: tagline)
+    self._update(\.iconName, to: icon.rawValue)
   }
 
   /// Used to assign the given `tasks` to the

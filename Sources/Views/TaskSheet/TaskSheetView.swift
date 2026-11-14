@@ -45,10 +45,19 @@ struct TaskSheetView: View {
     )
   }
 
-  /// The subtitle which shows the number
-  /// of tasks left to complete
+  /// The subtitle which shows the tagline, or when the sheet
+  /// was last active followed by the tasks left to complete
   private var _subtitle: String {
-    "\(self._activeTasks.count) tasks to complete"
+    let lastActive = self._sheet.activityDate.text(self._appSettings.dateFormat)
+    let progress = (self._activeTasks.isEmpty == true)
+      ? "All done!"
+      : "\(self._activeTasks.count) left"
+
+    // Show the tagline if one has been set
+    // otheriwse show the last active date
+    return (self._sheet.tagline.isEmpty == false)
+      ? "\(self._sheet.tagline) • \(progress)"
+      : "Last active \(lastActive) • \(progress)"
   }
 
   private var _activeTasks: [TaskModel] {
@@ -76,8 +85,15 @@ struct TaskSheetView: View {
             alignment: .leading,
             spacing: 4
           ) {
-            Text(self._sheet.name)
-              .font(.serif(28, .semibold))
+            HStack(
+              alignment: .center,
+              spacing: 10
+            ) {
+              LucideIcon(self._sheet.icon, size: 26)
+
+              Text(self._sheet.name)
+                .font(.serif(28, .semibold))
+            }
 
             Text(self._subtitle)
               .foregroundStyle(Color.contentSecondary)
@@ -186,15 +202,22 @@ struct TaskSheetView: View {
       // bar as the navigation bar behaves differently when it is
       if (self._hasVerticalBar == false) {
         ToolbarItem(placement: .largeTitle) {
-          Text(self._sheet.name)
-            .font(.serif(28, .semibold))
-            .padding(.horizontal, 6)
-            .padding(.top, 42)
-            .padding(.bottom, -2)
-            .frame(
-              maxWidth: .infinity,
-              alignment: .leading
-            )
+          HStack(
+            alignment: .center,
+            spacing: 10
+          ) {
+            LucideIcon(self._sheet.icon, size: 26)
+
+            Text(self._sheet.name)
+              .font(.serif(28, .semibold))
+          }
+          .padding(.horizontal, 6)
+          .padding(.top, 42)
+          .padding(.bottom, -2)
+          .frame(
+            maxWidth: .infinity,
+            alignment: .leading
+          )
         }
 
         ToolbarItem(placement: .largeSubtitle) {

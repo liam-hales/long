@@ -23,34 +23,53 @@ struct TaskSheetRowView: View {
   var body: some View {
     HStack(
       alignment: .center,
-      spacing: 8
+      spacing: 14
     ) {
-      Text(self._sheet.name)
-        .lineLimit(1)
-        .frame(
-          maxWidth: .infinity,
-          alignment: .leading
-        )
+      LucideIcon(self._sheet.icon, size: 20)
 
-      if (self._sheet.overdueCount > 0) {
-        LucideIcon(
-          TaskFilter.overdue.icon,
-          size: 16,
-          color: .contentError
-        )
+      VStack(
+        alignment: .leading,
+        spacing: 4
+      ) {
+        Text(self._sheet.name)
+          .lineLimit(1)
+
+        if (self._sheet.tagline.isEmpty == false) {
+          Text(self._sheet.tagline)
+            .foregroundStyle(Color.contentSecondary)
+            .font(.mono(11))
+            .lineLimit(1)
+        }
       }
+      .frame(
+        maxWidth: .infinity,
+        alignment: .leading
+      )
 
-      if (self._sheet.todayCount > 0) {
-        LucideIcon(
-          TaskFilter.today.icon,
-          size: 16,
-          color: .contentWarning
-        )
+      HStack(
+        alignment: .center,
+        spacing: 8
+      ) {
+        if (self._sheet.overdueCount > 0) {
+          LucideIcon(
+            TaskFilter.overdue.icon,
+            size: 16,
+            color: .contentError
+          )
+        }
+
+        if (self._sheet.todayCount > 0) {
+          LucideIcon(
+            TaskFilter.today.icon,
+            size: 16,
+            color: .contentWarning
+          )
+        }
+
+        Text("\(self._sheet.activeCount)")
+          .foregroundStyle(Color.contentSecondary)
+          .font(.mono(12))
       }
-
-      Text("\(self._sheet.activeCount)")
-        .foregroundStyle(Color.contentSecondary)
-        .font(.mono(12))
     }
     .listRow(isSelected: self._isSelected)
     .contentShape(
