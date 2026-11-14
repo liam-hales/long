@@ -75,7 +75,7 @@ struct EditTaskView: View {
           TextField(
             "Title",
             text: self.$_title,
-            prompt: Text("Untitled")
+            prompt: Text("What needs doing?")
               .foregroundStyle(Color.contentSecondary),
             axis: .vertical
           )
