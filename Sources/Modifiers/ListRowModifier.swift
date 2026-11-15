@@ -22,7 +22,7 @@ struct ListRowModifier: ViewModifier {
           .fill(Color.surfaceHigh)
           .strokeBorder(
             (self._isSelected == true)
-              ? Color.outlineSelected
+              ? Color.accent
               : Color.outline,
             lineWidth: 1
           )
