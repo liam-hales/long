@@ -89,7 +89,7 @@ struct TaskSheetView: View {
               alignment: .center,
               spacing: 10
             ) {
-              LucideIcon(self._sheet.icon, size: 26)
+              IconTileView(icon: self._sheet.icon, size: 24)
 
               Text(self._sheet.name)
                 .font(.serif(28, .semibold))
@@ -206,7 +206,7 @@ struct TaskSheetView: View {
             alignment: .center,
             spacing: 10
           ) {
-            LucideIcon(self._sheet.icon, size: 26)
+            IconTileView(icon: self._sheet.icon, size: 24)
 
             Text(self._sheet.name)
               .font(.serif(28, .semibold))

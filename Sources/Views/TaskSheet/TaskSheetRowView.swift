@@ -25,7 +25,7 @@ struct TaskSheetRowView: View {
       alignment: .center,
       spacing: 14
     ) {
-      LucideIcon(self._sheet.icon, size: 20)
+      IconTileView(icon: self._sheet.icon, size: 20)
 
       VStack(
         alignment: .leading,
