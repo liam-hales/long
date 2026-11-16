@@ -49,6 +49,17 @@ extension Array where Element == TaskModel {
           .sorted(using: sort)
     }
   }
+
+  /// Returns the tasks that are
+  /// due on a given `day`
+  func filtered(by day: Date) -> [TaskModel] {
+    self.filter { task in
+      (
+        task.isSettled == false &&
+        task.schedule(at: day) == .today
+      )
+    }
+  }
 }
 
 extension Array where Element == TaskSheetModel {
