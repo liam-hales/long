@@ -65,6 +65,10 @@ closure_body_length:
   warning: 250
   error: 300
 
+type_body_length:
+  warning: 300
+  error: 350
+
 cyclomatic_complexity:
   ignores_case_statements: true
 
