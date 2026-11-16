@@ -1,8 +1,8 @@
 import SwiftUI
 
-/// Used to display the header at the top of the navigation
-/// sidebar, greeting the user and displaying today's date
-struct NavHeaderView: View {
+/// Used to display the header at the top of the home
+/// view, greeting the user and displaying today's date
+struct HomeHeaderView: View {
   private static let _greetingSeed: Int = Int.random(in: 0...Int.max)
 
   @Environment(AppSettings.self)
