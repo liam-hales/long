@@ -42,7 +42,6 @@ struct HomeHeaderView: View {
         .font(.mono(14))
     }
     .frame(maxWidth: .infinity)
-    .padding(.vertical, 12)
     .listRowInsets(.vertical, 0)
     .listRowBackground(Color.clear)
     .listRowSeparator(.hidden)

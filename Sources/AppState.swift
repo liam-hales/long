@@ -28,6 +28,7 @@ final class AppState {
 
   private let _context: ModelContext
   private let _captureManager: TaskCaptureManager
+  private var _selectedDay: Date
 
   var navVisibility: NavigationSplitViewVisibility
   var navSelection: NavSelection?
@@ -63,6 +64,21 @@ final class AppState {
       .first
   }
 
+  /// The day selected in the home day picker, falling
+  /// back to today if the selected day is now in the past
+  var selectedDay: Date {
+    get {
+      let today = Calendar
+        .current
+        .startOfDay(for: .now)
+
+      return max(self._selectedDay, today)
+    }
+    set {
+      self._selectedDay = newValue
+    }
+  }
+
   /// Whether the user is part way through capturing
   /// tasks, including reviewing them or seeing an error
   var isCaptureActive: Bool {
@@ -81,6 +97,7 @@ final class AppState {
   ) {
     self._context = context
     self._captureManager = captureManager
+    self._selectedDay = Calendar.current.startOfDay(for: .now)
 
     self.navVisibility = .doubleColumn
     self.navSelection = nil

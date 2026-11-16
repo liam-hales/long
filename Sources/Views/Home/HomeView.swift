@@ -57,28 +57,37 @@ struct HomeView: View {
 
       if (self._appState.isSearching == false) {
         List(selection: $appState.navSelection) {
+
+          let overdueTasks = self._tasks.filtered(by: .overdue)
+          let dueTasks = self._tasks.filtered(by: self._appState.selectedDay)
+
           HomeHeaderView()
+            .padding(.top, 12)
+            .padding(.bottom, 22)
 
-          let filters = [
-            TaskFilter.overdue,
-            TaskFilter.today,
-          ]
+          HomeDayPickerView(
+            tasks: self._tasks,
+            selectedDay: self._appState.selectedDay
+          ) { day in
+            self._appState.selectedDay = day
+          }
 
-          // Section and render the tasks by
-          // the overdue and today filters
-          ForEach(filters) { filter in
-            let tasks = self._tasks.filtered(by: filter)
-
-            if (tasks.isEmpty == false) {
-              TaskSectionView(
-                filter: filter,
-                tasks: tasks,
-                isCompact: true
-              ) { task in
-                self._appState.revealTask(task)
-              }
+          // Render the overdue tasks only if there are any, these are
+          // always overdue as of now no matter which day is selected
+          if (overdueTasks.isEmpty == false) {
+            TaskSectionView(
+              filter: .overdue,
+              tasks: overdueTasks,
+              isCompact: true
+            ) { task in
+              self._appState.revealTask(task)
             }
           }
+
+          HomeDueSectionView(
+            day: self._appState.selectedDay,
+            tasks: dueTasks
+          )
 
           SectionView(
             title: "Task Sheets",
@@ -178,5 +187,13 @@ struct HomeView: View {
     .listSectionSpacing(16)
     .contentMargins(.vertical, 16, for: .scrollContent)
     .scrollContentBackground(.hidden)
+    .onChange(of: self._scenePhase) { _, phase in
+
+      // Reset the selected day when the app is put in the
+      // background so it always comes back to today's tasks
+      if (phase == .background) {
+        self._appState.selectedDay = Calendar.current.startOfDay(for: .now)
+      }
+    }
   }
 }
