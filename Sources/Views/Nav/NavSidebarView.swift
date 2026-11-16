@@ -1,41 +1,16 @@
 import LucideSwift
-import SwiftData
 import SwiftUI
 
-/// Used to display the navigation
-/// sidebar for the app
+/// Used to display the navigation sidebar for the app which
+/// renders the home view and split view specific controls
 struct NavSidebarView: View {
   private let _sizeClass: UserInterfaceSizeClass?
 
   @Environment(AppState.self)
   private var _appState: AppState
 
-  @Environment(AppSettings.self)
-  private var _appSettings: AppSettings
-
   @Environment(\.displayScale)
   private var _displayScale: CGFloat
-
-  /// Used to force the view to rebuild when the
-  /// app comes back from the background
-  @Environment(\.scenePhase)
-  private var _scenePhase: ScenePhase
-
-  @Query
-  private var _taskSheets: [TaskSheetModel]
-
-  @Query(
-    filter: #Predicate<TaskModel> { $0.sheet != nil },
-    sort: \TaskModel.dueDate,
-    order: .forward
-  )
-  private var _tasks: [TaskModel]
-
-  /// The task sheets ordered by
-  /// the users preferred sort
-  private var _sortedTaskSheets: [TaskSheetModel] {
-    self._taskSheets.sorted(by: self._appSettings.taskSheetSort)
-  }
 
   /// Initialises the view with
   /// the app `sizeClass`
@@ -44,188 +19,47 @@ struct NavSidebarView: View {
   }
 
   var body: some View {
+    HomeView()
+      .toolbar(removing: .sidebarToggle)
+      .toolbar {
 
-    @Bindable
-    var appState = _appState
-
-    @Bindable
-    var appSettings = _appSettings
-
-    // Swap between the search and sidebar lists in a `ZStack` so the
-    // search and toolbar modifiers stay attached to a single view
-    ZStack {
-      if (self._appState.isSearching == true) {
-
-        // Trim the search text from any
-        // whitespace and new lines
-        let query = self._appState
-          .searchText
-          .trimmingCharacters(in: .whitespacesAndNewlines)
-
-        TaskSearchView(query: query)
-      }
-
-      if (self._appState.isSearching == false) {
-        List(selection: $appState.navSelection) {
-          NavHeaderView()
-
-          let filters = [
-            TaskFilter.overdue,
-            TaskFilter.today,
-          ]
-
-          // Section and render the tasks by
-          // the overdue and today filters
-          ForEach(filters) { filter in
-            let tasks = self._tasks.filtered(by: filter)
-
-            if (tasks.isEmpty == false) {
-              TaskSectionView(
-                filter: filter,
-                tasks: tasks,
-                isCompact: true
-              ) { task in
-                self._appState.revealTask(task)
-              }
-            }
-          }
-
-          SectionView(
-            title: "Task Sheets",
-            icon: .fileText,
-            count: self._taskSheets.count
-          ) {
-            ForEach(self._sortedTaskSheets) { sheet in
-              let value: AppState.NavSelection = .taskSheet(sheet.id)
-
-              TaskSheetRowView(
-                sheet: sheet,
-                isSelected: self._appState.navSelection == value
-              )
-              .tag(value)
-            }
-          }
-        }
-      }
-    }
-    .searchable(
-      text: $appState.searchText,
-      isPresented: $appState.isSearching,
-      prompt: Text("Search tasks"),
-    )
-    .searchScopes($appState.searchScope) {
-      ForEach(TaskSearchScope.allCases) { scope in
-        Text(scope.title).tag(scope)
-      }
-    }
-    .searchToolbarBehavior(.minimize)
-    .toolbar(removing: .sidebarToggle)
-    .toolbarMinimizationBehavior(.onScrollDown, for: .navigationBar)
-    .toolbar {
-      ToolbarItem(placement: .topBarTrailing) {
-        Button(
-          action: {
-            self._appState.createTaskSheet(name: "Untitled")
-          },
-          label: {
-            LucideIcon(.filePlusCorner, size: 22)
-          }
-        )
-      }
-      .toolbarAxis(.vertical)
-
-      ToolbarItem(placement: .topBarTrailing) {
-        Menu(
-          content: {
-            Picker("Sort By", selection: $appSettings.taskSheetSort) {
-              ForEach(TaskSheetSort.allCases) { sort in
-                Label(
-                  title: {
-                    Text(sort.title)
-                  },
-                  icon: {
-                    Image(
-                      lucide: sort.icon,
-                      size: .init(width: 22, height: 22)
-                    )
-                  }
-                )
-              }
-            }
-            .tint(.contentPrimary)
-            .pickerStyle(.inline)
-          },
-          label: {
-            LucideIcon(.arrowUpDown, size: 22)
-          }
-        )
-      }
-      .toolbarAxis(.vertical)
-
-      ToolbarItem(placement: .topBarLeading) {
-        Button(
-          action: {
-            self._appState.modalSelection = .settings
-          },
-          label: {
-            LucideIcon(.settings, size: 22)
-          }
-        )
-      }
-      .toolbarAxis(.vertical)
-
-      // Show the sidebar open button only
-      // if the size class is set to `regular`
-      if (self._sizeClass == .regular) {
-        ToolbarSpacer(
-          .fixed,
-          placement: .topBarTrailing
-        )
-
-        ToolbarItem(placement: .topBarTrailing) {
-          Button(
-            action: {
-              self._appState.navVisibility = .detailOnly
-            },
-            label: {
-              LucideIcon(.panelRightOpen, size: 22)
-            }
+        // Show the sidebar open button only if the size class is set to `regular` and
+        // the primary action placement keeps it after the home view toolbar items
+        if (self._sizeClass == .regular) {
+          ToolbarSpacer(
+            .fixed,
+            placement: .primaryAction
           )
-        }
-        .toolbarAxis(.vertical)
-      }
 
-      ToolbarSpacer(
-        .flexible,
-        placement: .bottomBar
-      )
-
-      DefaultToolbarItem(
-        kind: .search,
-        placement: .bottomBar
-      )
-    }
-    .listStyle(.plain)
-    .listRowSpacing(10)
-    .listSectionSpacing(16)
-    .contentMargins(.vertical, 16, for: .scrollContent)
-    .scrollContentBackground(.hidden)
-    .background {
-
-      // The background fills the whole column including its safe area, so the
-      // divider drawn on its trailing edge sits where the columns meet
-      Color.base
-        .overlay(alignment: .trailing) {
-
-          // Show the divider only if the
-          // size class is set to `regular`
-          if (self._sizeClass == .regular) {
-            Rectangle()
-              .fill(Color.outline)
-              .frame(width: 2 / self._displayScale)
+          ToolbarItem(placement: .primaryAction) {
+            Button(
+              action: {
+                self._appState.navVisibility = .detailOnly
+              },
+              label: {
+                LucideIcon(.panelRightOpen, size: 22)
+              }
+            )
           }
+          .toolbarAxis(.vertical)
         }
-        .ignoresSafeArea()
-    }
+      }
+      .background {
+
+        // The background fills the whole column including its safe area, so the
+        // divider drawn on its trailing edge sits where the columns meet
+        Color.base
+          .overlay(alignment: .trailing) {
+
+            // Show the divider only if the
+            // size class is set to `regular`
+            if (self._sizeClass == .regular) {
+              Rectangle()
+                .fill(Color.outline)
+                .frame(width: 2 / self._displayScale)
+            }
+          }
+          .ignoresSafeArea()
+      }
   }
 }
