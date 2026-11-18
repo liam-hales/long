@@ -126,6 +126,7 @@ struct HomeView: View {
       }
     }
     .searchToolbarBehavior(.minimize)
+    .toolbarTitleDisplayMode(.inline)
     .toolbarMinimizationBehavior(.onScrollDown, for: .navigationBar)
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {
