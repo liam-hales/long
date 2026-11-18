@@ -15,6 +15,9 @@ struct TaskInputView: View {
   @Environment(\.displayScale)
   private var _displayScale: CGFloat
 
+  @Environment(\.verticalBarEdge)
+  private var _verticalBarEdge: Edge.Set
+
   /// Initialises the view with the `isFocused`
   /// binding used to control the input focus
   init(isFocused: FocusState<Bool>.Binding) {
@@ -148,6 +151,7 @@ struct TaskInputView: View {
       }
       .padding(.top, 16)
       .padding(.bottom, (self._isFocused.wrappedValue == true) ? 16 : 0)
+      .padding(self._verticalBarEdge, 8)
       .containerMargins()
     }
     .background(Color.base)

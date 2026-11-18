@@ -12,6 +12,9 @@ struct HomeView: View {
   @Environment(AppSettings.self)
   private var _appSettings: AppSettings
 
+  @Environment(\.verticalBarEdge)
+  private var _verticalBarEdge: Edge.Set
+
   /// Used to force the view to rebuild when the
   /// app comes back from the background
   @Environment(\.scenePhase)
@@ -58,52 +61,57 @@ struct HomeView: View {
       if (self._appState.isSearching == false) {
         List(selection: $appState.navSelection) {
 
-          let overdueTasks = self._tasks.filtered(by: .overdue)
-          let dueTasks = self._tasks.filtered(by: self._appState.selectedDay)
+          // Group the rows so the vertical bar
+          // padding is applied to each of them
+          Group {
+            let overdueTasks = self._tasks.filtered(by: .overdue)
+            let dueTasks = self._tasks.filtered(by: self._appState.selectedDay)
 
-          HomeHeaderView()
-            .padding(.top, 12)
-            .padding(.bottom, 22)
+            HomeHeaderView()
+              .padding(.top, 12)
+              .padding(.bottom, 22)
 
-          HomeDayPickerView(
-            tasks: self._tasks,
-            selectedDay: self._appState.selectedDay
-          ) { day in
-            self._appState.selectedDay = day
-          }
+            HomeDayPickerView(
+              tasks: self._tasks,
+              selectedDay: self._appState.selectedDay
+            ) { day in
+              self._appState.selectedDay = day
+            }
 
-          // Render the overdue tasks only if there are any, these are
-          // always overdue as of now no matter which day is selected
-          if (overdueTasks.isEmpty == false) {
-            TaskSectionView(
-              filter: .overdue,
-              tasks: overdueTasks,
-              isCompact: true
-            ) { task in
-              self._appState.revealTask(task)
+            // Render the overdue tasks only if there are any, these are
+            // always overdue as of now no matter which day is selected
+            if (overdueTasks.isEmpty == false) {
+              TaskSectionView(
+                filter: .overdue,
+                tasks: overdueTasks,
+                isCompact: true
+              ) { task in
+                self._appState.revealTask(task)
+              }
+            }
+
+            HomeDueSectionView(
+              day: self._appState.selectedDay,
+              tasks: dueTasks
+            )
+
+            SectionView(
+              title: "Task Sheets",
+              icon: .fileText,
+              count: self._taskSheets.count
+            ) {
+              ForEach(self._sortedTaskSheets) { sheet in
+                let value: AppState.NavSelection = .taskSheet(sheet.id)
+
+                TaskSheetRowView(
+                  sheet: sheet,
+                  isSelected: self._appState.navSelection == value
+                )
+                .tag(value)
+              }
             }
           }
-
-          HomeDueSectionView(
-            day: self._appState.selectedDay,
-            tasks: dueTasks
-          )
-
-          SectionView(
-            title: "Task Sheets",
-            icon: .fileText,
-            count: self._taskSheets.count
-          ) {
-            ForEach(self._sortedTaskSheets) { sheet in
-              let value: AppState.NavSelection = .taskSheet(sheet.id)
-
-              TaskSheetRowView(
-                sheet: sheet,
-                isSelected: self._appState.navSelection == value
-              )
-              .tag(value)
-            }
-          }
+          .padding(self._verticalBarEdge, 8)
         }
       }
     }

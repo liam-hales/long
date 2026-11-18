@@ -16,6 +16,9 @@ struct TaskSheetView: View {
   @Environment(\.hasVerticalBar)
   private var _hasVerticalBar: Bool
 
+  @Environment(\.verticalBarEdge)
+  private var _verticalBarEdge: Edge.Set
+
   /// Used for force the view to rebuild when the
   /// app comes back from the background
   @Environment(\.scenePhase)
@@ -78,77 +81,83 @@ struct TaskSheetView: View {
     ScrollViewReader { proxy in
       List {
 
-        // Show the title and subtitle in the `List` only when the veritcal bar
-        // is present as the navigation bar behaves differently when it is
-        if (self._hasVerticalBar == true) {
-          VStack(
-            alignment: .leading,
-            spacing: 4
-          ) {
-            HStack(
-              alignment: .center,
-              spacing: 10
+        // Group the rows so the vertical bar
+        // padding is applied to each of them
+        Group {
+
+          // Show the title and subtitle in the `List` only when the veritcal bar
+          // is present as the navigation bar behaves differently when it is
+          if (self._hasVerticalBar == true) {
+            VStack(
+              alignment: .leading,
+              spacing: 4
             ) {
-              IconTileView(icon: self._sheet.icon, size: 24)
+              HStack(
+                alignment: .center,
+                spacing: 10
+              ) {
+                IconTileView(icon: self._sheet.icon, size: 24)
 
-              Text(self._sheet.name)
-                .font(.serif(28, .semibold))
+                Text(self._sheet.name)
+                  .font(.serif(28, .semibold))
+              }
+
+              Text(self._subtitle)
+                .foregroundStyle(Color.contentSecondary)
+                .font(.mono(14))
             }
-
-            Text(self._subtitle)
-              .foregroundStyle(Color.contentSecondary)
-              .font(.mono(14))
+            .padding(.horizontal, 6)
+            .padding(.bottom, 10)
+            .listRowInsets(.vertical, 0)
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
           }
-          .padding(.horizontal, 6)
-          .padding(.bottom, 10)
-          .listRowInsets(.vertical, 0)
-          .listRowBackground(Color.clear)
-          .listRowSeparator(.hidden)
-        }
 
-        if (self._appState.taskFocus != .all) {
+          if (self._appState.taskFocus != .all) {
 
-          // Get the focussed tasks using
-          // the `taskFocus` state
-          let focusedTasks = self._tasks.filtered(by: self._appState.taskFocus)
+            // Get the focussed tasks using
+            // the `taskFocus` state
+            let focusedTasks = self._tasks.filtered(by: self._appState.taskFocus)
 
-          if (focusedTasks.isEmpty == false) {
-            Section {
-              ForEach(focusedTasks) { task in
-                TaskRowView(
-                  task: task,
-                  dateFormat: self._appSettings.dateFormat,
-                  isSelected: self._appState.revealedTaskId == task.id
-                )
-                .accessibilityAddTraits(.isButton)
-                .onTapGesture {
+            if (focusedTasks.isEmpty == false) {
+              Section {
+                ForEach(focusedTasks) { task in
+                  TaskRowView(
+                    task: task,
+                    dateFormat: self._appSettings.dateFormat,
+                    isSelected: self._appState.revealedTaskId == task.id
+                  )
+                  .accessibilityAddTraits(.isButton)
+                  .onTapGesture {
+                    self._appState.modalSelection = .editTask(task)
+                  }
+                }
+              }
+            }
+          }
+
+          if (self._appState.taskFocus == .all) {
+            let filters = TaskFilter
+              .allCases
+              .filter { $0 != .all }
+
+            // Section and render the
+            // tasks by each filter
+            ForEach(filters) { filter in
+              let tasks = self._tasks.filtered(by: filter)
+
+              if (tasks.isEmpty == false) {
+                TaskSectionView(
+                  filter: filter,
+                  tasks: tasks
+                ) { task in
                   self._appState.modalSelection = .editTask(task)
                 }
               }
             }
           }
         }
-
-        if (self._appState.taskFocus == .all) {
-          let filters = TaskFilter
-            .allCases
-            .filter { $0 != .all }
-
-          // Section and render the
-          // tasks by each filter
-          ForEach(filters) { filter in
-            let tasks = self._tasks.filtered(by: filter)
-
-            if (tasks.isEmpty == false) {
-              TaskSectionView(
-                filter: filter,
-                tasks: tasks
-              ) { task in
-                self._appState.modalSelection = .editTask(task)
-              }
-            }
-          }
-        }
+        .padding(self._verticalBarEdge, 8)
       }
       .task(id: self._appState.revealedTaskId) {
 
