@@ -42,13 +42,19 @@ struct WelcomeView: View {
           WelcomeStepView(
             number: 2,
             title: "Add tasks.",
-            message: "Type out what you need to do and let on-device Apple Intelligence create you your tasks."
+            message: "Type out what you need to do and let on-device Apple Intelligence create your tasks."
           )
 
           WelcomeStepView(
             number: 3,
+            title: "Plan your week.",
+            message: "Pick a day on the home screen from the week aheaddto see what tasks are due."
+          )
+
+          WelcomeStepView(
+            number: 4,
             title: "Get stuff done.",
-            message: "Use focus to see what’s due and tick off tasks as you go."
+            message: "Tick off tasks as you go and use focus to narrow a task sheet down to what’s left."
           )
         }
         .frame(
