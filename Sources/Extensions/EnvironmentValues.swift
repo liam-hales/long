@@ -14,4 +14,29 @@ extension EnvironmentValues {
 
     return false
   }
+
+  /// Used to determine which horizontal edge the system
+  /// places the vertical bar on in the current context
+  nonisolated var verticalBarEdge: Edge.Set {
+
+    // The `toolbarVerticalEdge` value is
+    // only available on iOS 27.1
+    if #available(iOS 27.1, *) {
+      switch self.toolbarVerticalEdge {
+
+        case .leading:
+          return .leading
+
+        case .trailing:
+          return .trailing
+
+        // If there is no vertical edge
+        // then return no edges
+        case nil:
+          return []
+      }
+    }
+
+    return []
+  }
 }
