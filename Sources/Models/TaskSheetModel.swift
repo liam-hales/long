@@ -82,12 +82,16 @@ final class TaskSheetModel: Identifiable, BaseModel {
     }
   }
 
-  /// Initialises a new task sheet
-  /// with a given `name`
-  init(name: String) {
+  /// Initialises a new task sheet with a
+  /// given `name`, `tagline` and `icon`
+  init(
+    name: String,
+    tagline: String,
+    icon: LucideIconName
+  ) {
     self.name = name
-    self.tagline = ""
-    self.iconName = LucideIconName.notebook.rawValue
+    self.tagline = tagline
+    self.iconName = icon.rawValue
     self.tasks = []
     self.createDate = .now
     self.updateDate = .now

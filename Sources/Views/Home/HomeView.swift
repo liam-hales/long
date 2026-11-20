@@ -132,7 +132,7 @@ struct HomeView: View {
       ToolbarItem(placement: .topBarTrailing) {
         Button(
           action: {
-            self._appState.createTaskSheet(name: "Untitled")
+            self._appState.modalSelection = .createTaskSheet
           },
           label: {
             LucideIcon(.filePlusCorner, size: 22)

@@ -1,4 +1,5 @@
 import Foundation
+import LucideSwift
 import SwiftData
 import SwiftUI
 
@@ -16,6 +17,7 @@ final class AppState {
   /// Describes which modal the user
   /// currently has presented
   enum ModalSelection: Identifiable, Hashable {
+    case createTaskSheet
     case editTaskSheet(_ sheet: TaskSheetModel)
     case editTask(_ task: TaskModel)
     case reviewTasks
@@ -116,18 +118,27 @@ final class AppState {
     self.captureError = nil
   }
 
-  /// Used to create and save a new
-  /// task sheet with a given `name`
-  func createTaskSheet(name: String) -> Void {
-    let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+  /// Used to create and save a new task sheet
+  /// with a given `name`, `tagline` and `icon`
+  func createTaskSheet(
+    name: String,
+    tagline: String,
+    icon: LucideIconName
+  ) -> Void {
+    let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+    let trimmedTagline = tagline.trimmingCharacters(in: .whitespacesAndNewlines)
 
     // Check if the trimmed name
     // is empty and if so return
-    if trimmed.isEmpty == true {
+    if trimmedName.isEmpty == true {
       return
     }
 
-    let newSheet = TaskSheetModel(name: trimmed)
+    let newSheet = TaskSheetModel(
+      name: trimmedName,
+      tagline: trimmedTagline,
+      icon: icon
+    )
 
     // Insert and immediately save the
     // new task sheet so it persists

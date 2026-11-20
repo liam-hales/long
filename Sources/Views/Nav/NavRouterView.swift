@@ -75,8 +75,17 @@ struct NavRouterView: View {
     .sheet(item: $appState.modalSelection) { modal in
       switch modal {
 
+        case .createTaskSheet:
+          TaskSheetFormView { name, tagline, icon in
+            self._appState.createTaskSheet(
+              name: name,
+              tagline: tagline,
+              icon: icon
+            )
+          }
+
         case .editTaskSheet(let sheet):
-          EditTaskSheetView(sheet: sheet)
+          TaskSheetFormView(sheet: sheet)
 
         case .editTask(let task):
           EditTaskView(task: task)

@@ -8,6 +8,9 @@ struct WelcomeView: View {
   @Environment(AppState.self)
   private var _appState: AppState
 
+  @State
+  private var _isCreatingSheet: Bool = false
+
   var body: some View {
     ScrollView {
       VStack(
@@ -74,7 +77,7 @@ struct WelcomeView: View {
         ) {
           Button(
             action: {
-              self._appState.createTaskSheet(name: "Untitled")
+              self._isCreatingSheet = true
             },
             label: {
               HStack(
@@ -112,5 +115,17 @@ struct WelcomeView: View {
     .defaultScrollAnchor(.center, for: .alignment)
     .scrollBounceBehavior(.basedOnSize)
     .background(Color.base)
+    .sheet(isPresented: self.$_isCreatingSheet) {
+      TaskSheetFormView { name, tagline, icon in
+
+        // Create the new task sheet with
+        // the details from the form view
+        self._appState.createTaskSheet(
+          name: name,
+          tagline: tagline,
+          icon: icon
+        )
+      }
+    }
   }
 }
