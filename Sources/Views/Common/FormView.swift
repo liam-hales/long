@@ -1,14 +1,16 @@
 import LucideSwift
 import SwiftUI
 
-/// Used to display a modal which allows the
-/// user to edit and save a set of details
-struct EditView<Content: View>: View {
-  private let _subject: String
+/// Used to display a modal form which allows the
+/// user to fill in and save a set of details
+struct FormView<Content: View>: View {
+  private let _title: String
+  private let _subtitle: String
+  private let _confirmText: String
   private let _height: CGFloat
   private let _hasChanges: Bool
   private let _isValid: Bool
-  private let _onSave: () -> Void
+  private let _onConfirm: () -> Void
   private let _content: Content
 
   @Environment(\.dismiss)
@@ -17,37 +19,41 @@ struct EditView<Content: View>: View {
   @State
   private var _showDiscardConfirmation: Bool = false
 
-  private var _isSaveDisabled: Bool {
+  private var _isConfirmDisabled: Bool {
     (
       self._hasChanges == false ||
       self._isValid == false
     )
   }
 
-  /// Initialises the view with the edit `content` for a given
-  /// `subject` and the `onSave` action to run when the user saves
+  /// Initialises the view with the form `content`, its `title`, `subtitle` and
+  /// `confirmText`, and the `onConfirm` action to run when the user confirms
   init(
-    subject: String,
+    title: String,
+    subtitle: String,
+    confirmText: String,
     height: CGFloat,
     hasChanges: Bool,
     isValid: Bool,
-    onSave: @escaping () -> Void,
+    onConfirm: @escaping () -> Void,
 
     @ViewBuilder
     content: () -> Content
   ) {
-    self._subject = subject
+    self._title = title
+    self._subtitle = subtitle
+    self._confirmText = confirmText
     self._height = height
     self._hasChanges = hasChanges
     self._isValid = isValid
-    self._onSave = onSave
+    self._onConfirm = onConfirm
     self._content = content()
   }
 
-  /// Used to save the changes
+  /// Used to confirm the form
   /// and dismiss the view
-  private func _save() -> Void {
-    self._onSave()
+  private func _confirm() -> Void {
+    self._onConfirm()
     self._dismiss()
   }
 
@@ -101,7 +107,7 @@ struct EditView<Content: View>: View {
               }
             },
             message: {
-              Text("Your changes to this \(self._subject) will be lost.")
+              Text("Are you sure? Your changes will be lost.")
             }
           )
         }
@@ -109,7 +115,7 @@ struct EditView<Content: View>: View {
         ToolbarItem(placement: .confirmationAction) {
           Button(
             role: .confirm,
-            action: self._save
+            action: self._confirm
           ) {
             HStack(
               alignment: .center,
@@ -121,27 +127,27 @@ struct EditView<Content: View>: View {
                 strokeWidth: 3
               )
 
-              Text("Save")
+              Text(self._confirmText)
                 .font(.serif(16, .semibold))
             }
             .padding(.horizontal, 6)
             .foregroundStyle(
-              (self._isSaveDisabled == true)
+              (self._isConfirmDisabled == true)
                 ? .contentSecondary
                 : .white
             )
           }
           .buttonStyle(.glassProminent)
-          .disabled(self._isSaveDisabled)
+          .disabled(self._isConfirmDisabled)
           .tint(
-            (self._isSaveDisabled == true)
+            (self._isConfirmDisabled == true)
               ? .disabled
               : .accent
           )
         }
       }
-      .navigationTitle("Edit")
-      .navigationSubtitle("Update \(self._subject) details")
+      .navigationTitle(self._title)
+      .navigationSubtitle(self._subtitle)
       .interactiveDismissDisabled(self._hasChanges)
       .scrollBounceBehavior(.basedOnSize)
       .scrollDismissesKeyboard(.interactively)
