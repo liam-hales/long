@@ -56,12 +56,14 @@ struct EditTaskView: View {
   }
 
   var body: some View {
-    EditView(
-      subject: "task",
+    FormView(
+      title: "Edit task",
+      subtitle: "Update the task details",
+      confirmText: "Save",
       height: 820,
       hasChanges: self._hasChanges,
       isValid: self._isTitleValid,
-      onSave: {
+      onConfirm: {
         self._task.update(
           title: self._trimmedTitle,
           dueDate: self._dueDate
