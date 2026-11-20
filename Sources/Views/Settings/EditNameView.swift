@@ -56,9 +56,9 @@ struct EditNameView: View {
         self._appSettings.preferredName = self._trimmedName
       },
       content: {
-        VStack(
-          alignment: .leading,
-          spacing: 8
+        HStack(
+          alignment: .center,
+          spacing: 12
         ) {
           TextField(
             "Name",
@@ -73,26 +73,15 @@ struct EditNameView: View {
           .autocorrectionDisabled()
           .submitLabel(.done)
 
-          HStack(
-            alignment: .center,
-            spacing: 8
-          ) {
-            Text("The name used to greet you")
-              .foregroundStyle(Color.contentSecondary)
-              .font(.mono(14))
-
-            Spacer()
-
-            // Display the current name character
-            // count so the user knows not to go over
-            Text("\(self._trimmedName.count) / \(Self._maxNameLength)")
-              .foregroundStyle(
-                (self._isNameValid == false)
-                  ? Color.contentError
-                  : Color.contentSecondary
-              )
-              .font(.mono(14))
-          }
+          // Display the current name character
+          // count so the user knows not to go over
+          Text("\(self._trimmedName.count) / \(Self._maxNameLength)")
+            .foregroundStyle(
+              (self._isNameValid == false)
+                ? Color.contentError
+                : Color.contentSecondary
+            )
+            .font(.mono(14))
         }
         .padding(.horizontal, 4)
         .onAppear {
