@@ -51,7 +51,7 @@ struct WelcomeView: View {
           WelcomeStepView(
             number: 3,
             title: "Plan your week.",
-            message: "Pick a day on the home screen from the week aheaddto see what tasks are due."
+            message: "Pick a day on the home screen from the week ahead to see what tasks are due."
           )
 
           WelcomeStepView(
