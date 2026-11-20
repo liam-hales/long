@@ -18,6 +18,18 @@ struct EditNameView: View {
     self._name.trimmingCharacters(in: .whitespacesAndNewlines)
   }
 
+  private var _title: String {
+    (self._appSettings.preferredName.isEmpty == true)
+      ? "Add name"
+      : "Edit Name"
+  }
+
+  private var _subtitle: String {
+    (self._appSettings.preferredName.isEmpty == true)
+      ? "Add a name used to greet you"
+      : "Update the name used to greet you"
+  }
+
   private var _hasChanges: Bool {
     self._trimmedName != self._appSettings.preferredName
   }
@@ -33,12 +45,14 @@ struct EditNameView: View {
   }
 
   var body: some View {
-    EditView(
-      subject: "name",
+    FormView(
+      title: self._title,
+      subtitle: self._subtitle,
+      confirmText: "Save",
       height: 180,
       hasChanges: self._hasChanges,
       isValid: self._isNameValid,
-      onSave: {
+      onConfirm: {
         self._appSettings.preferredName = self._trimmedName
       },
       content: {
