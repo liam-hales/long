@@ -234,6 +234,7 @@ struct SettingsView: View {
         }
       }
       .toolbarTitleDisplayMode(.inline)
+      .toolbarTitleAlignment(.center)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(

@@ -86,6 +86,7 @@ struct FormView<Content: View>: View {
         .frame(maxWidth: .infinity)
       }
       .toolbarTitleDisplayMode(.inline)
+      .toolbarTitleAlignment(.center)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(

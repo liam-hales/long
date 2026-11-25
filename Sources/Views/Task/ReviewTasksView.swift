@@ -44,6 +44,7 @@ struct ReviewTasksView: View {
         }
       }
       .toolbarTitleDisplayMode(.inline)
+      .toolbarTitleAlignment(.center)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) {
           Button(
