@@ -20,4 +20,26 @@ extension View {
       self.padding(.horizontal, 16)
     }
   }
+
+  /// Used to set how the title and subtitle
+  /// are aligned in the toolbar
+  @ViewBuilder
+  func toolbarTitleAlignment(_ alignment: TextAlignment) -> some View {
+
+    // The system `toolbarTitleAlignment` modifier
+    // is only available on iOS 27.2
+    if #available(iOS 27.2, *) {
+      let titleAlignment: ToolbarTitleAlignment = switch alignment {
+        case .leading: .leading
+        case .center: .center
+        case .trailing: .automatic
+      }
+
+      self.toolbarTitleAlignment(titleAlignment)
+    }
+
+    if #unavailable(iOS 27.2) {
+      self
+    }
+  }
 }
