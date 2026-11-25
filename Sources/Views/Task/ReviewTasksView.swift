@@ -56,26 +56,18 @@ struct ReviewTasksView: View {
             }
           )
         }
+        .toolbarAxis(.vertical)
 
         ToolbarItem(placement: .confirmationAction) {
           Button(
             role: .confirm,
             action: self._add
           ) {
-            HStack(
-              alignment: .center,
-              spacing: 8
-            ) {
-              LucideIcon(
-                .check,
-                size: 20,
-                strokeWidth: 3
-              )
-
-              Text("Add")
-                .font(.serif(16, .semibold))
-            }
-            .padding(.horizontal, 6)
+            LucideIcon(
+              .check,
+              size: 20,
+              strokeWidth: 3
+            )
             .foregroundStyle(
               (self._isAddDisabled == true)
                 ? .contentSecondary
@@ -90,6 +82,7 @@ struct ReviewTasksView: View {
               : .accent
           )
         }
+        .toolbarAxis(.vertical)
       }
       .listStyle(.plain)
       .navigationTitle("Review")

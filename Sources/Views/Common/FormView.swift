@@ -111,26 +111,18 @@ struct FormView<Content: View>: View {
             }
           )
         }
+        .toolbarAxis(.vertical)
 
         ToolbarItem(placement: .confirmationAction) {
           Button(
             role: .confirm,
             action: self._confirm
           ) {
-            HStack(
-              alignment: .center,
-              spacing: 8
-            ) {
-              LucideIcon(
-                .check,
-                size: 20,
-                strokeWidth: 3
-              )
-
-              Text(self._confirmText)
-                .font(.serif(16, .semibold))
-            }
-            .padding(.horizontal, 6)
+            LucideIcon(
+              .check,
+              size: 20,
+              strokeWidth: 3
+            )
             .foregroundStyle(
               (self._isConfirmDisabled == true)
                 ? .contentSecondary
@@ -145,6 +137,7 @@ struct FormView<Content: View>: View {
               : .accent
           )
         }
+        .toolbarAxis(.vertical)
       }
       .navigationTitle(self._title)
       .navigationSubtitle(self._subtitle)

@@ -246,6 +246,7 @@ struct SettingsView: View {
             }
           )
         }
+        .toolbarAxis(.vertical)
       }
       .listStyle(.plain)
       .navigationTitle("Settings")
