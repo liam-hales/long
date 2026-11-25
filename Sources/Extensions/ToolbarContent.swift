@@ -10,14 +10,15 @@ extension ToolbarContent {
   @ToolbarContentBuilder
   func toolbarAxis(_ axis: Axis) -> some ToolbarContent {
 
-    // The `axisBehavior` modifier is
-    // only aviliable on iOS 27.1
+    // The system `axisBehavior` modifier
+    // is only available on iOS 27.1
     if #available(iOS 27.1, *) {
-      self.axisBehavior(
-        (axis == .vertical)
-          ? .verticalPreferred
-          : .horizontalOnly
-      )
+      let behavior: ToolbarItemAxisBehavior = switch axis {
+        case .horizontal: .horizontalOnly
+        case .vertical: .verticalPreferred
+      }
+
+      self.axisBehavior(behavior)
     }
 
     if #unavailable(iOS 27.1) {
